@@ -1,0 +1,279 @@
+<!-- Tabela para exibir os dados -->
+<ion-row id="tabela-container">
+  <ion-col size="12">
+    <ion-card>
+      <ion-card-header>
+  
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="col-disabled"><strong>Código</strong></ion-col>
+            <ion-col class="col-disabled"><strong>Descrição do Produto</strong></ion-col>
+            <ion-col class="col-disabled"><strong>NCM (de Compra)</strong></ion-col>
+            <ion-col class="col-disabled" *ngIf="mostrarCodigo"><strong>CEST (de Compra)</strong></ion-col>
+            <ion-col class="col-disabled"><strong>Quantidade</strong></ion-col>
+            <ion-col class="col-disabled"><strong>Valor Unitário</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{ totalCompra | currency: 'BRL' }}</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>% Frete</strong></ion-col>
+            <ion-col class="col-disabled"><strong>V Frete</strong></ion-col>
+            <ion-col class="col-disabled"><strong>Frete + Compra</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>V. ICMS Interestadual</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>Aliquota Interestadual</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>% MVA</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>Base de Cálculo (R$)</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>Alíquota Int. (%)</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>Déb. do ICMS-ST (R$)</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{ totalIcmsSt | currency: 'BRL' }}</strong></ion-col>
+            <ion-col class="col-disabled"><strong>Custo Un</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{ custoTotal | currency: 'BRL' }}</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% Margem</strong></ion-col>
+            <ion-col class="col-disabled"><strong>V Venda Un - S/Desconto</strong></ion-col>
+            <ion-col class="col-disabled"><strong>V.T Venda - S/Desconto</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% Desconto</strong></ion-col>
+            <ion-col class="col-disabled"><strong>V Venda Un - C/Desconto</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{ vendaTotal | currency: 'BRL' }}</strong></ion-col>
+            <ion-col class="col-disabled"><strong>NCM (de venda)</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>% IRPJ</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>% CSLL</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>% PIS</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>% COFINS</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled"><strong>% ICMS</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{ impostoTotal | currency: 'BRL' }}</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled">% Comissão Varejista</ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled">% Comissão Distribuidor</ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled">% Frete Venda</ion-col>
+            <ion-col *ngIf="mostrarCodigo" class="col-disabled">% Taxas</ion-col>
+            <ion-col style="color: green;">{{ despesaTotal | currency: 'BRL' }}</ion-col>
+            <ion-col style="color: green;">{{ lucroTotal | currency: 'BRL' }}</ion-col>
+            <ion-col style="color: green;">{{ percentualLucro | percent: '1.0-3' }}</ion-col>
+            <ion-col class="col-disabled"></ion-col>
+          </ion-row>
+          
+           
+          
+
+          <ion-row>
+            <ion-col><strong>Código</strong></ion-col>
+            <ion-col><strong>Descrição do Produto</strong></ion-col>
+            <ion-col><strong>NCM (de Compra)</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>CEST (de Compra)</strong></ion-col>
+            <ion-col><strong>Quantidade</strong></ion-col>
+            <ion-col><strong>Valor Unitário</strong></ion-col>
+            <ion-col><strong>VT Compra</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>% Frete</strong></ion-col>
+            <ion-col><strong>V Frete</strong></ion-col>
+            <ion-col><strong>Frete + Compra</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>V. ICMS Interestadual</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>Aliquota Interestadual</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>% MVA</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>Base de Cálculo (R$)</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>Alíquota Int. (%)</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>Déb. do ICMS-ST (R$)</strong></ion-col>
+            <ion-col><strong>V. ICMS-ST (R$)</strong></ion-col>
+            <ion-col><strong>Custo Un</strong></ion-col>
+            <ion-col><strong>Custo Total</strong></ion-col>
+            <ion-col><strong>% Margem</strong></ion-col>
+            <ion-col><strong>V Venda Un - S/Desconto</strong></ion-col>
+            <ion-col><strong>V.T Venda - S/Desconto</strong></ion-col>
+            <ion-col><strong>% Desconto</strong></ion-col>
+            <ion-col><strong>V Venda Un - C/Desconto</strong></ion-col>
+            <ion-col><strong>V.T Venda - C/Desconto</strong></ion-col>
+            <ion-col><strong>NCM (de venda)</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>% IRPJ</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>% CSLL</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>% PIS</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>% COFINS</strong></ion-col>
+            <ion-col *ngIf="mostrarCodigo"><strong>% ICMS</strong></ion-col>
+            <ion-col><strong>V.T Imposto</strong> </ion-col>
+            <ion-col *ngIf="mostrarCodigo">% Comissão Varejista</ion-col>
+            <ion-col *ngIf="mostrarCodigo">% Comissão Distribuidor</ion-col>
+            <ion-col *ngIf="mostrarCodigo">% Frete Venda</ion-col>
+            <ion-col *ngIf="mostrarCodigo">% Taxas</ion-col>
+            <ion-col>V.T Despesas</ion-col>
+            <ion-col>R$ Lucro</ion-col>
+            <ion-col>% Lucro</ion-col>
+            <ion-col><ion-icon name="color-wand-outline"></ion-icon></ion-col>
+          </ion-row>
+          
+          <ion-row *ngFor="let item of dadosTabela; let i = index">
+
+            <ion-col>{{ i + 1 }}</ion-col>
+            <ion-col>{{ item.nomeProduto }}</ion-col>            
+            <ion-col>
+              {{ item.ncmCompra }}
+              <span class="button-information" (click)="cargaTributariaNCMCompra(item.ncmCompra, item.cestCompra, item.ufDistribuidor)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+              </span>
+            </ion-col>
+           
+            <ion-col *ngIf="mostrarCodigo">{{ item.cestCompra }}</ion-col>
+
+            <!-- Quantidade -->
+            <ion-col>{{ item.quantidadeProduto }}</ion-col>
+
+            <!-- Valor Unitário -->
+            <ion-col>{{ item.valorCompraProdutoUnitario | currency:'BRL' }}</ion-col>
+
+            <!-- VT Compra (Quantidade x Valor Unitário)   -->
+            <ion-col>{{ calculateVTCompra(item) | currency:'BRL' }}</ion-col>
+
+            <!-- % Frete -->
+            <ion-col *ngIf="mostrarCodigo">{{ item.percentualFreteCompra }}%</ion-col>
+
+            <!-- V Frete (Frete em valor com base no percentual) -->
+            <ion-col>{{ calculateVFrete(item) | currency:'BRL' }}</ion-col>
+
+            <!-- V.C Compra (Valor Total de Compra + Frete) -->
+            <ion-col>{{ calculateFreteCompra(item) | currency:'BRL' }}</ion-col>
+
+            <ion-col *ngIf="mostrarCodigo">
+              {{ calculateIcmsCompra(item) | currency:'BRL' }}
+            </ion-col>
+
+            <!-- Exibindo o MVA no template -->
+            <ion-col *ngIf="mostrarCodigo">{{ item.aliquotaInterestadualFornecedor }}</ion-col>
+
+            <!-- Exibindo o MVA no template -->
+            <ion-col *ngIf="mostrarCodigo">{{ item.percentualMVA }}</ion-col>
+
+
+            <!-- Base de Cálculo -->
+            <ion-col [title]="
+                  'Cálculo ICMS ST: ' + 
+                  (item.percentualMVA) + '%' + ' * ' + 
+                  (calculateFreteCompra(item)) + ' + ' + (calculateFreteCompra(item))
+                " *ngIf="mostrarCodigo">{{ calcularBaseIcmsSt(item) | currency:'BRL' }}</ion-col>
+
+            <!-- Déb. do ICMS-ST -->
+            <ion-col *ngIf="mostrarCodigo">{{ item.aliquotaInternaDistribuidor }}</ion-col>
+
+            <ion-col *ngIf="mostrarCodigo">{{ debitoICMSST(item) | currency:'BRL' }}</ion-col>
+
+            <!-- V. ICMS-ST (Diferença entre ICMS-ST e ICMS Interestadual) -->
+            <ion-col>{{ calculoDifICMS(item) | currency:'BRL' }}
+              <span class="button-information" (click)="carregarCalculoICMSST(item)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+              </span>
+            </ion-col>
+
+            <ion-col>{{ calculoCustoUn(item) | currency:'BRL' }}</ion-col>
+            <ion-col>{{ calculoCustoTotal(item) | currency:'BRL' }}</ion-col>
+
+
+            <!-- % Margem -->
+            <ion-col>{{ (item.percentualMargem/100) | percent:'1.0-1' }}</ion-col>
+
+            <!-- V Venda Unitário valor de custo divido por quantidade *  -->
+            <ion-col>
+              {{
+              calculoVlrVendaUn(item)| currency:'BRL'
+              }}
+            </ion-col>
+
+            <!-- V total de Venda Unitário   -->
+            <ion-col>
+              {{
+              calculoVlrVendaTotal(item) | currency:'BRL'
+              }}
+            </ion-col>
+
+            <!-- % Desconto  -->
+            <ion-col>{{ (item.percentualDesconto/100) | percent:'1.0-3' }}</ion-col>
+
+            <ion-col>
+              {{
+              calculoDescontoVlrVendaUn(item) | currency:'BRL'
+              }}
+            </ion-col>
+
+
+
+            <!-- V.T Desconto -->
+
+            <ion-col> {{
+              calculoDescontoVlrVendaTotal(item) | currency:'BRL'
+              }}
+            </ion-col>
+
+            <ion-col>{{ item.ncmVenda }}</ion-col>
+
+
+            <ion-col *ngIf="mostrarCodigo">{{ item.irpj }}</ion-col>
+            <ion-col *ngIf="mostrarCodigo">{{ item.csll }}</ion-col>
+            <ion-col *ngIf="mostrarCodigo">{{ item.aliquotapisSaida }}</ion-col>
+            <ion-col *ngIf="mostrarCodigo">{{ item.aliquotacofinsSaida }}</ion-col>
+            <ion-col *ngIf="mostrarCodigo">{{ item.aliquotaicms }}</ion-col>
+
+
+
+            <ion-col>
+              {{
+              valorTotalImpostoVenda(item) | currency: 'BRL'
+              }}
+              <span class="button-information" (click)="carregarCalculoImposto(item)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+              </span>
+
+            </ion-col>
+
+            <ion-col *ngIf="mostrarCodigo">{{item.comissaoVarejista}}</ion-col>
+            <ion-col *ngIf="mostrarCodigo">{{item.comissaoDistribuidor}}</ion-col>
+            <ion-col *ngIf="mostrarCodigo">{{item.percentualFreteVenda}}</ion-col>
+            <ion-col *ngIf="mostrarCodigo">{{item.percentualTaxas}}</ion-col>
+            <ion-col>{{ calculoVlrDespesas(item) | currency: 'BRL' }}
+              <span class="button-information" (click)="carregarCalculoDespesas(item)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+              </span>
+            </ion-col>
+            <ion-col>{{calculoVlrLucro(item)| currency:'BRL'}}</ion-col>
+            <ion-col>{{calculoPercentualLucro(item)| percent:'1.0-3' }}</ion-col>
+            <ion-col>
+              <ion-buttons>              
+                <ion-button fill="clear" size="small" (click)="removeItem(i)">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button>
+              </ion-buttons>  
+  
+            </ion-col>
+
+
+
+
+
+
+
+
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+
+    </ion-card>
+  </ion-col>
+</ion-row>
+
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="end">  
+  <ion-fab-button>  
+    <ion-icon name="apps-outline"></ion-icon>
+  </ion-fab-button>  
+
+  <ion-fab-list side="top">  
+
+    <ion-fab-button (click)="printContent()">
+      <ion-icon name="print-outline"></ion-icon>
+    </ion-fab-button>  
+
+    <ion-fab-button (click)="exportToExcel()">
+      <ion-icon name="document-text-outline"></ion-icon>
+    </ion-fab-button>  
+
+    <ion-fab-button (click)="salvarDadosSimulador()">
+      <ion-icon name="save-outline"></ion-icon>
+    </ion-fab-button>  
+
+    <ion-fab-button (click)="printDRE()">
+      DRE
+    </ion-fab-button>  
+  </ion-fab-list>  
+</ion-fab>  

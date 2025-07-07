@@ -1,0 +1,75 @@
+<ion-content [fullscreen]="true">
+
+  <app-header 
+    [pageTitle]="pageTitle" 
+    [iconName]="'arrow-back-sharp'"
+    [ViewPage]="true">
+  </app-header>
+  
+
+  <app-subheader
+  [TitleSubheader]="TitleSubheader"
+  [ViewPage]="true"
+  descricaoCampoPesquisa="Pesquisar por Descrição, NCM ou CEST"
+  (newClicked)="novoCadastroNCM()"
+  (saveClicked)="salvarCadastro()"
+  (searchClicked)="onSearch($event)">
+
+</app-subheader>
+
+
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+ 
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">UF</th>         
+          <th scope="col">NCM</th>
+          <th scope="col">CEST</th>
+          <th scope="col">Descrição</th>          
+          <th scope="col">CST PIS/COFINS Entrada</th>
+          <th scope="col">CST PIS/COFINS Saída</th>
+          <th scope="col">CFOP</th>
+          <th scope="col">CST</th>
+          <th scope="col">% ICMS</th>
+          <th scope="col">% IRPJ</th>
+          <th scope="col">% CSLL</th>
+          <th scope="col">% PIS</th>
+          <th scope="col">% COFINS</th>
+          <th ></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let ncm of ncms; let i = index">
+          <td>{{ ncm.uf }}</td>
+          <td>{{ ncm.ncm }}</td>
+          <td>{{ ncm.cest }}</td>
+          <td class="no-wrap">{{ ncm.descricao }}</td>
+          <td>{{ ncm.cstpiscofinsEntrada }}</td>          
+          <td>{{ ncm.cstpiscofinsSaida }}</td>          
+          <td>{{ ncm.cfop }}</td>
+          <td>{{ ncm.cst }}</td>
+          <td>{{ ncm.aliquotaicms }}</td>   
+          <td>{{ ncm.irpj }}</td>   
+          <td>{{ ncm.csll }}</td>   
+          <td>{{ ncm.aliquotapisSaida }}</td>   
+          <td>{{ ncm.aliquotacofinsSaida }}</td>   
+          <td>
+            <ion-buttons>
+              <ion-button fill="clear" size="small" (click)="editar(ncm)">
+                <ion-icon name="create-sharp"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" size="small" (click)="confirmarExclusao(ncm.id, $event)">
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+
+
+          </td>  
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ion-content>

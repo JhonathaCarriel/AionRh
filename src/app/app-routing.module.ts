@@ -25,6 +25,14 @@ const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'dashboards',
+    loadChildren: () =>
+      import('./dashboards/dashboards.component').then(
+        (m) => m.DashboardsComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
     path: 'departamentos',
     loadChildren: () =>
       import('./departamentos/departamentos.module').then(
@@ -81,6 +89,51 @@ const routes: Routes = [
         (m) => m.ResetSenhaPageModule
       ),
   },
+  {
+    path: 'simulador',
+    loadChildren: () => import('./menu/simulador/simulador.module').then( m => m.SimuladorPageModule)
+  },
+  {
+    path: 'ncms',
+    loadChildren: () => import('./ncms/ncms.module').then( m => m.NcmsPageModule)
+  },
+{
+  path:'cadastro/ncm',
+  loadChildren: () => import('./ncms/cadastro/cadastro.module').then(m => m.CadastroPageModule)
+},
+{
+  path: 'editar/ncm/:id',
+  loadChildren: () => import('./ncms/editar/editar.module').then(m => m.EditarPageModule)
+},
+{
+  path: 'relatorio-pdf',
+  loadChildren: () => import('./menu/simulador/relatorio-pdf/relatorio-pdf.component').then(m =>m.RelatorioPdfComponent)
+},
+  {
+    path: 'simulador/servico',
+    loadChildren: () => import('./menu/simulador-servico/simulador-servico.module').then( m => m.SimuladorServicoPageModule)
+  },
+  {
+    path: 'simulador/servico/criar',
+    loadChildren: () => import('./menu/simulador-servico/criar/criar.module').then( m => m.CriarPageModule)
+  },
+  {
+    path: 'simulador/servico/editar/:id',
+    loadChildren: () => import('./menu/simulador-servico/editar/editar.module').then( m => m.EditarPageModule)
+  },
+  {
+    path: 'simulador/cnae',
+    loadChildren: () => import('./cnae/cnae.module').then( m => m.CnaePageModule)
+  },
+  {
+    path: 'simulador/cnae/criar',
+    loadChildren: () => import('./cnae/criar/criar.module').then( m => m.CriarPageModule)
+  },
+  {
+    path: 'simulador/cnae/editar/:id',
+    loadChildren: () => import('./cnae/editar/editar.module').then( m => m.EditarPageModule)
+  }
+
 ];
 
 @NgModule({

@@ -1,0 +1,30 @@
+<ion-grid>
+  <ion-row>
+    <ion-col size="4" class="ion-text-start align-items-center col-inicio">
+      <ng-container *ngIf="ViewPage">
+        <ion-button size="small" (click)="onNewClick()" color="#3f7b32" title="Abre a tela de cadastro">Novo</ion-button>
+      </ng-container>
+
+      <ng-container *ngIf="FormPage">
+        <ion-button size="small" color="#3f7b32" (click)="onSaveClick()" title="Salva os dados" type="submit">Salvar</ion-button>
+        <ion-button size="small" fill="outline" color="#3f7b32" (click)="onDiscardClick()" title="Descarta o que foi preenchido">Descartar</ion-button>        
+      </ng-container>
+
+      <span>{{TitleSubheader}}</span>
+    </ion-col>
+
+    <ion-col size="4">
+      <form *ngIf="ViewPage" class="form-inline">
+        <input 
+        class="form-control mr-sm-2" 
+        type="search" 
+        [placeholder]="descricaoCampoPesquisa" 
+        aria-label="Search" 
+        [(ngModel)]="searchTerm"  
+        (ngModelChange)="onSearchChange()" 
+        >
+      </form>
+    </ion-col>
+
+  </ion-row>
+</ion-grid>

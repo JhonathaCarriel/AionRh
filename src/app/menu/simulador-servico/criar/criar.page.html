@@ -1,0 +1,137 @@
+<ion-header [translucent]="true">
+  <app-header [pageTitle]="pageTitle" [iconName]="'arrow-back-sharp'" [FormPage]="true">
+  </app-header>
+
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true">
+ <form action="" class="form" [formGroup]="simuladorServicoForm">
+  <ion-grid>
+    <ion-row>
+      <!-- Varejista -->
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Varejista</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-input label="Nome Varejista" formControlName="nomeVarejista" type="text" label-placement="floating"
+              fill="outline" placeholder="Nome Varejista"></ion-input>
+
+            <ion-select label="UF Varejista" formControlName="ufVarejista" interface="popover" fill="outline"
+              placeholder="Selecione a UF">
+              <ion-select-option *ngFor="let estado of estados" [value]="estado.sigla">
+                {{ estado.sigla }} - {{ estado.nome }}
+              </ion-select-option>
+            </ion-select>
+
+            <ion-select label="Atividade Varejista" formControlName="atividadeVarejista" interface="popover"
+              fill="outline" placeholder="Atividade">
+              <ion-select-option *ngFor="let atividade of atividades" [value]="atividade.nome">{{ atividade.nome
+                }}</ion-select-option>
+            </ion-select>
+            <ion-select label="NFS Serviço" formControlName="nfsServicoVarejista" interface="popover" fill="outline"
+              placeholder="NFS Seriço">
+              <ion-select-option *ngFor="let boleano of boleanos" [value]="boleano.value">{{ boleano.nome
+                }}</ion-select-option>
+            </ion-select>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Valores Predeterminados -->
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Valores Predeterminados</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+
+              <ion-col>
+                <ion-input label="% Margem" formControlName="percentualMargem" type="text" label-placement="floating"
+                  fill="outline" placeholder="% Margem"></ion-input>
+              </ion-col>
+
+              <ion-col>
+                <ion-input label="% Desconto" formControlName="percentualDesconto" type="text"
+                  label-placement="floating" fill="outline" placeholder="% Desconto"></ion-input>
+              </ion-col>
+
+              <ion-col>
+                <ion-input label="% Taxas" formControlName="percentualTaxas" type="text" label-placement="floating"
+                  fill="outline" placeholder="% Taxas"></ion-input>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+
+              <ion-col>
+                <ion-input label="Comissão Varejista" formControlName="comissaoVarejista" type="text"
+                  label-placement="floating" fill="outline" placeholder="Comissão Varejista"></ion-input>
+              </ion-col>
+
+              <ion-col>
+                <ion-input label="Comissão Distribuidor" formControlName="comissaoDistribuidor" type="text"
+                  label-placement="floating" fill="outline" placeholder="Comissão Distribuidor"></ion-input>
+              </ion-col>
+
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+
+      <!-- Produto -->
+      <ion-col >
+        <ion-card>
+          <ion-card-header>
+                <ion-card-title>Serviço</ion-card-title>
+
+
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-col>
+                <ion-input label="Para quem a simulação?" formControlName="paraQuemSimulacao" type="text" label-placement="floating"
+                  fill="outline" placeholder="Para quem a simulação?"></ion-input>
+              </ion-col>
+              <ion-col>
+                <ion-input label="Código do Serviço" formControlName="cnae" type="text" label-placement="floating"
+                  fill="outline" placeholder="Código do Serviço" (ionInput)="buscarDadosCnae()"></ion-input>
+              </ion-col>
+              <ion-col >
+                <ion-input label="Valor do Serviço do Mecânico" formControlName="valorServicoMecanico" type="number"
+                  label-placement="floating" fill="outline" placeholder="Valor do Serviço do Mecânico"></ion-input>
+              </ion-col>
+
+
+
+            </ion-row>
+
+            <ion-row>
+
+              <ion-col size="10">
+                <ion-textarea label="Descrição Serviço:" formControlName="nomeServico" type="text" label-placement="floating"
+                  fill="outline" placeholder="Descrição Serviço:"></ion-textarea>
+              </ion-col>
+              <ion-col size="2">
+                <ion-button fill="clear" color="primary" (click)="adicionarNaTabela()">
+                  <ion-icon name="add-circle-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+  <app-tabela [dadosTabela]="tabelaInformacoes"></app-tabela>
+ </form>
+</ion-content>

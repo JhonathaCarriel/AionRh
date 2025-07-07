@@ -1,13 +1,12 @@
 <div class="container mt-3">
   <div class="row">
-
     <div class="col-md-6">
       <ion-card class="card-dashboards-barHorizontal setorMaiorPontuacao">
         <ion-card-header>
-          <ion-card-title>Setor com maior pontuação</ion-card-title>
+          <ion-card-title>Compras x Mês</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <canvas #barChartMaiorPontuacao></canvas>
+          <canvas #barChartComprasMes></canvas>
         </ion-card-content>
       </ion-card>
     </div>
@@ -15,38 +14,24 @@
     <div class="col-md-6">
       <ion-card class="card-dashboards-barHorizontal colaboradoresQuantidadePonto">
         <ion-card-header>
-          <ion-card-title>Desempenho Geral dos Colaboradores</ion-card-title>
+          <ion-card-title>Vendas x Mês</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <canvas #barChartColaboradoresPontuacao></canvas>
+          <canvas #barChartVendasMes></canvas>
         </ion-card-content>
       </ion-card>
     </div>
 
-
+    <!-- Adicionando o gráfico de barras para Lucro x Mês -->
     <div class="col-md-6">
       <ion-card class="card-dashboards-barHorizontal setorMediaPontuacao">
         <ion-card-header>
-          <ion-card-title>Setor X Média de Pontuação</ion-card-title>
+          <ion-card-title>Lucro x Mês</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <canvas #pieChartSetorMediaPontuacao></canvas>
+          <canvas #barChartLucroMes></canvas>
         </ion-card-content>
       </ion-card>
     </div>
-
-
-<!-- 
-    <div class="col-sm-6">
-      <ion-card class="card-dashboards-barHorizontal colaboradorxcategoria">
-        <ion-card-header>
-          <ion-card-title>Colaborador x Categoria</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <canvas #pieCharColaboradorCategoria></canvas>
-        </ion-card-content>
-      </ion-card>
-    </div>
- -->
   </div>
 </div>

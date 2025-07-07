@@ -10,9 +10,7 @@ import { AuthService } from '../shared/services/auth-service.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
-  loginForm: FormGroup;
-  passwordType: string = 'password';
-  passwordIcon: string = 'eye-off';
+  loginForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,61 +20,59 @@ export class LoginPage {
     private toastCtrl: ToastController,
     private alertCtrl: AlertController
   ) {
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required],]
     });
   }
 
-  async login() {
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
+  async login(): Promise<void> {
+    if (!this.loginForm.valid) {
+      await this.showToast('Por favor, preencha todos os campos corretamente.', 'danger');
+      return;
+    }
 
-      const loading = await this.loadingCtrl.create({ message: 'Autenticando...' });
-      await loading.present();
+    const { email, password } = this.loginForm.value;
+    const loading = await this.loadingCtrl.create({ message: 'Autenticando...' });
+    await loading.present();
 
-      try {
-        // Autenticar o usuário usando o serviço AuthService
-        const success = await this.authService.login(email, password);
+    try {
+      const success = await this.authService.login(email, password);
+      await loading.dismiss();
 
-        // Finalizar o loading após a autenticação
-        await loading.dismiss();
-
-        if (success) {
-          // Navegar para a página inicial após o login bem-sucedido
-          this.loginForm.reset();
-          this.router.navigate(['/home']);
-        } else {
-          // Exibir mensagem de erro se a autenticação falhar
-          await this.showInvalidCredentialsAlert();
-        }
-      } catch (error) {
-        // Finalizar o loading em caso de erro
-        await loading.dismiss();
-
-        // Exibir mensagem de erro caso a autenticação falhe
-        await this.showInvalidCredentialsAlert();
+      if (success) {
+        this.loginForm.reset();
+        this.router.navigate(['/home']);
+      } else {
+        await this.showAlert('Erro de autenticação', 'Usuário ou senha incorretos.');
       }
-    } else {
-      // Exibir mensagem de erro se o formulário não for válido
-      const toast = await this.toastCtrl.create({
-        message: 'Por favor, preencha todos os campos corretamente.',
-        duration: 3000,
-        position: 'top',
-        color: 'danger',
-      });
-      await toast.present();
+    } catch (error) {
+      await loading.dismiss();
+      console.error('Erro ao autenticar:', error);
+      await this.showAlert('Erro de autenticação', 'Ocorreu um erro ao tentar autenticar.');
     }
   }
 
-
-  async showInvalidCredentialsAlert() {
+  private async showAlert(header: string, message: string): Promise<void> {
     const alert = await this.alertCtrl.create({
-      header: 'Erro de autenticação',
-      message: 'Usuário ou senha incorretos.',
-      buttons: ['OK']
+      header,
+      message,
+      buttons: ['OK'],
     });
-
     await alert.present();
+  }
+
+  private async showToast(message: string, color: string): Promise<void> {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 3000,
+      position: 'top',
+      color,
+    });
+    await toast.present();
   }
 }

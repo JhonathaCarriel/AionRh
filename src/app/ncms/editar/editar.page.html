@@ -1,0 +1,235 @@
+<ion-content [fullscreen]="true">
+
+  <app-header 
+    [pageTitle]="pageTitle" 
+    [iconName]="'arrow-back-sharp'"
+    [FormPage]="true">
+  </app-header>
+
+  <!-- Componente de Sub-Cabeçalho -->
+  <app-subheader  [FormPage]="true" (saveClicked)="atualizarNCM()"
+    (discardClicked)="descartar()">
+  </app-subheader>
+
+
+
+  <div class="container">
+    <form [formGroup]="ncmForm" class="card">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-lg-2">
+          <div class="form-group">
+            <label for="crt" class="form-label">CRT</label>
+            <select id="crt" formControlName="crt" type="text" class="form-control" name="crt">
+              <option value="1 – Simples Nacional">1 – Simples Nacional</option>
+              <option value="2 – Regime Normal: Lucro Presumido">2 – Regime Normal: Lucro Presumido</option>
+              <option value="3 – Regime Normal: Lucro Real">3 – Regime Normal: Lucro Real</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-2">
+          <div class="form-group">
+            <label for="uf" class="form-label">UF</label>
+            <select id="uf" formControlName="uf" class="form-control" aria-label="Selecione a UF" name="uf">
+              <option value="" disabled selected>Selecione</option>
+              <option *ngFor="let estado of estados" [value]="estado.sigla">
+                {{ estado.sigla }} - {{ estado.nome }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 col-lg-2">
+          <div class="form-group">
+            <label for="ncm" class="form-label">NCM</label>
+            <input
+              id="ncm"
+              formControlName="ncm"
+              type="text"
+              class="form-control"
+              (input)="onNcmChange()"
+              placeholder="Digite o NCM"
+              maxlength="8" minlength="8"
+              name="ncm"
+            />
+          </div>
+        </div>
+        
+        <div class="col-12 col-sm-6 col-lg-2">
+          <div class="form-group">
+            <label for="cest" class="form-label">CEST</label>
+            <input id="cest" formControlName="cest" type="text" class="form-control"
+            aria-label="CEST" maxlength="7" minlength="7" name="cest">            
+          </div>
+        </div>
+        
+        
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="form-group"> <label for="descricao" class="form-label">Descrição do NCM</label> <input
+              id="descricao" formControlName="descricao" [value]="descricao" type="text" class="form-control" aria-label="Descrição do NCM" name="descricao"> </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-4">
+          <div class="form-group">
+            <label for="cstpiscofinsEntrada" class="form-label">CST PIS/COFINS Entrada</label>
+            <select id="cstpiscofinsEntrada" formControlName="cstpiscofinsEntrada" class="form-control" aria-label="Código CST PIS/COFINS Entrada" name="cstpiscofinsEntrada">
+              <option *ngFor="let cst of cstService.cstPisCofinsEntrada" [value]="cst.value">
+                {{ cst.description }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-1">
+          <div class="form-group">
+            <label for="aliquotapisEntrada" class="form-label">% PIS</label>
+            <input id="aliquotapisEntrada" formControlName="aliquotapisEntrada" type="number" class="form-control"
+              aria-label="Alíquota PIS/COFINS Entrada" name="aliquotapisEntrada">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-1">
+          <div class="form-group">
+            <label for="aliquotacofinsEntrada" class="form-label">% COFINS</label>
+            <input id="aliquotacofinsEntrada" formControlName="aliquotacofinsEntrada" type="number" class="form-control"
+              aria-label="Alíquota PIS/COFINS Entrada" name="aliquotacofinsEntrada">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-4">
+          <div class="form-group">
+            <label for="cstpiscofinsSaida" class="form-label">CST PIS/COFINS Saída</label>
+            <select id="cstpiscofinsSaida" formControlName="cstpiscofinsSaida" class="form-control"
+              aria-label="Código CST PIS/COFINS Saída" name="cstpiscofinsSaida">
+              <option *ngFor="let cst of cstService.cstPisCofinsSaida" [value]="cst.value">
+      {{ cst.description }}
+    </option>
+            </select>
+          </div>
+        </div>
+
+
+
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-1">
+          <div class="form-group">
+            <label for="aliquotapisSaida" class="form-label">% PIS</label>
+            <input id="aliquotapisSaida" formControlName="aliquotapisSaida" type="number"class="form-control"
+              aria-label="Alíquota PIS Saída" name="aliquotapisSaida">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-1">
+          <div class="form-group">
+            <label for="aliquotacofinsSaida" class="form-label">% COFINS</label>
+            <input id="aliquotacofinsSaida" formControlName="aliquotacofinsSaida" type="number" class="form-control"
+              aria-label="Alíquota PIS Saída" name="aliquotacofinsSaida">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="form-group">
+            <label for="cstIPI" class="form-label">CST IPI</label>
+            <select id="cstIPI" formControlName="cstIPI" class="form-control" aria-label="Código CST IPI" name="cstIPI">
+              <option *ngFor="let cst of cstService.cstIpi" [value]="cst.value">
+                {{ cst.description }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-1">
+          <div class="form-group">
+            <label for="aliquotaIPI" class="form-label">% IPI</label>
+            <input id="aliquotaIPI" formControlName="aliquotaIPI" type="number" class="form-control"
+              aria-label="Alíquota IPI" name="aliquotaIPI">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="form-group">
+            <label for="cfop" class="form-label">CFOP</label>
+            <select id="cfop" formControlName="cfop" class="form-control" aria-label="Código CFOP" name="cfop">
+              <option value="1403/5405">1403/5405</option>
+              <option value="1102/5102">1102/5102</option>
+
+            </select>
+          </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+          <div class="form-group">
+            <label for="cst" class="form-label">CST</label>
+            <select id="cst" formControlName="cst" class="form-control" aria-label="Código CST/CSOSN" name="cst">
+              <option *ngFor="let cst of cstService.cst" [value]="cst.value">
+                {{ cst.description }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="form-group">
+            <label for="aliquotaicms" class="form-label">Alíquota ICMS</label>
+            <input id="aliquotaicms" formControlName="aliquotaicms" type="text" class="form-control"
+              aria-label="Alíquota ICMS" name="aliquotaicms">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="form-group">
+            <label for="mvaOriginal" class="form-label">Alíquota MVA</label>
+            <input id="mvaOriginal" formControlName="mvaOriginal" type="number" class="form-control"
+              aria-label="Alíquota MVA" name="mvaOriginal">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="form-group">
+            <label for="mvaAliquota12" class="form-label">Alíquota MVA 12%</label>
+            <input id="mvaAliquota12" formControlName="mvaAliquota12" type="number"  class="form-control" name="mvaAliquota12">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="form-group">
+            <label for="mvaAliquota7" class="form-label">Alíquota MVA 7%</label>
+            <input id="mvaAliquota7" formControlName="mvaAliquota7" type="number"  class="form-control" name="mvaAliquota7">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="form-group">
+            <label for="mvaAliquota4" class="form-label">Alíquota MVA 4%</label>
+            <input id="mvaAliquota4" formControlName="mvaAliquota4" type="number"  class="form-control" name="mvaAliquota4">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="form-group">
+            <label for="irpj" class="form-label" title="IRPJ = 8% x 15% = 1,20% (não levando em consideração o adicional de IR);">IRPJ</label>
+            <input id="irpj" formControlName="irpj" type="number"  class="form-control" name="irpj">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="form-group">
+            <label for="csll" class="form-label" title="CSLL = 12% x 9% = 1,08% ">CSLL</label>
+            <input id="csll" formControlName="csll" type="number" class="form-control" name="csll">
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+
+</ion-content>

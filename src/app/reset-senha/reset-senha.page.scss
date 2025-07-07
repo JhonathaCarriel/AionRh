@@ -1,6 +1,13 @@
-@import url(../login/login.page.scss);
+ion-content {
+  --ion-background-color: #3f7b32;;
+}
 
-.form {
-  display: flex;
-  justify-content: center;
+
+strong{
+ color:#0e420b;
+ font-weight: bolder;
+}
+
+ion-button{
+  color: #ffffff; 
 }

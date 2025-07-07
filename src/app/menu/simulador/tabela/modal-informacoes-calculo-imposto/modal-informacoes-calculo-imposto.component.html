@@ -1,0 +1,174 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalhes dos Impostos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Detalhes do Produto: {{ item.nomeProduto }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="row g-3 mt-4">
+        <!-- Quantidade -->
+        <div class="col-6 col-md-4">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Qt</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.quantidadeProduto }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Valor Unitário -->
+        <div class="col-6 col-md-4">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>V Un</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ calculoDescontoVlrVendaUn | currency:'BRL' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Valor Total -->
+        <div class="col-12 col-md-4">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>V T.</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ calculoDescontoVlrVendaTotal | currency:'BRL' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-4">
+        <!-- NCM -->
+        <div class="col-12 col-md-4">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>NCM</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.ncmVenda }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CEST -->
+        <div class="col-6 col-md-4">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>CEST</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.cestVenda }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alíquota Interna -->
+        <div class="col-6 col-md-4">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Aliquota</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.aliquotaicms }}</p>
+              <p>{{ valorTotalImpostoVendaICMS(item)| currency:'BRL' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-4">
+        <!-- IRPJ -->
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>IRPJ</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.irpj }}%</p>
+              <p>{{ calculoDescontoVlrVendaTotal * (item.irpj / 100) | currency:'BRL' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CSLL -->
+        <div class="col-6 col-md-6">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>CSLL</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.csll }}%</p>
+              <p>{{ calculoDescontoVlrVendaTotal * (item.csll / 100) | currency:'BRL' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-4">
+        <!-- Alíquota PIS -->
+        <div class="col-12 col-md-4">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Alíquota PIS</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.aliquotapisSaida }}%</p>
+              <p>{{ calculoDescontoVlrVendaTotal * (item.aliquotapisSaida / 100) | currency:'BRL' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alíquota COFINS -->
+        <div class="col-6 col-md-4">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Alíquota COFINS</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.aliquotacofinsSaida }}%</p>
+              <p>{{ calculoDescontoVlrVendaTotal * (item.aliquotacofinsSaida / 100) | currency:'BRL' }}</p>
+            </div>
+          </div>
+        </div>
+        <!-- Alíquota COFINS -->
+        <div class="col-6 col-md-4">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Crédito de ICMS (Compra)</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ calculateIcms| currency:'BRL' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Valor Total Imposto -->
+        <div class="col-6 col-md-4">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Valor Total Imposto</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ valorTotalImpostoVenda | currency:'BRL' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,125 @@
+
+<ion-row id="tabela-container">
+  <ion-col size="12">
+    <ion-card>
+      <ion-card-header>
+
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="col-disabled"><strong>Código</strong></ion-col>
+            <ion-col class="col-disabled"><strong>CNAE</strong></ion-col>
+            <ion-col class="col-disabled"><strong>Descrição do Servico</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{totalServicoMecanico | currency: 'BRL'}}</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% Margem</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{totalServicoSemDesconto | currency: 'BRL'}}</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% Desconto</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{totalServicoComDesconto | currency: 'BRL'}}</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% CSLL Retido</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% PIS Retido</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% COFINS Retido</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{totalImpostosRetidos | currency: 'BRL'}}</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% CSLL</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% IRPJ</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% ISS</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{totalImpostosNaoRetidos | currency: 'BRL'}}</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% Comissão Varejista</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% Comissão Distribuidor</strong></ion-col>
+            <ion-col class="col-disabled"><strong>% Taxa</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{totalDespesas | currency: 'BRL'}}</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{totalLucroReais | currency: 'BRL'}}</strong></ion-col>
+            <ion-col style="color: green;"><strong>{{totalLucroPercentual | percent: '1.0-3'}}</strong></ion-col>
+            <ion-col class="col-disabled"></ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col><strong>Código</strong></ion-col>
+            <ion-col><strong>CNAE</strong></ion-col>
+            <ion-col><strong>Descrição do Servico</strong></ion-col>
+            <ion-col><strong>Valor Serviço Mecânico</strong></ion-col>
+            <ion-col><strong>% Margem</strong></ion-col>
+            <ion-col><strong>V. Serviço S/Desconto</strong></ion-col>
+            <ion-col><strong>% Desconto</strong></ion-col>
+            <ion-col><strong>V. Serviço C/Desconto</strong></ion-col>
+            <ion-col><strong>% CSLL Retido</strong></ion-col>
+            <ion-col><strong>% PIS Retido</strong></ion-col>
+            <ion-col><strong>% COFINS Retido</strong></ion-col>
+            <ion-col><strong>V. T. Imposto Retido</strong></ion-col>
+            <ion-col><strong>% CSLL</strong></ion-col>
+            <ion-col><strong>% IRPJ</strong></ion-col>
+            <ion-col><strong>% ISS</strong></ion-col>
+            <ion-col><strong>V. T. Imposto</strong></ion-col>
+            <ion-col><strong>% Comissão Varejista</strong></ion-col>
+            <ion-col><strong>% Comissão Distribuidor</strong></ion-col>
+            <ion-col><strong>% Taxa</strong></ion-col>
+            <ion-col><strong>V. T. Despesas</strong></ion-col>
+            <ion-col><strong>R$ Lucro</strong></ion-col>
+            <ion-col><strong>% Lucro</strong></ion-col>
+            <ion-col></ion-col>
+          </ion-row>
+
+          <ion-row *ngFor="let item of dadosTabela; let i = index">
+            <ion-col>{{i + 1}}</ion-col>
+            <ion-col>{{item.cnae}}</ion-col>
+            <ion-col>{{item.nomeServico}}</ion-col>
+            <ion-col>{{item.valorServicoMecanico | currency:'BRL'}}</ion-col>
+            <ion-col>{{item.percentualMargem}}%</ion-col>
+            <ion-col>{{ calculateVTServico(item)| currency:'BRL' }}</ion-col>
+            <ion-col>{{item.percentualDesconto}}%</ion-col>
+            <ion-col>{{ calculateVTServicoComDesconto(item)| currency:'BRL' }}</ion-col>
+            <ion-col>{{item.csllRetido}}%</ion-col>
+            <ion-col>{{item.aliquotapisSaida}}%</ion-col>
+            <ion-col>{{item.aliquotacofinsSaida}}%</ion-col>
+            <ion-col>{{ caculateTotalImpostoRetido(item)| currency:'BRL' }}</ion-col>
+            <ion-col>{{item.irpj}}%</ion-col>
+            <ion-col>{{item.csll}}%</ion-col>
+            <ion-col>{{item.aliquotaISS}}%</ion-col>
+            <ion-col>{{caculateTotalImpostoNaoRetido(item) | currency: 'BRL'}}</ion-col>
+            <ion-col>{{item.comissaoVarejista}}%</ion-col>
+            <ion-col>{{item.comissaoDistribuidor}}%</ion-col>
+            <ion-col>{{item.percentualTaxas}}%</ion-col>
+            <ion-col>{{caculateTotalDespesas(item) | currency: 'BRL'}}</ion-col>
+            <ion-col>{{caculateTotalLucroReais(item) | currency: 'BRL'}}</ion-col>
+            <ion-col>{{caculateTotalLucroPercentual(item)/100 | percent: '1.0-3'}}</ion-col>
+            <ion-col>
+              <ion-buttons>
+                <ion-button fill="clear" size="small" (click)="removeItem(i)">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-card-content>
+
+    </ion-card>
+  </ion-col>
+
+</ion-row>
+
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button>
+    <ion-icon name="apps-outline"></ion-icon>
+  </ion-fab-button>
+
+  <ion-fab-list side="top">
+
+    <ion-fab-button (click)="printContent()">
+      <ion-icon name="print-outline"></ion-icon>
+    </ion-fab-button>
+
+    <ion-fab-button (click)="exportToExcel()">
+      <ion-icon name="document-text-outline"></ion-icon>
+    </ion-fab-button>
+
+    <ion-fab-button (click)="salvarDadosSimulador()">
+      <ion-icon name="save-outline"></ion-icon>
+    </ion-fab-button>
+
+    <ion-fab-button (click)="printDRE()">
+      DRE
+    </ion-fab-button>
+  </ion-fab-list>
+</ion-fab>

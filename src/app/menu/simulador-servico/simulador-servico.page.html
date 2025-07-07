@@ -1,0 +1,19 @@
+<ion-content [fullscreen]="true">
+
+  <app-header
+    [pageTitle]="pageTitle"
+    [iconName]="'arrow-back-sharp'"
+    [ViewPage]="true">
+  </app-header>
+
+
+  <app-subheader
+  [TitleSubheader]="TitleSubheader"
+  [ViewPage]="true"
+  descricaoCampoPesquisa="Pesquisar por Descrição, NCM ou CEST"
+  (newClicked)="novoCadastroSimulacaoServico()"
+  (searchClicked)="onSearch($event)">
+
+</app-subheader>
+
+</ion-content>

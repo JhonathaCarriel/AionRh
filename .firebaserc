@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "odin-tarjador"
-  }
+    "default": "horus",
+    "www": "sala-mundo",
+    "horus": "sala-mundo"
+  },
+  "targets": {},
+  "etags": {}
 }

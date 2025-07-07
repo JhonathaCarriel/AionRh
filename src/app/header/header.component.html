@@ -1,10 +1,23 @@
 <ion-toolbar>
   <ion-buttons slot="start">
-    <ion-button (click)="goHome()">
-      <ion-icon name="apps"></ion-icon>
-    </ion-button>
-    <span style="font-weight: bolder; font-size: 15px;">{{pageTitle}}</span>
+
+    <ng-container *ngIf="ViewPage">
+      <ion-button (click)="goBack()">
+        <ion-icon [name]="currentIcon" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()"></ion-icon>
+      </ion-button>
+    </ng-container>
+
+    <ng-container *ngIf="FormPage">
+        <ion-button (click)="goBack()">
+          <ion-icon [name]="currentIcon" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()"></ion-icon>
+        </ion-button>
+    </ng-container>
+    <span>{{pageTitle}}</span>
   </ion-buttons>
 
- 
+  <ion-buttons slot="end">
+    <ion-button shape="round" fill="clear" class="logout" (click)="logout()">
+      <ion-icon slot="icon-only" color="#fff" name="log-in-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
 </ion-toolbar>

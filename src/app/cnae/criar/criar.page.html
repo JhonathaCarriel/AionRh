@@ -1,0 +1,146 @@
+<ion-content [fullscreen]="true">
+
+  <!-- Header Component -->
+  <app-header
+    [pageTitle]="pageTitle"
+    [iconName]="'arrow-back-sharp'"
+    [FormPage]="true">
+  </app-header>
+
+  <!-- Subheader Component -->
+  <app-subheader
+    [FormPage]="true"
+    (saveClicked)="salvarCNAE()"
+    (discardClicked)="descartar()">
+  </app-subheader>
+
+  <div class="container">
+    <form [formGroup]="cnaeForm" class="card">
+
+      <!-- Linha 1: CRT e UF -->
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <div class="form-group">
+            <label for="crt" class="form-label">CRT</label>
+            <select id="crt" formControlName="crt" class="form-control" (change)="onCRTChange()">
+              <option value="1 – Simples Nacional">1 – Simples Nacional</option>
+              <option value="2 – Regime Normal: Lucro Presumido">2 – Regime Normal: Lucro Presumido</option>
+              <option value="3 – Regime Normal: Lucro Real">3 – Regime Normal: Lucro Real</option>
+            </select>
+
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="form-group">
+            <label for="uf" class="form-label">UF</label>
+            <select id="uf" formControlName="uf" class="form-control" (change)="onEstadoChange()">
+              <option value="" disabled selected>Selecione</option>
+              <option *ngFor="let estado of estados" [value]="estado.sigla">
+                {{ estado.sigla }} - {{ estado.nome }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="form-group">
+            <label for="cidade" class="form-label">Cidade</label>
+            <select id="cidade" formControlName="cidade" class="form-control">
+              <option value="" disabled selected>Selecione</option>
+              <option *ngFor="let cidade of cidades" [value]="cidade.nome">
+                {{ cidade.nome }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Linha 2: CNAE e Descrição -->
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <div class="form-group">
+            <label for="cnae" class="form-label">Código CNAE</label>
+            <input
+              id="cnae"
+              formControlName="cnae"
+              type="text"
+              class="form-control"
+              (input)="onCnaeChange()"
+              placeholder="Digite o CNAE"
+             >
+          </div>
+        </div>
+
+        <div class="col-12 col-md-8">
+          <div class="form-group">
+            <label for="descricao" class="form-label">Descrição do CNAE</label>
+            <input
+              id="descricao"
+              formControlName="descricao"
+              [value]="descricao"
+              type="text"
+              class="form-control"
+              aria-label="Descrição do CNAE">
+          </div>
+        </div>
+      </div>
+
+      <!-- Linha 3: Impostos Retidos -->
+      <section>
+
+        <div class="row">
+          <div class="col-6 col-md-3">
+            <div class="form-group">
+              <label for="aliquotapisSaida" class="form-label">% PIS</label>
+              <input id="aliquotapisSaida" formControlName="aliquotapisSaida" type="number" class="form-control">
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="form-group">
+              <label for="aliquotacofinsSaida" class="form-label">% COFINS</label>
+              <input id="aliquotacofinsSaida" formControlName="aliquotacofinsSaida" type="number" class="form-control">
+            </div>
+          </div>
+
+
+          <div class="col-6 col-md-3">
+            <div class="form-group">
+              <label for="aliquotaISS" class="form-label">% ISS</label>
+              <input id="aliquotaISS" formControlName="aliquotaISS" type="number" class="form-control">
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="form-group">
+              <label for="csllRetido" class="form-label">% CSLL Retido</label>
+              <input id="csllRetido" formControlName="csllRetido" type="number" class="form-control">
+            </div>
+          </div>
+        </div>
+
+
+      </section>
+
+      <!-- Linha 4: Retenções Adicionais -->
+      <div class="row">
+
+        <div class="col-6 col-md-6">
+          <div class="form-group">
+            <label for="irpj" class="form-label">IRPJ</label>
+            <input id="irpj" formControlName="irpj" type="number" class="form-control">
+          </div>
+        </div>
+
+        <div class="col-6 col-md-6">
+          <div class="form-group">
+            <label for="csll" class="form-label">CSLL</label>
+            <input id="csll" formControlName="csll" type="number" class="form-control">
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</ion-content>

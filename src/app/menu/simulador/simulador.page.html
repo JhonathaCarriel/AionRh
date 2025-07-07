@@ -1,0 +1,320 @@
+<ion-header [translucent]="true">
+  <app-header [pageTitle]="pageTitle" [iconName]="'arrow-back-sharp'" [FormPage]="true">
+  </app-header>
+
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <form class="form" [formGroup]="simuladorForm">
+    <ion-grid>
+      <ion-row>
+
+        <!-- Fornecedor -->
+        <ion-col size="12" size-md="2">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Fornecedor</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+
+              <ion-input label="Nome Fornecedor" formControlName="nomeFornecedor" type="text" label-placement="floating"
+                fill="outline" placeholder="Nome Fornecedor"></ion-input>
+
+              <ion-select label="UF Fornecedor" formControlName="ufFornecedor" interface="popover" fill="outline"
+                placeholder="Selecione a UF" (ionChange)="atualizarAliquotaFornecedor()">
+                <ion-select-option *ngFor="let estado of estados" [value]="estado.sigla">
+                  {{ estado.sigla }} - {{ estado.nome }}
+                </ion-select-option>
+              </ion-select>
+
+              <ion-input [hidden]="!exibirMva" label="Alíquota Interestadual Fornecedor" formControlName="aliquotaInterestadualFornecedor" type="text" label-placement="floating"
+              fill="outline" placeholder="%"></ion-input>
+
+              <ion-select label="Atividade Fornecedor" formControlName="atividadeFornecedor" interface="popover"
+                fill="outline" placeholder="Atividade">
+
+                <ion-select-option *ngFor="let atividade of atividades" [value]="atividade.nome">{{ atividade.nome
+                  }}</ion-select-option>
+              </ion-select>
+              <ion-select label="NF-e Compra" formControlName="nfeCompraFornecedor" interface="popover" fill="outline"
+                placeholder="NF-e Compra">
+                <ion-select-option *ngFor="let boleano of boleanos" [value]="boleano.value">{{ boleano.nome
+                  }}</ion-select-option>
+              </ion-select>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Distribuidor -->
+        <ion-col size="12" size-md="2">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Distribuidor</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+
+              <ion-input label="Nome Distribuidor" formControlName="nomeDistribuidor" type="text"
+                label-placement="floating" fill="outline" placeholder="Nome Distribuidor"></ion-input>
+
+              <ion-select label="UF Distribuidor" formControlName="ufDistribuidor" interface="popover" fill="outline"
+                placeholder="Selecione a UF" (ionChange)="atualizarAliquotaDistribuidor()">
+                <ion-select-option *ngFor="let estado of estados" [value]="estado.sigla">
+                  {{ estado.sigla }} - {{ estado.nome }}
+                </ion-select-option>
+              </ion-select>
+              <ion-input [hidden]="!exibirMva" label="Aliquota Interna" formControlName="aliquotaInternaDistribuidor" type="text"
+              label-placement="floating" fill="outline" placeholder="Aliquota Interna"></ion-input>
+
+              <ion-select label="Atividade Distribuidor" formControlName="atividadeDistribuidor" interface="popover"
+                fill="outline" placeholder="Atividade">
+                <ion-select-option *ngFor="let atividade of atividades" [value]="atividade.nome">{{ atividade.nome
+                  }}</ion-select-option>
+              </ion-select>
+              <ion-select label="NF-e Transferência" formControlName="nfeTransferenciaDistribuidor" interface="popover"
+                fill="outline" placeholder="NF-e Transferência" (ionBlur)="controlarCampo()">
+                <ion-select-option *ngFor="let boleano of boleanos" [value]="boleano.value">{{ boleano.nome
+                  }}</ion-select-option>
+              </ion-select>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Varejista -->
+        <ion-col size="12" size-md="2">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Varejista</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-input label="Nome Varejista" formControlName="nomeVarejista" type="text" label-placement="floating"
+                fill="outline" placeholder="Nome Varejista"></ion-input>
+
+              <ion-select label="UF Varejista" formControlName="ufVarejista" interface="popover" fill="outline"
+                placeholder="Selecione a UF">
+                <ion-select-option *ngFor="let estado of estados" [value]="estado.sigla">
+                  {{ estado.sigla }} - {{ estado.nome }}
+                </ion-select-option>
+              </ion-select>
+
+              <ion-select label="Atividade Varejista" formControlName="atividadeVarejista" interface="popover"
+                fill="outline" placeholder="Atividade">
+                <ion-select-option *ngFor="let atividade of atividades" [value]="atividade.nome">{{ atividade.nome
+                  }}</ion-select-option>
+              </ion-select>
+              <ion-select label="NF-e Venda" formControlName="nfeVendaVarejista" interface="popover" fill="outline"
+                placeholder="NF-e Venda">
+                <ion-select-option *ngFor="let boleano of boleanos" [value]="boleano.value">{{ boleano.nome
+                  }}</ion-select-option>
+              </ion-select>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Valores Predeterminados -->
+        <ion-col size="12" size-md="2">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Valores Predeterminados</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row>
+
+                <ion-col>
+                  <ion-input label="% Margem" formControlName="percentualMargem" type="text" label-placement="floating"
+                    fill="outline" placeholder="% Margem"></ion-input>
+                </ion-col>
+
+                <ion-col>
+                  <ion-input label="% Desconto" formControlName="percentualDesconto" type="text"
+                    label-placement="floating" fill="outline" placeholder="% Desconto"></ion-input>
+                </ion-col>
+
+                <ion-col>
+                  <ion-input label="% Taxas" formControlName="percentualTaxas" type="text" label-placement="floating"
+                    fill="outline" placeholder="% Taxas"></ion-input>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+
+                <ion-col>
+                  <ion-input label="Comissão Varejista" formControlName="comissaoVarejista" type="text"
+                    label-placement="floating" fill="outline" placeholder="Comissão Varejista"></ion-input>
+                </ion-col>
+
+                <ion-col>
+                  <ion-input label="Comissão Distribuidor" formControlName="comissaoDistribuidor" type="text"
+                    label-placement="floating" fill="outline" placeholder="Comissão Distribuidor"></ion-input>
+                </ion-col>
+
+              </ion-row>
+
+              <ion-row>
+                <ion-col size="4">
+                  <ion-input label="% Frete Compra" formControlName="percentualFreteCompra" type="text"
+                    label-placement="floating" fill="outline" placeholder="% Frete Compra"></ion-input>
+                </ion-col>
+
+                <ion-col size="2">
+                  <ion-button size="small" fill="clear" color="primary" (click)="openFreteModal('compra')">
+                    <ion-icon name="calculator-outline">
+                    </ion-icon></ion-button>
+                </ion-col>
+
+                <ion-col size="4">
+                  <ion-input label="% Frete Venda" formControlName="percentualFreteVenda" type="text"
+                    label-placement="floating" fill="outline" placeholder="% Frete Venda"></ion-input>
+                </ion-col>
+                <ion-col size="2">
+                  <ion-button size="small" fill="clear" color="primary" (click)="openFreteModal('venda')">
+                    <ion-icon name="calculator-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+
+        <!-- Produto -->
+        <ion-col size="12" size-md="4">
+          <ion-card>
+            <ion-card-header>
+                  <ion-card-title>Produtos</ion-card-title>
+
+
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row>
+                <ion-col>
+                  <ion-input label="Descrição" formControlName="nomeProduto" type="text" label-placement="floating"
+                    fill="outline" placeholder="Descrição"></ion-input>
+                </ion-col>
+                <ion-col>
+                  <ion-input label="Para quem a simulação?" formControlName="paraQuemSimulacao" type="text" label-placement="floating"
+                    fill="outline" placeholder="Para quem a simulação?"></ion-input>
+                </ion-col>
+
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-input label="Quantidade" formControlName="quantidadeProduto" type="number"
+                    label-placement="floating" fill="outline" placeholder="Quantidade"></ion-input>
+                </ion-col>
+                <ion-col>
+                  <ion-input label="Valor Unitário" formControlName="valorCompraProdutoUnitario" type="number"
+                    label-placement="floating" fill="outline" placeholder="Valor Unitário"></ion-input>
+                </ion-col>
+                <ion-col>
+                  <ion-select label="Importado?" formControlName="produtoImportado" interface="popover" fill="outline"
+                    placeholder="Importado?">
+                    <ion-select-option *ngFor="let boleano of boleanos" [value]="boleano.value">{{ boleano.nome
+                      }}</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col>
+                  <ion-input label="NCM de Compra" formControlName="ncmCompra" type="text" label-placement="floating"
+                    fill="outline" placeholder="NCM de Compra" (ionBlur)="buscarCestCompra()" [attr.maxlength]="8"></ion-input>
+                </ion-col>
+
+                <ion-col>
+
+
+                  <ion-select label="CEST C." formControlName="cestCompra" interface="popover" fill="outline"
+                  placeholder="Importado?">
+                  <ion-select-option *ngFor="let option of cestOptions" [value]="option.cest">{{ option.cest }}</ion-select-option>
+                </ion-select>
+                </ion-col>
+
+                <ion-col [hidden]="!exibirMva">
+                  <ion-input label="% MVA" formControlName="percentualMVA" type="text" label-placement="floating"
+                    fill="outline" placeholder="% MVA"></ion-input>
+                </ion-col>
+
+                <ion-col [hidden]="!exibirMva">
+                  <ion-input label="CST" formControlName="cst" type="text" label-placement="floating"
+                    fill="outline" placeholder="CST"></ion-input>
+                </ion-col>
+
+                <ion-col>
+                  <ion-input label="NCM de Venda" formControlName="ncmVenda" type="text" label-placement="floating"
+                    fill="outline" placeholder="NCM de Venda" (ionBlur)="buscarCestVenda()" [attr.maxlength]="8"></ion-input>
+                </ion-col>
+
+                <ion-col>
+                  <ion-select label="CEST V." formControlName="cestVenda" interface="popover" fill="outline"
+                  placeholder="Cest de Venda">
+                  <ion-select-option *ngFor="let option of cestOptions" [value]="option.cest">{{ option.cest }}</ion-select-option>
+                </ion-select>
+                </ion-col>
+
+                <ion-col>
+                  <ion-button fill="clear" color="primary" (click)="adicionarNaTabela()">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+
+
+
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+      </ion-row>
+
+      <app-tabela [dadosTabela]="tabelaInformacoes"></app-tabela>
+
+    </ion-grid>
+  </form>
+
+
+
+<!-- Modal Bootstrap -->
+<div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isFreteModalOpen}"
+  [ngStyle]="{'background-color': 'rgba(0,0,0,0.5)'}" role="dialog" aria-labelledby="freteModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document"> <!-- Adicionado modal-dialog-centered -->
+    <div class="modal-content">
+
+      <div class="modal-body">
+        <form>
+          <!-- Campo Valor do Frete -->
+          <div class="form-group">
+            <label for="valorFrete">Valor do Frete</label>
+            <input type="number" class="form-control" id="valorFrete" [(ngModel)]="valorFrete" name="valorFrete"
+              placeholder="Digite o valor do frete" required />
+          </div>
+
+          <!-- Campo Valor da Compra/Venda -->
+          <div class="form-group">
+            <label for="valorCompraVenda">Valor da Compra/Venda</label>
+            <input type="number" class="form-control" id="valorCompraVenda" [(ngModel)]="valorCompraVenda"
+              name="valorCompraVenda" placeholder="Digite o valor da compra/venda" required />
+          </div>
+
+          <!-- Botão Calcular -->
+          <ion-button type="button" color="success" (click)="calcularFrete()">
+            Calcular
+          </ion-button>
+          <ion-button type="button" (click)="closeFreteModal()">
+            Fechar
+          </ion-button>
+        </form>
+      </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="modal-footer">
+        <!-- Rodapé vazio, pode adicionar conteúdo aqui -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</ion-content>

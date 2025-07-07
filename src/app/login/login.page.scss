@@ -1,108 +1,19 @@
 ion-content {
-    --ion-background-color: #9d3a9d;
-}
-
-ion-list {
-    border-radius: 20px;
-    background-color: #ffffff;
-    height: 500px;
-    width: 380px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: space-around;
-    justify-content: space-evenly;
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.form {
-    --ion-background-color: #EFEFEF;
-    margin-top: 60px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: space-evenly;
-    align-items: center;
-
+    background: var(--background);
 }
 
 
-a {
-    text-decoration: none;
-    color: #9d3a9d;
-    text-align: end;
+strong{
+   color:#0e420b;
+   font-weight: bolder;
 }
 
-ion-inout {
-    --ion-background-color: #ffffff;
+ion-button{
+    color: #ffffff; 
 }
 
-ion-button {
-    text-transform: inherit;
-}
-
-h1 {
-    padding-top: 0px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 30px;
-}
-
-.logo {
-    text-align: center;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-
-
-ion-list.ios {
-    border-radius: 20px;
-    background-color: transparent;
-    height: 500px;
-    width: 380px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: space-around;
-    justify-content: space-evenly;
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-
-}
-
-
-.form {
-    --ion-background-color: #EFEFEF;
-    margin-top: 60px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: space-evenly;
-    align-items: center;
-
-}
-
-ion-button.ios {
-    --ion-color-primary: #ffffff;
-    --background: #ffffff;
-    color: #9d3a9d;
-}
-
-a.ios {
-    text-decoration: none;
-    color: #ffffff;
-}
-
-ion-input.ios {
-   color: #ffffff;
-
-}
-
+ion-input{
+    padding-left: 10px;}
+    h4{
+        --color: blue;
+    }

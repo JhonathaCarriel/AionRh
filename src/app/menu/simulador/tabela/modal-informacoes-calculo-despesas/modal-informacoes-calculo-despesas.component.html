@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalhes das Despesas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Detalhes do Produto: {{ item.nomeProduto }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="row g-3 mt-4">
+        <!-- Comissão Varejista -->
+        <div class="col-6 col-md-6">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Comissão Varejista</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.comissaoVarejista }}%</p>
+              <p>{{  calculoDescontoVlrVendaTotal * (item.comissaoVarejista / 100) | currency:'BRL':'symbol' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comissão Distribuidor -->
+        <div class="col-6 col-md-6">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Comissão Distribuidor</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.comissaoDistribuidor }}%</p>
+              <p>{{ calculoDescontoVlrVendaTotal * (item.comissaoDistribuidor / 100) | currency:'BRL':'symbol' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-4">
+        <!-- Frete Venda -->
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Frete Venda</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.percentualFreteVenda }}%</p>
+              <p>{{ calculoDescontoVlrVendaTotal * (item.percentualFreteVenda / 100) | currency:'BRL':'symbol' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Taxas -->
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Taxas</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ item.percentualTaxas }}%</p>
+              <p>{{ calculoDescontoVlrVendaTotal * (item.percentualTaxas / 100) | currency:'BRL':'symbol' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-4">
+        <!-- Valor Total Despesas -->
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-header text-center">
+              <strong>Valor Total Despesas</strong>
+            </div>
+            <div class="card-body text-center">
+              <p>{{ calculoVlrDespesas | currency:'BRL':'symbol' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

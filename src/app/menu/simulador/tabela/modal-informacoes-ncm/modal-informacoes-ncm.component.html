@@ -1,0 +1,258 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalhes do NCM</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Detalhes do NCM: {{ ncm }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="row mt-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>Descrição</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.descricao }}</p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>NCM</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.ncm }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row mt-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>CEST</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.cest }}</p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>CFOP</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.cfop }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row mt-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>CRÉDITO - CRT</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.crt }}</p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>CST</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.cst }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row mt-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>CST IPI</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.cstIPI }}</p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>CST PIS/COFINS Entrada</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.cstpiscofinsEntrada }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row mt-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>CST PIS/COFINS Saída</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.cstpiscofinsSaida }}</p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>Aliquota IPI</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.aliquotaIPI }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row mt-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>Aliquota COFINS Entrada</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.aliquotacofinsEntrada }}</p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>Aliquota COFINS Saída</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.aliquotacofinsSaida }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row mt-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>Aliquota ICMS</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.aliquotaicms }}</p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>Aliquota PIS Entrada</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.aliquotapisEntrada }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row mt-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>Aliquota PIS Saída</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.aliquotapisSaida }}</p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>MVA Aliquota 12%</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.mvaAliquota12 }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row mt-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>MVA Aliquota 4%</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.mvaAliquota4 }}</p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>MVA Aliquota 7%</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.mvaAliquota7 }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row mt-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>MVA Original</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.mvaOriginal }}</p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <strong>UF</strong>
+            </div>
+            <div class="card-body">
+              <p>{{ ncmDetails?.uf }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

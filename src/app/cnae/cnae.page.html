@@ -1,0 +1,64 @@
+<ion-content [fullscreen]="true">
+
+  <app-header
+    [pageTitle]="pageTitle"
+    [iconName]="'arrow-back-sharp'"
+    [ViewPage]="true">
+  </app-header>
+
+
+  <app-subheader
+    [TitleSubheader]="TitleSubheader"
+    [ViewPage]="true"
+    descricaoCampoPesquisa="Pesquisar por Descrição, CNAE ou Cidade"
+    (newClicked)="novoCadastroCNAE()"
+    (searchClicked)="onSearch($event)">
+  </app-subheader>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">UF</th>
+          <th scope="col">Cidade</th>
+          <th scope="col">CNAE</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">% PIS</th>
+          <th scope="col">% COFINS</th>
+          <th scope="col">% ISS</th>
+          <th scope="col">% CSLL Retido</th>
+          <th scope="col">% IRPJ</th>
+          <th scope="col">% CSLL</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let cnae of cnaes; let i = index">
+          <td>{{ cnae.uf }}</td>
+          <td>{{ cnae.cidade }}</td>
+          <td>{{ cnae.cnae }}</td>
+          <td class="no-wrap">{{ cnae.descricao }}</td>
+          <td>{{ cnae.aliquotapisSaida }}</td>
+          <td>{{ cnae.aliquotacofinsSaida }}</td>
+          <td>{{ cnae.aliquotaISS }}</td>
+          <td>{{ cnae.csllRetido }}</td>
+          <td>{{ cnae.irpj }}</td>
+          <td>{{ cnae.csll }}</td>
+          <td>
+            <ion-buttons>
+              <ion-button fill="clear" size="small" (click)="editarCNAE(cnae)">
+                <ion-icon name="create-sharp"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" size="small" (click)="confirmarExclusao(cnae.id, $event)">
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</ion-content>
