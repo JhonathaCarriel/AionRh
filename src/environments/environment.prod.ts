@@ -4,13 +4,13 @@ import 'firebase/compat/database';
 export const environment = {
   production: true,
   firebaseConfig: {
-    apiKey: "AIzaSyBhnNa3BqiSPcxvUEsnYF7lyCQxOhpGoK0",
-  authDomain: "sala-mundo.firebaseapp.com",
-  databaseURL: "https://sala-mundo-default-rtdb.firebaseio.com",
-  projectId: "sala-mundo",
-  storageBucket: "sala-mundo.appspot.com",
-  messagingSenderId: "957872730707",
-  appId: "1:957872730707:web:53cd5459ab3cae44f80ca6"
+    apiKey: "AIzaSyCBAav8YWS-yDeaCPa01mrGF-Q01UPQbFM",
+    authDomain: "simulador-326c3.firebaseapp.com",
+    projectId: "simulador-326c3",
+    storageBucket: "simulador-326c3.firebasestorage.app",
+    messagingSenderId: "701518295175",
+    appId: "1:701518295175:web:8fe61750d8e7b096070822",
+    measurementId: "G-03J1GZ9ZHJ"
   }
 };
 

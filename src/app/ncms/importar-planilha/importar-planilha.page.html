@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Dados Importados</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fechar(false)">Cancelar</ion-button>
+      <ion-button (click)="checkNcmStatus()">Confirmar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Show missing headers message -->
+  <div *ngIf="missingHeaders.length > 0" class="alert alert-danger">
+    A planilha está faltando os seguintes cabeçalhos: {{ missingHeaders.join(', ') }}
+  </div>
+
+  <!-- Responsive table container -->
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>NCM</th>
+          <th>Status</th>  <!-- Add Status column -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data">
+          <td>{{ item['NCM'] }}</td>  <!-- Display only the NCM column data -->
+          <td>{{ statusNcm[item['NCM']] || 'Verificando...' }}</td>  <!-- Display status -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ion-content>

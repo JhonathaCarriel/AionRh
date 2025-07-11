@@ -1,0 +1,102 @@
+ion-input,
+ion-select,
+ion-select-popover,
+ion-radio,
+ion-col,
+ion-card{
+font-size: 12px;
+--color:var(--ion-color-step-300, var(--ion-background-color-step-300, #646464));
+}
+
+.input-fill-outline.sc-ion-input-md-h,
+ion-select, ion-input {
+    --border-color: var(--ion-color-step-300, var(--ion-background-color-step-300, #b1b1b1));
+    --border-radius: 4px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    min-height: 30px;
+}
+
+ion-list{
+    display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: stretch;
+        align-items: flex-start;
+}
+
+ion-input, ion-select {
+    margin: 5px;
+}
+
+ion-card-title{
+    font-size: 12px;
+}
+
+ion-col{
+    border:#b3b3b3;
+}
+
+#ion-overlay-2, #ion-overlay-2 * {
+    font-size: 10px !important;
+  }
+
+  .autocomplete-list {
+    position: absolute;
+    z-index: 10;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  ion-button{
+    color: #ffffff;
+  }
+  .custom-label {
+    --label-font-size: 1.5rem; /* Aumenta o tamanho do texto do label */
+    --label-color: #000; /* Opcional: Altere a cor do label */
+  }
+
+
+.row{
+  margin-top: 10px;
+  margin: 20px;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+
+.tabs-personalizadas{
+  margin-top: 10px;
+
+}
+
+.tab-content{
+  border-radius: 5px;
+  color: rgb(122, 122, 122);
+}
+
+
+
+
+///IOS
+
+.ios .card{
+margin: 5px;
+border-radius: 5px;
+padding: 10px
+}
+.ios .tabs-personalizadas{
+margin-top: 5px;
+}
+.ios .row{
+margin-top: 5px;
+}
+
+
+link.active:hover {
+  color: var(--bs-nav-tabs-link-active-color);
+  background-color: #bbbbbb;
+  border-color: var(--bs-nav-tabs-link-active-border-color);
+}

@@ -21,20 +21,22 @@ export interface NCM{
   cest: string,
   descricao: string,
   cstIPI:  string,
-  aliquotaIPI: string,
+  aliquotaIPI: number,
   cstpiscofinsEntrada:  string,
   cstpiscofinsSaida:  string,
-  aliquotapisEntrada:string,
-  aliquotapisSaida: string,
-  aliquotacofinsEntrada: string,
-  aliquotacofinsSaida: string,
-  cfop: string,
+  aliquotapisEntrada:number,
+  aliquotapisSaida: number,
+  aliquotacofinsEntrada: number,
+  aliquotacofinsSaida: number,
+
   cst:  string,
   aliquotaicms: string,
-  mvaOriginal: string,
-  mvaAliquota12: string,
-  mvaAliquota7: string,
-  mvaAliquota4: string,
+  mvaOriginal: number,
+  mvaAliquota12: number,
+  mvaAliquota7: number,
+  mvaAliquota4: number,
+  irpj: number,
+  csll: number,
 }
 
 @Component({
@@ -82,33 +84,28 @@ export class EditarPage implements OnInit {
       cest: [''],
       descricao: [''],
       cstIPI: [''],
-      aliquotaIPI: [''],
+      aliquotaIPI:  [],
       cstpiscofinsEntrada: [''],
       cstpiscofinsSaida: [''],
-      aliquotapisEntrada: [''],
-      aliquotapisSaida: [''],
-      aliquotacofinsEntrada: [''],
-      aliquotacofinsSaida: [''],
-      cfop: [''],
+      aliquotapisEntrada: [],
+      aliquotapisSaida: [],
+      aliquotacofinsEntrada:  [],
+      aliquotacofinsSaida:  [],
+
       cst: [''],
       aliquotaicms: [''],
-      mvaOriginal: [''],
-      mvaAliquota12: [''],
-      mvaAliquota7: [''],
-      mvaAliquota4: [''],
-      irpj:['1.20'],
-      csll:['1.08']
+      mvaOriginal:  [],
+      mvaAliquota12:  [],
+      mvaAliquota7: [],
+      mvaAliquota4:  [],
+      irpj: [],
+      csll: [],
     });
 
     this.ncmId = this.route.snapshot.paramMap.get('id')!;
     this.loadNCMData();
     this.carregarEstados();
-    this.monitorarUF();
-    this.monitorarCst();
-    this.monitorarCrt();
-    this.monitorarcstpiscofinsEntrada();
-    this.monitorarcstpiscofinsSaida();
-    this.carregarEstados();
+
 
   }
 
@@ -181,197 +178,6 @@ export class EditarPage implements OnInit {
     await alert.present();
   }
 
-  monitorarCst() {
-    this.ncmForm.get('cst')?.valueChanges.subscribe((cstValue) => {
-      const estado = this.ncmForm.get('uf')?.value;
-      let aliquotaICMS: string = '0%';
-
-      // Adiciona validação de CST
-      if (!cstValue) {
-        aliquotaICMS = '0';
-      } else {
-        switch (cstValue) {
-          case '00': // CST igual a "00 - Tributado integralmente"
-            const aliquotaInterna = this.aliquotasService.getAliquota(estado)?.aliquotaInterna;
-            aliquotaICMS = aliquotaInterna ? `${aliquotaInterna}` : '0';
-
-            // Zerar os campos MVA
-            this.ncmForm.get('mvaOriginal')?.setValue('0');
-            this.ncmForm.get('mvaAliquota12')?.setValue('0');
-            this.ncmForm.get('mvaAliquota7')?.setValue('0');
-            this.ncmForm.get('mvaAliquota4')?.setValue('0');
-            break;
-          case '60':
-            aliquotaICMS = 'FF';
-            break;
-          case '40':
-            aliquotaICMS = 'II';
-            break;
-          case '41':
-            aliquotaICMS = 'NN';
-            break;
-          default:
-            aliquotaICMS = '0';
-            break;
-        }
-      }
-
-      this.ncmForm.get('aliquotaicms')?.setValue(aliquotaICMS);
-    });
-  }
-
-
-  monitorarcstpiscofinsSaida() {
-    this.ncmForm.get('cstpiscofinsSaida')?.valueChanges.subscribe((cstValue) => {
-      const crtValue = this.ncmForm.get('crt')?.value;
-      const validCSTs = ['01', '02', '03', '67'];
-
-      if (validCSTs.includes(cstValue)) {
-        let aliquotapisSaida: number = 0;
-        let aliquotacofinsSaida: number = 0;
-
-        switch (crtValue) {
-          case '1 – Simples Nacional':
-            aliquotapisSaida = 0;
-            aliquotacofinsSaida = 0;
-            break;
-          case '2 – Regime Normal: Lucro Presumido':
-            aliquotapisSaida = 0.65;
-            aliquotacofinsSaida = 3;
-            break;
-          case '3 – Regime Normal: Lucro Real':
-            aliquotapisSaida = 1,65;
-            aliquotacofinsSaida = 7,6;
-            break;
-          default:
-            aliquotapisSaida = 0;
-            aliquotacofinsSaida = 0;
-            break;
-        }
-
-        this.ncmForm.get('aliquotapisSaida')?.setValue(aliquotapisSaida);
-        this.ncmForm.get('aliquotacofinsSaida')?.setValue(aliquotacofinsSaida);
-      } else {
-        this.ncmForm.get('aliquotapisSaida')?.setValue(0);
-        this.ncmForm.get('aliquotacofinsSaida')?.setValue(0);
-      }
-    });
-  }
-
-
-  monitorarcstpiscofinsEntrada() {
-    this.ncmForm.get('cstpiscofinsEntrada')?.valueChanges.subscribe((cstValue) => {
-      const crtValue = this.ncmForm.get('crt')?.value;
-
-      // Lista de CSTs válidos
-      const validCSTs = ['50', '51', '52', '53', '54', '55', '56'];
-
-      if (validCSTs.includes(cstValue)) {
-        let aliquotaPIS: number = 0;
-        let aliquotaCOFINS: number = 0;
-
-        // Define as alíquotas com base no CRT
-        switch (crtValue) {
-          case '1 – Simples Nacional':
-            aliquotaPIS = 0;
-            aliquotaCOFINS = 0;
-            break;
-          case '2 – Regime Normal: Lucro Presumido':
-            aliquotaPIS = 0.65;
-            aliquotaCOFINS = 3;
-            break;
-          case '3 – Regime Normal: Lucro Real':
-            aliquotaPIS = 1.65;
-            aliquotaCOFINS = 7.6;
-            break;
-          default:
-            break;
-        }
-
-        // Atualiza os valores dos campos
-        this.ncmForm.get('aliquotapisEntrada')?.setValue(aliquotaPIS);
-        this.ncmForm.get('aliquotacofinsEntrada')?.setValue(aliquotaCOFINS);
-      } else {
-        // Caso contrário, define como 0%
-        this.ncmForm.get('aliquotapisEntrada')?.setValue(0);
-        this.ncmForm.get('aliquotacofinsEntrada')?.setValue(0);
-      }
-    });
-  }
-
-
-  monitorarUF() {
-    this.ncmForm.get('uf')?.valueChanges.subscribe((uf) => {
-      const estado = this.aliquotasService.getAliquota(uf);
-      const cst = this.ncmForm.get('cst')?.value;
-      let aliquotaICMS = '';
-
-      switch (cst) {
-        case '00': // CST igual a 00
-          if (estado) {
-            aliquotaICMS = estado.aliquotaInterna.toString(); // Converte o número para string
-          } else {
-            aliquotaICMS = '';
-          }
-          break;
-        case '60': // CST igual a 60
-          aliquotaICMS = 'FF';
-          break;
-        case '40': // CST igual a 40
-          aliquotaICMS = 'II';
-          break;
-        case '41': // CST igual a 41
-          aliquotaICMS = 'NN';
-          break;
-        default: // Qualquer outro valor
-          aliquotaICMS = '0';
-          break;
-      }
-
-      // Define o valor do campo aliquotaICMS
-      this.ncmForm.get('aliquotaicms')?.setValue(aliquotaICMS);
-    });
-  }
-
-
-  monitorarCrt() {
-    this.ncmForm.get('crt')?.valueChanges.subscribe((crtValue) => {
-      switch (crtValue) {
-        case '1 – Simples Nacional':
-          this.setAliquotas({
-            aliquotaIPI: '0',
-            aliquotapisEntrada: '0',
-            aliquotapisSaida: '0',
-            aliquotacofinsEntrada: '0',
-            aliquotacofinsSaida: '0',
-          }, true);
-          break;
-
-        case '2 – Regime Normal: Lucro Presumido':
-          this.setAliquotas({
-            aliquotaIPI: '0',
-            aliquotapisEntrada: '0.65',
-            aliquotapisSaida: '0.65',
-            aliquotacofinsEntrada: '3',
-            aliquotacofinsSaida: '3',
-          }, false);
-          break;
-
-        case '3 – Regime Normal: Lucro Real':
-          this.setAliquotas({
-            aliquotaIPI: '0',
-            aliquotapisEntrada: '1.65',
-            aliquotapisSaida: '1.65',
-            aliquotacofinsEntrada: '7.6',
-            aliquotacofinsSaida: '7.6',
-          }, false);
-          break;
-
-        default:
-          break;
-      }
-    });
-  }
 
   private setAliquotas(values: any, isDisabled: boolean) {
     Object.keys(values).forEach((key) => {

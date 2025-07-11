@@ -1,8 +1,7 @@
 {
   "projects": {
-    "default": "horus",
-    "www": "sala-mundo",
-    "horus": "sala-mundo"
+    "www": "simulador-326c3",
+    "default": "simulador-326c3"
   },
   "targets": {},
   "etags": {}

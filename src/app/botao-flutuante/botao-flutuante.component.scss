@@ -1,0 +1,15 @@
+ion-fab-list {
+  ion-button {
+    color: white;
+    text-transform: none;
+
+    ion-icon {
+      margin: 5px;
+    }
+  }
+}
+.fixed {
+  position: fixed;
+  bottom: 30px;
+  right: 0;
+}

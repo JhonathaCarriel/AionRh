@@ -1,15 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 
-@Component({ 
+@Component({
   standalone: true,
   selector: 'app-subheader',
   templateUrl: './subheader.component.html',
-  styleUrls: ['./subheader.component.scss'],   
-  imports: [IonicModule, CommonModule, FormsModule]  
+  styleUrls: ['./subheader.component.scss'],
+  imports: [IonicModule, CommonModule, FormsModule]
 })
 export class SubheaderComponent implements OnInit {
   @Input() descricaoCampoPesquisa: string = '';
@@ -21,11 +21,14 @@ export class SubheaderComponent implements OnInit {
   @Output() newClicked = new EventEmitter<void>();
   @Output() saveClicked = new EventEmitter<void>();
   @Output() discardClicked = new EventEmitter<void>();
-  @Output() filesSelected = new EventEmitter<FileList>();
-  @Output() importFile = new EventEmitter<FileList>();
-  @Output() searchClicked = new EventEmitter<string>();  
 
-  searchTerm: string = '';  
+  @Output() importFile = new EventEmitter<FileList>();
+  @Output() searchClicked = new EventEmitter<string>();
+
+  @Output() filesSelected = new EventEmitter<FileList>();
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
+  searchTerm: string = '';
   constructor() { }
 
   ngOnInit() { }
@@ -42,18 +45,20 @@ export class SubheaderComponent implements OnInit {
     this.discardClicked.emit();
   }
 
+
+  onSearchChange() {
+    this.searchClicked.emit(this.searchTerm);
+  }
+
   onImportarClick() {
-    this.importFile.emit();
+    // Simula o clique no campo de arquivo
+    this.fileInput.nativeElement.click();
   }
 
   onFilesSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      this.filesSelected.emit(input.files);
+      this.filesSelected.emit(input.files); // Emite os arquivos selecionados
     }
-  }
-
-  onSearchChange() {
-    this.searchClicked.emit(this.searchTerm); 
   }
 }

@@ -1,0 +1,226 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalhes do NCM</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form class="form" [formGroup]="DadosTabelaForm">
+    <section class="container mt-3">
+      <h4>Dados NCM Varejista</h4>
+      <div class="row g-3">
+        <!-- Novos campos para NCM Distribuídos e Varejista -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="Aliquota Cofins Saída"
+            formControlName="dadosVarejistaaliquotacofinsSaida"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Aliquota Cofins Saída"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="Aliquota PIS Saída"
+            formControlName="dadosVarejistaaliquotapisSaida"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Aliquota PIS Saída"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="CST"
+            formControlName="dadosVarejistacst"
+            type="text"
+            label-placement="floating"
+            fill="outline"
+            placeholder="CST"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="Aliquota ICMS"
+            formControlName="dadosVarejistaaliquotaicms"
+            type="text"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Aliquota ICMS"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="MVA Original"
+            formControlName="dadosVarejistamvaOriginal"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="MVA Original"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="MVA Aliquota 12%"
+            formControlName="dadosVarejistamvaAliquota12"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="MVA Aliquota 12%"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="MVA Aliquota 7%"
+            formControlName="dadosVarejistamvaAliquota7"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="MVA Aliquota 7%"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="MVA Aliquota 4%"
+            formControlName="dadosVarejistamvaAliquota4"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="MVA Aliquota 4%"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="IRPJ"
+            formControlName="dadosVarejistairpj"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="IRPJ"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="CSLL"
+            formControlName="dadosVarejistacsll"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="CSLL"
+          ></ion-input>
+        </div>
+      </div>
+    </section>
+
+    <section class="container mt-3">
+      <h4>Dados NCM Distribuidor</h4>
+      <div class="row g-3">
+        <!-- Novos campos para NCM Distribuidor -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="Aliquota Cofins Saída"
+            formControlName="dadosDistribuidoraliquotacofinsSaida"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Aliquota Cofins Saída"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="Aliquota PIS Saída"
+            formControlName="dadosDistribuidoraliquotapisSaida"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Aliquota PIS Saída"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="CST"
+            formControlName="dadosDistribuidorcst"
+            type="text"
+            label-placement="floating"
+            fill="outline"
+            placeholder="CST"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="Aliquota ICMS"
+            formControlName="dadosDistribuidoraliquotaicms"
+            type="text"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Aliquota ICMS"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="MVA Original"
+            formControlName="dadosDistribuidormvaOriginal"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="MVA Original"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="MVA Aliquota 12%"
+            formControlName="dadosDistribuidormvaAliquota12"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="MVA Aliquota 12%"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="MVA Aliquota 7%"
+            formControlName="dadosDistribuidormvaAliquota7"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="MVA Aliquota 7%"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="MVA Aliquota 4%"
+            formControlName="dadosDistribuidormvaAliquota4"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="MVA Aliquota 4%"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="IRPJ"
+            formControlName="dadosDistribuidorirpj"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="IRPJ"
+          ></ion-input>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <ion-input
+            label="CSLL"
+            formControlName="dadosDistribuidorcsll"
+            type="number"
+            label-placement="floating"
+            fill="outline"
+            placeholder="CSLL"
+          ></ion-input>
+        </div>
+      </div>
+    </section>
+  </form>
+</ion-content>

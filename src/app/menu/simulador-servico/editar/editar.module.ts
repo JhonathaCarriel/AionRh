@@ -1,19 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
 import { EditarPageRoutingModule } from './editar-routing.module';
 
 import { EditarPage } from './editar.page';
+import { HeaderComponent } from 'src/app/header/header.component';
+import { SubheaderComponent } from 'src/app/subheader/subheader.component';
+import { TabelaComponent } from '../tabela/tabela.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EditarPageRoutingModule
+    EditarPageRoutingModule,
+    ReactiveFormsModule,
+    HeaderComponent,
+    SubheaderComponent,
+    ReactiveFormsModule,
+    TabelaComponent
   ],
   declarations: [EditarPage]
 })

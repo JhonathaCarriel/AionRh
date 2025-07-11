@@ -10,8 +10,8 @@ export class FirebaseNCMService {
   constructor(private firestore: AngularFirestore) { }
 
   saveNCMDados(ncmData: any): Promise<void> {
-    const ncmRef = this.firestore.collection('ncm'); 
-    return ncmRef.add(ncmData) 
+    const ncmRef = this.firestore.collection('ncm');
+    return ncmRef.add(ncmData)
       .then(() => {
         console.log("Dados salvos com sucesso!");
       })
@@ -29,17 +29,17 @@ export class FirebaseNCMService {
   async atualizaNCM(id: string, ncmData: any) {
     try {
       const ncmRef = this.firestore.doc(`ncm/${id}`);
-  
+
       // Verifica se o documento existe antes de atualizar
       const docSnap = await ncmRef.get();
       if (!docSnap) {
         console.error('Documento não encontrado para atualização:', id);
         return; // Ou lance uma exceção personalizada
       }
-  
+
       // Atualiza o documento
       await ncmRef.update(ncmData);
-  
+
       console.log('NCM atualizado com sucesso!');
     } catch (error) {
       console.error('Erro ao atualizar NCM:', error);
@@ -64,7 +64,6 @@ export class FirebaseNCMService {
       .where('aliquotapisSaida', '==', dados.aliquotapisSaida)
       .where('aliquotacofinsEntrada', '==', dados.aliquotacofinsEntrada)
       .where('aliquotacofinsSaida', '==', dados.aliquotacofinsSaida)
-      .where('cfop', '==', dados.cfop)
       .where('cst', '==', dados.cst)
       .where('aliquotaicms', '==', dados.aliquotaicms)
       .where('mvaOriginal', '==', dados.mvaOriginal)
@@ -76,10 +75,9 @@ export class FirebaseNCMService {
       .toPromise()
       .then((snapshot) => {
         if (!snapshot) {
-          // Garantia extra, embora geralmente snapshot nunca seja undefined
           return false;
         }
-        return !snapshot.empty; // Retorna true se encontrar um registro com os mesmos dados
+        return !snapshot.empty;
       })
       .catch((error) => {
         console.error('Erro ao verificar duplicidade', error);
@@ -95,13 +93,14 @@ export class FirebaseNCMService {
       )
       .valueChanges(); // Obtém os dados
   }
-  
 
-  consultaNCMVenda(ncmVenda: string, ufVarejista: string): Observable<any[]> {
+
+  consultaNCMVenda(ncmVenda: string, ufVarejista: string, cestVenda: string): Observable<any[]> {
     return this.firestore
-      .collection('ncm', ref => 
-        ref.where('ncm', '==', ncmVenda)     
+      .collection('ncm', ref =>
+        ref.where('ncm', '==', ncmVenda)
            .where('uf', '==', ufVarejista)
+           .where('cestCompra', '==', cestVenda)
       )
       .valueChanges()
       .pipe(
@@ -125,11 +124,53 @@ export class FirebaseNCMService {
         })
       );
   }
-  
-  
 
-  
-  
-  
-  
+  savePadraoTributacao(PadraoTributacaoData: any): Promise<void> {
+    const ncmRef = this.firestore.collection('padraoTributacao');
+    return ncmRef.add(PadraoTributacaoData)
+      .then(() => {
+        console.log("Dados salvos com sucesso!");
+      })
+      .catch((error) => {
+        console.error("Erro ao salvar dados: ", error);
+        throw error;
+      });
+  }
+  verificarDuplicidadeCompletaPadraoTributacao(dados: any): Promise<boolean> {
+    return this.firestore.collection('padraoTributacao', ref => ref
+      .where('descricaoPadraoTributacao', '==', dados.descricaoPadraoTributacao)
+      .where('cstIPI', '==', dados.cstIPI)
+      .where('aliquotaIPI', '==', dados.aliquotaIPI)
+      .where('cstpiscofinsEntrada', '==', dados.cstpiscofinsEntrada)
+      .where('cstpiscofinsSaida', '==', dados.cstpiscofinsSaida)
+      .where('aliquotapisEntrada', '==', dados.aliquotapisEntrada)
+      .where('aliquotapisSaida', '==', dados.aliquotapisSaida)
+      .where('aliquotacofinsEntrada', '==', dados.aliquotacofinsEntrada)
+      .where('aliquotacofinsSaida', '==', dados.aliquotacofinsSaida)
+      .where('cst', '==', dados.cst)
+      .where('aliquotaicms', '==', dados.aliquotaicms)
+      .where('mvaOriginal', '==', dados.mvaOriginal)
+      .where('mvaAliquota12', '==', dados.mvaAliquota12)
+      .where('mvaAliquota7', '==', dados.mvaAliquota7)
+      .where('mvaAliquota4', '==', dados.mvaAliquota4)
+    )
+      .get()
+      .toPromise()
+      .then((snapshot) => {
+        if (!snapshot) {
+          return false;
+        }
+        return !snapshot.empty;
+      })
+      .catch((error) => {
+        console.error('Erro ao verificar duplicidade', error);
+        throw error;
+      });
+  }
+
+
+
+
+
+
 }

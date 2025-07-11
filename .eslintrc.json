@@ -6,7 +6,9 @@
       "files": ["*.ts"],
       "parserOptions": {
         "project": ["tsconfig.json"],
-        "createDefaultProgram": true
+        "createDefaultProgram": true,
+          "ecmaVersion": 2020,
+           "sourceType": "module"
       },
       "extends": [
         "plugin:@angular-eslint/recommended",

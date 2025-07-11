@@ -1,0 +1,70 @@
+<ion-content [fullscreen]="true">
+
+  <app-header
+    [pageTitle]="pageTitle"
+    [iconName]="'arrow-back-sharp'"
+    [ViewPage]="true">
+  </app-header>
+
+  <app-subheader
+    [TitleSubheader]="TitleSubheader"
+    [ViewPage]="true"
+    descricaoCampoPesquisa="Pesquisar por CNPJ ou Fantasia"
+    (newClicked)="novoCadastroFornecedor()">
+  </app-subheader>
+
+  <ion-grid style="font-size: 12px" class="container-conteudo">
+    <div class="card">
+      <div class="table-responsive rounded">
+        <table class="table align-middle table-edge table-nowrap mb-0 table-hover table-borderless">
+          <thead class="table-light">
+            <tr>
+              <th>CNPJ</th>
+              <th>Nome Fantasia</th>
+              <th>Razão Social</th>
+              <th>Estado</th>
+              <th>Municipio</th>
+              <th>Atividade</th>
+              <th>NF-e</th>
+              <th>Tipo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody class="p-2">
+            <ng-container *ngFor="let fornecedor of fornecedores">
+              <tr>
+                <td>{{ fornecedor.cnpj }}</td>
+                <td>{{ fornecedor.nomeEmpresa }}</td>
+                <td>{{ fornecedor.razaoSocial }}</td>
+                <td>{{ fornecedor.estado }}</td>
+                <td>{{ fornecedor.municipio }}</td>
+                <td>{{ fornecedor.atividadeFornecedor }}</td>
+                <td>{{ fornecedor.nfeCompraFornecedor }}</td>
+                <td>{{ fornecedor.tipoDeEmpresa }}</td>
+                <td>
+
+
+                   <ion-button
+                title="Deletar"
+                fill="clear"
+                color="danger"
+                (click)="confirmarExclusao(fornecedor.id, $event)">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+                <ion-button
+                title="Abrir Detalhes"
+                fill="clear"
+                color="secondary"
+                (click)="openEditar(fornecedor)">
+                <ion-icon name="open-outline"></ion-icon>
+              </ion-button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ion-grid>
+
+</ion-content>

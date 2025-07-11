@@ -1,0 +1,704 @@
+<ion-header [translucent]="true">
+  <app-header [pageTitle]="pageTitle" [iconName]="'arrow-back-sharp'" [FormPage]="true">
+  </app-header>
+
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <form class="form" [formGroup]="simuladorForm">
+    <ion-grid>
+
+      <!-- Abas -->
+      <ul class="nav nav-tabs tabs-personalizadas" id="formTabs" role="tablist">
+
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="dados-fornecedor-tab" data-bs-toggle="tab" data-bs-target="#dados-fornecedor"
+            type="button" role="tab" aria-controls="dados-fornecedor" aria-selected="true"
+            [ngClass]="{'active': activeTab === 'dados-fornecedor'}" (click)="setActiveTab('dados-fornecedor')">
+            Dados Fornecedor
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="dados-distribuidor-tab" data-bs-toggle="tab" data-bs-target="#dados-distribuidor"
+            type="button" role="tab" aria-controls="dados-distribuidor" aria-selected="false"
+            [ngClass]="{'active': activeTab === 'dados-distribuidor'}" (click)="setActiveTab('dados-distribuidor')">
+            Dados Distribuidor
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="dados-varejista-tab" data-bs-toggle="tab" data-bs-target="#dados-varejista"
+            type="button" role="tab" aria-controls="dados-varejista" aria-selected="false"
+            [ngClass]="{'active': activeTab === 'dados-varejista'}" (click)="setActiveTab('dados-varejista')">
+            Dados Varejista
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="dados-cliente-tab" data-bs-toggle="tab" data-bs-target="#dados-cliente"
+            type="button" role="tab" aria-controls="dados-cliente" aria-selected="false"
+            [ngClass]="{'active': activeTab === 'dados-cliente'}" (click)="setActiveTab('dados-cliente')">
+            Dados Cliente
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="dados-determinados-tab" data-bs-toggle="tab" data-bs-target="#dados-determinados"
+            type="button" role="tab" aria-controls="dados-determinados" aria-selected="false"
+            [ngClass]="{'active': activeTab === 'dados-determinados'}" (click)="setActiveTab('dados-determinados')">
+            Informações Determinadas
+          </button>
+        </li>
+
+
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="dados-produtos-tab" data-bs-toggle="tab" data-bs-target="#dados-produtos"
+            type="button" role="tab" aria-controls="dados-produtos" aria-selected="false"
+            [ngClass]="{'active': activeTab === 'dados-produtos'}" (click)="setActiveTab('dados-produtos')">
+            Dados Produtos
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="dados-ncm-tab" data-bs-toggle="tab" data-bs-target="#dados-ncm"
+            type="button" role="tab" aria-controls="dados-ncm" aria-selected="false"
+            [ngClass]="{'active': activeTab === 'dados-ncm'}" (click)="setActiveTab('dados-ncm')">
+            Dados NCM
+          </button>
+        </li>
+
+      </ul>
+
+      <!-- Conteúdo das Abas -->
+      <div class="tab-content" id="formTabsContent">
+        <!-- Aba Dados Profissionais -->
+        <div class="tab-pane fade" id="dados-fornecedor" role="tabpanel" aria-labelledby="dados-fornecedor-tab"
+          [ngClass]="{'show active': activeTab === 'dados-fornecedor'}">
+
+          <div class="section">
+
+            <div class="row">
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label for="nomeFornecedor">Nome Fornecedor</label>
+                <div class="input-group">
+                  <select class="form-select" formControlName="nomeFornecedor"
+                    (ngModelChange)="preencherCamposFornecedor($event)">
+                    <option value="" disabled selected>Selecione o fornecedor</option>
+                    <option *ngFor="let fornecedor of fornecedores" [value]="fornecedor.nomeEmpresa">
+                      {{ fornecedor.nomeEmpresa }}
+                    </option>
+                  </select>
+                  <button type="button" class="btn btn-outline-primary" (click)="abrirModalFornecedor()">
+                    CAD
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-3 col-md-4">
+                <label class="form-label">UF</label>
+                <select class="form-select" formControlName="ufFornecedor" (change)="atualizarAliquotaFornecedor()">
+                  <option value="" disabled selected>UF</option>
+                  <option *ngFor="let estado of estados" [value]="estado.sigla">
+                    {{ estado.sigla }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-12 col-sm-1 col-md-4" *ngIf="exibir">
+                <label class="form-label">Alíquota Interestadual</label>
+                <input type="number" class="form-control" formControlName="aliquotaInterestadualFornecedor" readonly>
+              </div>
+
+              <div class="col-12 col-sm-1 col-md-4" *ngIf="exibir">
+                <label class="form-label">Alíquota Interna</label>
+                <input type="number" class="form-control" formControlName="aliquotaInternaFornecedor" readonly>
+              </div>
+
+              <div class="col-12 col-sm-1 col-md-4">
+                <label class="form-label">Atividade</label>
+                <select class="form-select" formControlName="atividadeFornecedor">
+                  <option value="" disabled selected>Selecione</option>
+                  <option *ngFor="let atividade of atividades" [value]="atividade.nome">
+                    {{ atividade.nome }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-12 col-sm-1 col-md-4">
+                <label class="form-label">Vai Comprar com NF-e?</label>
+                <select class="form-select" formControlName="nfeCompraFornecedor">
+                  <option *ngFor="let boleano of boleanos" [value]="boleano.nome">
+                    {{ boleano.nome }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Aba Dados Distribuidor -->
+        <div class="tab-pane fade" id="dados-distribuidor" role="tabpanel" aria-labelledby="dados-distribuidor-tab"
+          [ngClass]="{'show active': activeTab === 'dados-distribuidor'}">
+          <div class="section">
+
+
+            <div class="row">
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label for="nomeDistribuidor">Nome Distribuidor</label>
+                <div class="input-group">
+                  <select class="form-select" formControlName="nomeDistribuidor"
+                    (ngModelChange)="preencherCamposDistribuidor($event)">
+                    <option value="" disabled selected>Selecione o distribuidor</option>
+                    <option *ngFor="let distribuidor of distribuidores" [value]="distribuidor.nomeEmpresa">
+                      {{ distribuidor.nomeEmpresa }}
+                    </option>
+                  </select>
+                  <button type="button" class="btn btn-outline-primary" (click)="abrirModalFornecedor()">
+                    CAD
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label class="form-label">UF</label>
+                <select class="form-select" formControlName="ufDistribuidor" (change)="atualizarAliquotaDistribuidor()">
+                  <option *ngFor="let estado of estados" [value]="estado.sigla">
+                    {{ estado.sigla }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4" *ngIf="exibir">
+                <label class="form-label">Alíquota Interestadual</label>
+                <input type="number" class="form-control" formControlName="aliquotaInterestadualDistribuidor" readonly>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4" *ngIf="exibir">
+                <label class="form-label">Alíquota Interna</label>
+                <input type="number" class="form-control" formControlName="aliquotaInternaDistribuidor" readonly>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label class="form-label">Atividade</label>
+                <select class="form-select" formControlName="atividadeDistribuidor">
+                  <option *ngFor="let atividade of atividades" [value]="atividade.nome">
+                    {{ atividade.nome }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-5 col-md-4">
+                <label class="form-label">Vai emitir NF-e de Transferência?</label>
+                <select class="form-select" formControlName="nfeTransferenciaDistribuidor">                  <
+                  <option *ngFor="let boleano of boleanos" [value]="boleano.nome">
+                    {{ boleano.nome }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- Aba Dados Varejista -->
+        <div class="tab-pane fade" id="dados-varejista" role="tabpanel" aria-labelledby="dados-varejista-tab"
+          [ngClass]="{'show active': activeTab === 'dados-varejista'}">
+          <div class="section">
+
+            <div class="row">
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label for="nomeVarejista">Nome Varejista</label>
+                <div class="input-group">
+                  <select class="form-select" formControlName="nomeVarejista"
+                    (ngModelChange)="verificarDistribuidor($event)" (ngModelChange)="preencherCamposVarejista($event)">
+                    <option value="" disabled selected>Selecione o varejista</option>
+                    <option *ngFor="let varejista of varejistas" [value]="varejista.nomeEmpresa">
+                      {{ varejista.nomeEmpresa }}
+                    </option>
+                  </select>
+                  <button type="button" class="btn btn-outline-primary" (click)="abrirModalFornecedor()">
+                    CAD
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label class="form-label">UF</label>
+                <select class="form-select" formControlName="ufVarejista" (change)="atualizarAliquotaVarejista()">
+                  <option value="" disabled selected>UF</option>
+                  <option *ngFor="let estado of estados" [value]="estado.sigla">
+                    {{ estado.sigla }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4" *ngIf="exibir">
+                <label class="form-label">Alíquota Interna</label>
+                <input type="number" class="form-control" formControlName="aliquotaInternaVarejista" readonly>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label class="form-label">Atividade</label>
+                <select class="form-select" formControlName="atividadeVarejista">
+                  <option value="" disabled selected>Selecione</option>
+                  <option *ngFor="let atividade of atividades" [value]="atividade.nome">
+                    {{ atividade.nome }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-5 col-md-4">
+                <label class="form-label">Vai emitir NF-e de Venda?</label>
+                <select class="form-select" formControlName="nfeVendaVarejista">
+                  <option value="" disabled selected>Selecione</option>
+                  <option *ngFor="let boleano of boleanos" [value]="boleano.nome">
+                    {{ boleano.nome }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- Aba Dados Cliente -->
+        <div class="tab-pane fade" id="dados-cliente" role="tabpanel" aria-labelledby="dados-cliente-tab"
+          [ngClass]="{'show active': activeTab === 'dados-cliente'}">
+          <div class="section">
+
+            <div class="row">
+              <div class="col-12 col-sm-5 col-md-4">
+                <label for="nomeCliente">Nome Cliente</label>
+                <div class="input-group">
+                  <select class="form-select" formControlName="nomeCliente"
+                    (ngModelChange)="preencherCamposCliente($event)">
+                    <option value="" disabled selected>Selecione o Cliente</option>
+                    <option *ngFor="let cliente of clientes" [value]="cliente.nomeEmpresa">
+                      {{ cliente.nomeEmpresa }}
+                    </option>
+                  </select>
+                  <button type="button" class="btn btn-outline-primary" (click)="abrirModalFornecedor()">
+                    CAD
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label class="form-label">UF</label>
+                <select class="form-select" formControlName="ufCliente" (change)="atualizarAliquotaCliente()">
+                  <option value="" disabled selected>UF</option>
+                  <option *ngFor="let estado of estados" [value]="estado.sigla">
+                    {{ estado.sigla }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4" *ngIf="exibir">
+                <label class="form-label">Alíquota Interna</label>
+                <input type="number" class="form-control" formControlName="aliquotaInternaCliente" readonly>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label class="form-label">Atividade</label>
+                <select class="form-select" formControlName="atividadeCliente">
+                  <option value="" disabled selected>Selecione</option>
+                  <option *ngFor="let atividade of atividades" [value]="atividade.nome">
+                    {{ atividade.nome }}
+                  </option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Aba Dados Determinados -->
+        <div class="tab-pane fade" id="dados-determinados" role="tabpanel" aria-labelledby="dados-determinados-tab"
+          [ngClass]="{'show active': activeTab === 'dados-determinados'}">
+          <div class="selection">
+            <div class="row">
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label for="">Taxas de Contrato</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" formControlName="percentualTaxas" placeholder="% Taxas" />
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label for="">Comissão Varejista</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" formControlName="comissaoVarejista"
+                    placeholder="Comissão Varejista" />
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label for="">Comissão Distribuidor</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" formControlName="comissaoDistribuidor"
+                    placeholder="Comissão Distribuidor" />
+                </div>
+              </div>
+
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label for="">Frete de Transferência</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" formControlName="percentualFreteTransferencia"
+                    placeholder="% Frete Transf" />
+                  <button type="button" class="btn btn-outline-primary" (click)="openFreteModal('transferencia')">
+                    CAL
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label for="">Frete Compra</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" formControlName="percentualFreteCompra"
+                    placeholder="% Frete Compra" />
+                  <button type="button" class="btn btn-outline-primary" (click)="openFreteModal('compra')">
+                    CAL
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-5 col-md-4">
+                <label for="">Frete Venda</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" formControlName="percentualFreteVenda"
+                    placeholder="% Frete Venda" />
+                  <button type="button" class="btn btn-outline-primary" (click)="openFreteModal('venda')">
+                    CAL
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+
+        </div>
+
+        <!-- Aba Dados Produtos -->
+        <div class="tab-pane fade" id="dados-produtos" role="tabpanel" aria-labelledby="dados-produtos-tab"
+          [ngClass]="{'show active': activeTab === 'dados-produtos'}">
+          <div class="selection">
+          <!-- Produto -->
+
+                <div class="row">
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for="nomeProduto">Nome Produto</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" formControlName="nomeProduto"
+                        placeholder="Descrição do Produto" />
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for="numeroOs">Número O.S</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" formControlName="numeroOs" placeholder="O.S" />
+                    </div>
+                  </div>
+
+
+
+
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for="">Produto Importado?</label>
+                    <div class="input-group">
+                      <select class="form-select" formControlName="produtoImportado" (ngModelChange)="atualizarAliquotas()">
+                        <option *ngFor="let boleano of boleanos" [value]="boleano.nome">{{ boleano.nome }}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for="">Produto de estoque?</label>
+                    <div class="input-group">
+                      <select class="form-select" formControlName="produtoEstoque">
+                        <option *ngFor="let boleano of boleanos" [value]="boleano.nome">{{ boleano.nome }}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for="">Quantidade</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" formControlName="quantidadeProduto"
+                        placeholder="Quantidade" />
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for="">Valor Unitário</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" formControlName="valorCompraProdutoUnitario"
+                        placeholder="Valor Unitário" />
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for="">Margem %</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" formControlName="percentualMargem"
+                        placeholder="% Margem" />
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for="">Desconto %</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" formControlName="percentualDesconto"
+                        placeholder="% Desconto" />
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for="">NCM</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" formControlName="ncm" placeholder="NCM"
+                        (input)="buscarCestData()" maxlength="8" />
+                      <button type="button" class="btn btn-outline-primary" (click)="modalCadastrarNCM()">
+                        CAD
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for="">CEST</label>
+                    <div class="input-group">
+                      <select class="form-select" formControlName="cest">
+                        <option value="" disabled selected>Selecione o CEST</option>
+                        <option *ngFor="let option of cestOptions" [value]="option.cest">{{ option.cest }}</option>
+                      </select>
+                      <button type="button" class="btn btn-outline-primary" (click)="buscarNCMData()">
+                        <ion-icon name="search-outline"></ion-icon>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-5 col-md-4">
+                    <label for=""></label>
+                    <div class="input-group">
+                      <button type="button" class="btn btn-outline-success" (click)="adicionarNaTabela()"
+                        (keydown)="onKeyDown($event)">
+                        <ion-icon name="add-circle-outline"></ion-icon> Adicionar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+          </div>
+
+        </div>
+        <!-- Aba Dados NCM -->
+        <div class="tab-pane fade" id="dados-ncm" role="tabpanel" aria-labelledby="dados-ncm-tab"
+        [ngClass]="{'show active': activeTab === 'dados-ncm'}">
+        <div class="selection">
+          <div class="row">
+
+                    <div class="col">
+                      <section>
+                        <h6>Distribuidor</h6>
+                        <div class="row">
+                          <div class="col">
+                            <label class="form-label">% Cofins</label>
+                            <input type="number" class="form-control" formControlName="dadosDistribuidoraliquotacofinsSaida"
+                              readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">% PIS</label>
+                            <input type="number" class="form-control" formControlName="dadosDistribuidoraliquotapisSaida"
+                              readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">CST</label>
+                            <input type="text" class="form-control" formControlName="dadosDistribuidorcst" readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">ICMS</label>
+                            <input type="text" class="form-control" formControlName="dadosDistribuidoraliquotaicms"
+                              readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">MVA</label>
+                            <input type="number" class="form-control" formControlName="dadosDistribuidormvaOriginal"
+                              readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">MVA 12%</label>
+                            <input type="number" class="form-control" formControlName="dadosDistribuidormvaAliquota12"
+                              readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">MVA 7%</label>
+                            <input type="number" class="form-control" formControlName="dadosDistribuidormvaAliquota7"
+                              readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">MVA 4%</label>
+                            <input type="number" class="form-control" formControlName="dadosDistribuidormvaAliquota4"
+                              readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">IRPJ</label>
+                            <input type="number" class="form-control" formControlName="dadosDistribuidorirpj" readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">CSLL</label>
+                            <input type="number" class="form-control" formControlName="dadosDistribuidorcsll" readonly>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+
+                    <div class="col-md-6">
+                      <section>
+                        <h6>Varejista</h6>
+                        <div class="row g-3">
+                          <div class="col">
+                            <label class="form-label">Cofins </label>
+                            <input type="number" class="form-control" formControlName="dadosVarejistaaliquotacofinsSaida"
+                              readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">PIS</label>
+                            <input type="number" class="form-control" formControlName="dadosVarejistaaliquotapisSaida"
+                              readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">CST</label>
+                            <input type="text" class="form-control" formControlName="dadosVarejistacst" readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">ICMS</label>
+                            <input type="text" class="form-control" formControlName="dadosVarejistaaliquotaicms" readonly>
+                          </div>
+                          <div class="col">
+                            <label class="form-label">Alíquota Difal</label>
+                            <input type="text" class="form-control" formControlName="dadosVarejistaaliquotaDifal" readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">MVA</label>
+                            <input type="number" class="form-control" formControlName="dadosVarejistamvaOriginal" readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">MVA 12%</label>
+                            <input type="number" class="form-control" formControlName="dadosVarejistamvaAliquota12"
+                              readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">MVA 7%</label>
+                            <input type="number" class="form-control" formControlName="dadosVarejistamvaAliquota7" readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">MVA 4%</label>
+                            <input type="number" class="form-control" formControlName="dadosVarejistamvaAliquota4" readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">IRPJ</label>
+                            <input type="number" class="form-control" formControlName="dadosVarejistairpj" readonly>
+                          </div>
+
+                          <div class="col">
+                            <label class="form-label">CSLL</label>
+                            <input type="number" class="form-control" formControlName="dadosVarejistacsll" readonly>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+
+
+                  </div>
+
+
+        </div>
+        </div>
+
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+      <app-tabelaprodutos [dadosTabela]="tabelaInformacoes" [simuladorForm]="simuladorForm"
+        (editar)="preencherFormularioComDados($event)">
+
+      </app-tabelaprodutos>
+
+
+
+    </ion-grid>
+  </form>
+
+
+
+  <!-- Modal Bootstrap -->
+  <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isFreteModalOpen}"
+    [ngStyle]="{'background-color': 'rgba(0,0,0,0.5)'}" role="dialog" aria-labelledby="freteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document"> <!-- Adicionado modal-dialog-centered -->
+      <div class="modal-content">
+
+        <div class="modal-body">
+          <form>
+            <!-- Campo Valor do Frete -->
+            <div class="form-group">
+              <label for="valorFrete">Valor do Frete</label>
+              <input type="number" class="form-control" id="valorFrete" [(ngModel)]="valorFrete" name="valorFrete"
+                placeholder="Digite o valor do frete" required />
+            </div>
+
+            <!-- Campo Valor da Compra/Venda -->
+            <div class="form-group">
+              <label for="valorCompraVenda">Valor da Compra/Venda</label>
+              <input type="number" class="form-control" id="valorCompraVenda" [(ngModel)]="valorCompraVenda"
+                name="valorCompraVenda" placeholder="Digite o valor da compra/venda" required />
+            </div>
+
+            <!-- Botão Calcular -->
+            <ion-button type="button" color="success" (click)="calcularFrete()">
+              Calcular
+            </ion-button>
+            <ion-button type="button" (click)="closeFreteModal()">
+              Fechar
+            </ion-button>
+          </form>
+        </div>
+
+        <!-- Rodapé do Modal -->
+        <div class="modal-footer">
+          <!-- Rodapé vazio, pode adicionar conteúdo aqui -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</ion-content>

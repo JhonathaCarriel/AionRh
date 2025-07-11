@@ -9,6 +9,7 @@ import { NcmsPageRoutingModule } from './ncms-routing.module';
 import { NcmsPage } from './ncms.page';
 import { HeaderComponent } from '../header/header.component';
 import { SubheaderComponent } from '../subheader/subheader.component';
+import { BotaoFlutuanteComponent } from '../botao-flutuante/botao-flutuante.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { SubheaderComponent } from '../subheader/subheader.component';
     HeaderComponent,
     SubheaderComponent,
     IonicModule,
-    NcmsPageRoutingModule
+    NcmsPageRoutingModule,
+    BotaoFlutuanteComponent
   ],
   declarations: [NcmsPage]
 })

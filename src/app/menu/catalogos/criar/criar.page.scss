@@ -1,0 +1,48 @@
+.row{
+  margin-top: 10px;
+}
+.card{
+  margin: 20px;
+  border-radius: 5px;
+  border-color: solid antiquewhite;
+  padding: 30px
+}
+
+select,
+input,
+label{
+  font-size: 12px;
+}
+.nav-tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+
+    &.active {
+      background-color: var(--ion-color-primary);
+      color: white;
+    }
+
+    .btn-close {
+      font-size: 0.5rem;
+      margin-left: 0.5rem;
+    }
+  }
+
+  .btn-success {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+  }
+}
+
+.tab-content {
+  background-color: white;
+  padding: 1rem;
+}

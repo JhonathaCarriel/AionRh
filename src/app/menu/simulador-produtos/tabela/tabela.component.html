@@ -1,0 +1,703 @@
+<ion-row id="tabela-container">
+  <ion-col size="12">
+    <ion-card class="shadow-lg">
+      <ion-row>
+        <ion-item>
+          <ion-toggle [(ngModel)]="exibir" (ionChange)="toggleCampos()">
+            <ion-note color="medium">Habilitar todos os campos</ion-note>
+          </ion-toggle>
+        </ion-item>
+        <ion-item>
+          <button type="button" class="btn btn-outline-primary" (click)="salvarSequencia()">
+            Salvar nova Sequência
+          </button>
+        </ion-item>
+        <ion-item>
+          <input type="file" accept=".xlsx, .xls" (change)="importarPlanilha($event)" style="display:none" #fileInput>
+          <button type="button" class="btn btn-outline-primary" (click)="fileInput.click()">
+            Importar Descrição, Qt e Valor Unitário
+          </button>
+        </ion-item>
+
+      </ion-row>
+
+      <!-- Cabeçalho do Card -->
+
+      <ion-card-content>
+        <!-- Tabela Responsiva -->
+        <div class="table-responsive">
+          <table class="table table-striped table-hover text-center">
+            <thead class="bg-dark text-white fw-bold">
+              <tr>
+                <th class="col-disabled" [hidden]="!exibir"><strong>ID</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Produto de Estoque?</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Vai Emitir NFe de transferência?</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Vai Emitir NFe de Compra?</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Vai Emitir NFe de Venda?</strong></th>
+                <th class="col-disabled"><strong>Não vou vender?</strong></th>
+                <th class="col-disabled"><strong>Código</strong></th>
+                <th class="col-disabled"><strong>Descrição do Produto</strong></th>
+                <th class="col-disabled"><strong>NCM</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>CEST (de Compra)</strong></th>
+                <th style="color: green;"><strong>{{totalQuantidade}}</strong></th>
+                <th class="col-disabled"><strong>Valor Unitário</strong></th>
+                <th style="color: green;"><strong>{{ totalCompra | currency: 'BRL' }}</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>% Frete</strong></th>
+                <th class="col-disabled"><strong>V Frete</strong></th>
+                <th style="color: green;"><strong>{{totalCompraComFrete | currency: 'BRL'}}</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>V. ICMS Interestadual D</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Aliquota Interestadual D</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>% MVA D</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Base de Cálculo (R$) D</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Alíquota Int. (%) D</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Déb. do ICMS-ST (R$) D</strong></th>
+                <th style="color: green;"><strong>{{ totalIcmsSt | currency: 'BRL' }}</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>V Frete</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Frete + Compra</strong></th>
+                <th style="color: green;"><strong>{{totalIcmsTransferencia}}</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Aliquota Interestadual V</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>% MVA V</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Base de Cálculo (R$) V</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Alíquota Int. (%) V</strong></th>
+                <th class="col-disabled" [hidden]="!exibir"><strong>Déb. do ICMS-ST (R$) V</strong></th>
+                <th style="color: green;"><strong>{{ totalIcmsStTransferencia | currency: 'BRL' }}</strong></th>
+                <th class="col-disabled"><strong>Custo Un</strong></th>
+                <th style="color: green;"><strong>{{ custoTotal | currency: 'BRL' }}</strong></th>
+                <th class="col-disabled"><strong>% Margem</strong></th>
+                <th class="col-disabled"><strong>V Venda Un - S/Desconto</strong></th>
+                <th class="col-disabled"><strong>V.T Venda - S/Desconto</strong></th>
+                <th class="col-disabled"><strong>% Desconto</strong></th>
+                <th class="col-disabled"><strong>V Venda Un - C/Desconto</strong></th>
+                <th style="color: green;"><strong>{{ vendaTotal | currency: 'BRL' }}</strong></th>
+                <th class="col-disabled" *ngIf="exibir"><strong>% IRPJ</strong></th>
+                <th class="col-disabled" *ngIf="exibir"><strong>% CSLL</strong></th>
+                <th class="col-disabled" *ngIf="exibir"><strong>% PIS</strong></th>
+                <th class="col-disabled" *ngIf="exibir"><strong>% COFINS</strong></th>
+                <th class="col-disabled" *ngIf="exibir"><strong>% ICMS</strong></th>
+                <th class="col-disabled" *ngIf="exibir"><strong>% DIFAL</strong></th>
+                <th style="color: green;">
+                  <strong>
+                    {{ impostoTotal | currency: 'BRL' }}
+                  </strong>
+
+                </th>
+                <th class="col-disabled" *ngIf="exibir">% Comissão Varejista</th>
+                <th class="col-disabled" *ngIf="exibir">% Comissão Distribuidor</th>
+                <th class="col-disabled" *ngIf="exibir">% Frete Venda</th>
+                <th class="col-disabled" *ngIf="exibir">% Taxas</th>
+                <th style="color: green;"><strong>{{ despesaTotal | currency: 'BRL' }}</strong></th>
+                <th style="color: green;"><strong>{{ lucroTotal | currency: 'BRL' }}</strong></th>
+                <th style="color: green;"><strong>{{ percentualLucro | percent:'1.0-3' }}</strong></th>
+                <th></th>
+              </tr>
+            </thead>
+            <!-- Cabeçalho da Tabela -->
+            <thead class="bg-dark text-white w">
+              <tr>
+                <th class="col" [hidden]="!exibir"><strong>ID</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Produto de Estoque?</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Vai Emitir NFe de transferência?</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Vai Emitir NFe de Compra?</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Vai Emitir NFe de Venda?</strong></th>
+                <th class="col"><strong>Não vou vender?</strong></th>
+                <th class="col" (click)="ordenarPorSequencia()">
+                  <strong>Código</strong>
+                  <ion-icon
+                    [name]="ordenacaoSequencia === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"
+                    *ngIf="ordenacaoSequencia">
+                  </ion-icon>
+                </th>                <th class="col-sm-3">Descrição do Produto</th>
+                <th class="col">NCM</th>
+                <th [hidden]="!exibir"><strong>CEST (de Compra)</strong></th>
+                <th class="col">Quantidade</th>
+                <th class="col">Valor Unitário</th>
+                <th class="col text-success">VT Compra</th>
+                <th [hidden]="!exibir"><strong>% Frete</strong></th>
+                <th class="col">V Frete</th>
+                <th class="col">Frete + Compra</th>
+                <th class="col" [hidden]="!exibir"><strong>V. ICMS Interestadual D</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Aliquota Interestadual D</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>% MVA D</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Base de Cálculo (R$) D</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Alíquota Int. (%) D</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Déb. do ICMS-ST (R$) D</strong></th>
+                <th class="col text-success">V. ICMS Compra</th>
+                <th class="col" [hidden]="!exibir"><strong>V Frete</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Frete + Compra</strong></th>
+                <th class="col text-success">V. ICMS a Paga da Transferência</th>
+                <th class="col" [hidden]="!exibir"><strong>Aliquota Interestadual V</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>% MVA V</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Base de Cálculo (R$) V</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Alíquota Int. (%) V</strong></th>
+                <th class="col" [hidden]="!exibir"><strong>Déb. do ICMS-ST (R$) V</strong></th>
+                <th class="col text-success">V. ICMS Transferência</th>
+                <th class="col">Custo Un</th>
+                <th class="col text-success">Custo Total</th>
+                <th class="col">% Margem</th>
+                <th class="col">V Venda Un - S/Desconto</th>
+                <th class="col">V.T Venda - S/Desconto</th>
+                <th class="col">% Desconto</th>
+                <th class="col">V Venda Un - C/Desconto</th>
+                <th class="col text-success">V.T Venda - C/Desconto</th>
+                <th class="col" *ngIf="exibir"><strong>% IRPJ</strong></th>
+                <th class="col" *ngIf="exibir"><strong>% CSLL</strong></th>
+                <th class="col" *ngIf="exibir"><strong>% PIS</strong></th>
+                <th class="col" *ngIf="exibir"><strong>% COFINS</strong></th>
+                <th class="col" *ngIf="exibir"><strong>% ICMS</strong></th>
+                <th class="col" *ngIf="exibir"><strong>% DIFAL</strong></th>
+                <th class="col text-success">V.T Imposto</th>
+                <th class="col" *ngIf="exibir">% Comissão Varejista</th>
+                <th class="col" *ngIf="exibir">% Comissão Distribuidor</th>
+                <th class="col" *ngIf="exibir">% Frete Venda</th>
+                <th class="col" *ngIf="exibir">% Taxas</th>
+                <th class="col text-success">V.T Despesas</th>
+                <th class="col text-success">R$ Lucro</th>
+                <th class="col text-success">% Lucro</th>
+                <th class="col text-success"><ion-icon name="color-wand-outline"></ion-icon></th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let item of dadosTabela; let i = index">
+                <td class="col" *ngIf="exibir">{{item.id}}</td>
+
+                <td class="col" *ngIf="exibir">
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.produtoEstoque }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <select *ngIf="item.editando" [(ngModel)]="item.produtoEstoque"
+    (change)="finalizarEdicao(item)" class="form-control padrao-input" autofocus>
+    <option [ngValue]="'Sim'">Sim</option>
+    <option [ngValue]="'Não'">Não</option>
+  </select>
+                </td>
+
+
+                <td class="col" *ngIf="exibir">
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.nfeTransferenciaDistribuidor }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <select *ngIf="item.editando" [(ngModel)]="item.nfeTransferenciaDistribuidor"
+    (change)="finalizarEdicao(item)" class="form-control padrao-input" autofocus>
+    <option [ngValue]="'Sim'">Sim</option>
+    <option [ngValue]="'Não'">Não</option>
+  </select>
+                </td>
+
+                <td class="col" *ngIf="exibir">
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.nfeCompraFornecedor }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <select *ngIf="item.editando" [(ngModel)]="item.nfeCompraFornecedor"
+                  (change)="finalizarEdicao(item)" class="form-control padrao-input" autofocus>
+                  <option [ngValue]="'Sim'">Sim</option>
+                  <option [ngValue]="'Não'">Não</option>
+                </select>
+                </td>
+
+                <td class="col" *ngIf="exibir">
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.nfeVendaVarejista }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <select *ngIf="item.editando" [(ngModel)]="item.nfeVendaVarejista"
+                  (change)="finalizarEdicao(item)" class="form-control padrao-input" autofocus>
+                  <option [ngValue]="'Sim'">Sim</option>
+                  <option [ngValue]="'Não'">Não</option>
+                </select>
+                </td>
+
+
+                <td>
+                  <input type="checkbox" [(ngModel)]="item.naoVender" class="form-check-input" />
+                </td>
+
+
+                <!-- Coluna de índice -->
+                <td class="col">
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.sequencia }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <input *ngIf="item.editando" type="text" [(ngModel)]="item.sequencia"
+                    (keyup.enter)="finalizarEdicao(item)" autofocus class="form-control padrao-input" />
+                </td>
+                <td class="col">
+                  <!-- Modo visualização (quando não está editando) -->
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.nomeProduto || 'Sem descrição' }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <input *ngIf="item.editando" type="text" [(ngModel)]="item.nomeProduto"
+                    (keyup.enter)="finalizarEdicao(item)" autofocus class="form-control padrao-input" />
+                </td>
+                <td class="col">
+                  {{ item.ncm }}
+                  <span class="button-information" (click)="cargaTributariaNCM(item)">
+                    <ion-icon name="information-circle-outline"></ion-icon>
+                  </span>
+                </td>
+                <td class="col" *ngIf="exibir">{{ item.cest }}</td>
+                <td class="col">
+                  <!-- Modo visualização (quando não está editando) -->
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.quantidadeProduto }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <input *ngIf="item.editando" type="number" [(ngModel)]="item.quantidadeProduto"
+                    (ionBlur)="finalizarEdicao(item)" (keyup.enter)="finalizarEdicao(item)" autofocus
+                    class="form-control padrao-input" />
+                </td>
+
+                <td class="col">
+
+
+                  <!-- Modo visualização (quando não está editando) -->
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.valorCompraProdutoUnitario | currency:'BRL' }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <input *ngIf="item.editando" type="number" [(ngModel)]="item.valorCompraProdutoUnitario"
+                    (ionBlur)="finalizarEdicao(item)" (keyup.enter)="finalizarEdicao(item)" autofocus
+                    class="form-control padrao-input" />
+                </td>
+
+
+
+                <!-- Cálculo do valor total da compra -->
+                <td class="col tooltip-container text-success">
+                  {{ calculoValorCompraUnitarioXQuantidadeProduto(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo Valor Total da Compra: {{ item.quantidadeProduto }} * {{ item.valorCompraProdutoUnitario |
+                    currency:'BRL' }}
+                  </span>
+                </td>
+
+                <!-- Frete e cálculos relacionados -->
+                <td class="col" [hidden]="!exibir">
+
+                  <!-- Modo visualização (quando não está editando) -->
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.percentualFreteCompra }}%
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <input *ngIf="item.editando" type="number" [(ngModel)]="item.percentualFreteCompra"
+                    (ionBlur)="finalizarEdicao(item)" (keyup.enter)="finalizarEdicao(item)" autofocus
+                    class="form-control padrao-input" />
+
+                </td>
+                <td class="col tooltip-container">
+                  {{ calcularValorFreteCompra(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Item</th>
+                          <th>Valor</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Quantidade de Produto</td>
+                          <td>{{ item.quantidadeProduto }}</td>
+                        </tr>
+                        <tr>
+                          <td>Valor de Compra por Unidade</td>
+                          <td>{{ item.valorCompraProdutoUnitario | currency:'BRL' }}</td>
+                        </tr>
+                        <tr>
+                          <td>Percentual de Frete</td>
+                          <td>{{ item.percentualFreteCompra }}%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <br>
+                    Cálculo do Valor do Frete de Compra: <br>
+                    ({{ item.quantidadeProduto }} * {{ item.valorCompraProdutoUnitario | currency:'BRL' }}) * ({{
+                    item.percentualFreteCompra }} / 100) =
+                    {{ calcularValorFreteCompra(item) | currency:'BRL' }}
+                  </span>
+                </td>
+
+                <!-- Cálculo do valor total com frete -->
+                <td class="col tooltip-container">
+                  {{ calcularValorCompraTotalComValorFrete(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo do Valor Total com Frete de Compra: <br>
+                    ({{ item.quantidadeProduto }} * {{ item.valorCompraProdutoUnitario | currency:'BRL' }}) +
+                    ({{ item.percentualFreteCompra }}% * {{ item.quantidadeProduto }} * {{
+                    item.valorCompraProdutoUnitario | currency:'BRL' }}) =
+                    {{ calcularValorCompraTotalComValorFrete(item) | currency:'BRL' }}
+                  </span>
+                </td>
+
+                <!-- ICMS e cálculos relacionados -->
+                <td class="col" *ngIf="exibir">{{ calcularIcmsCompra(item) | currency:'BRL' }}</td>
+                <td class="col" *ngIf="exibir">
+                  <!-- Modo visualização (quando não está editando) -->
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.aliquotaInterestadualFornecedor }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <input *ngIf="item.editando" type="number" [(ngModel)]="item.aliquotaInterestadualFornecedor"
+                    (ionBlur)="finalizarEdicao(item)" (keyup.enter)="finalizarEdicao(item)" autofocus
+                    class="form-control padrao-input" />
+
+
+                </td>
+                <td class="col" *ngIf="exibir">{{ buscarMVADistribuidor(item) }}</td>
+                <td class="col" *ngIf="exibir">{{ calcularBaseIcmsStDistribuidor(item) | currency:'BRL' }}</td>
+                <td class="col" *ngIf="exibir">{{ item.aliquotaInternaDistribuidor }}</td>
+                <td class="col" *ngIf="exibir">{{ calcularDebitoICMSST(item) | currency:'BRL' }}</td>
+
+                <!-- Diferença de ICMS ST e ICMS Interestadual -->
+                <td class="col text-success tooltip-container">
+                  {{ calcularDiferencaICMSSTeICMSInterestadual(item) | currency:'BRL' }}
+
+                  <span class="tooltip-content">
+                    Cálculo ICMS Antecipado Compra: ({{ calcularValorCompraTotalComValorFrete(item) | currency:'BRL' }}
+                    *
+                    {{ aliquotasService.getAliquotaICMSATDistribuidor(
+                    item.ufFornecedor,
+                    item.dadosDistribuidoraliquotaicms,
+                    item.produtoImportado,
+                    item.aliquotaInternaDistribuidor
+                    ) / 100 | percent:'1.2-2' }})
+                  </span>
+
+                  <!-- Tooltip para cálculo de ICMS ST Distribuidor -->
+                  <span class="tooltip-content" *ngIf="item.dadosDistribuidorcst === '60'">
+                    Cálculo ICMS ST Compra: {{ calcularValorCompraTotalComValorFrete(item) | currency:'BRL' }} + ({{
+                    buscarMVADistribuidor(item) }} / 100) + {{ calcularValorCompraTotalComValorFrete(item) |
+                    currency:'BRL' }}
+                  </span>
+
+                  <!-- Tooltip para cálculo de ICMS ST Distribuidor -->
+                  <span class="tooltip-content" *ngIf="item.dadosDistribuidorcst === '60'">
+                    Cálculo ICMS ST Compra: {{ calcularValorCompraTotalComValorFrete(item) | currency:'BRL' }} + ({{
+                    buscarMVADistribuidor(item) }} / 100) + {{ calcularValorCompraTotalComValorFrete(item) |
+                    currency:'BRL' }}
+                  </span>
+
+                  <span class="tooltip-content" *ngIf="item.dadosDistribuidorcst === '60'">
+                    Cálculo ICMS ST Compra: {{ calcularValorCompraTotalComValorFrete(item) | currency:'BRL' }} + ({{
+                    buscarMVADistribuidor(item) }} / 100) + {{ calcularValorCompraTotalComValorFrete(item) |
+                    currency:'BRL' }}
+                  </span>
+                </td>
+
+                <!-- Frete de transferência e cálculos relacionados -->
+                <td class="col" *ngIf="exibir">{{ calcularValorFreteTransferencia(item) | currency:'BRL' }}</td>
+
+                <td class="col" *ngIf="exibir">{{ calcularValorCompraTotalComValorFreteTransferencia(item) |
+                  currency:'BRL' }}</td>
+
+                <td class="col">{{ calcularIcmsTransferencia(item) | currency:'BRL' }}</td>
+
+                <td class="col" *ngIf="exibir">{{ item.aliquotaInterestadualDistribuidor }}</td>
+                <td class="col" *ngIf="exibir">{{ buscarMVAVarejista(item) }}</td>
+                <td class="col" *ngIf="exibir">{{ calcularBaseIcmsStVarejista(item) | currency:'BRL' }}</td>
+                <td class="col" *ngIf="exibir">{{ item.aliquotaInternaVarejista }}</td>
+                <td class="col" *ngIf="exibir">{{ calcularDebitoICMSSTVarejista(item) | currency:'BRL' }}</td>
+
+                <!-- Diferença de ICMS ST e ICMS Interestadual (Varejista) -->
+                <td class="col text-success tooltip-container">
+                  {{ calcularDiferencaICMSSTeICMSInterestadualVarejista(item) | currency:'BRL' }}
+
+                  <span class="tooltip-content" *ngIf="item.dadosVarejistacst === '00'">
+                    Cálculo ICMS Antecipado Transferência: ({{ calcularValorCompraTotalComValorFreteTransferencia(item)
+                    | currency:'BRL' }} *
+                    {{ aliquotasService.getAliquotaICMSATVarejista(
+                    item.ufDistribuidor,
+                    item.dadosVarejistaaliquotaicms,
+                    item.produtoImportado,
+                    item.aliquotaInternaVarejista
+                    ) / 100 | percent:'1.2-2' }})
+                  </span>
+
+                  <span class="tooltip-content" *ngIf="item.dadosVarejistacst === '60'">
+                    Cálculo ICMS ST Transferência: {{ calcularValorCompraTotalComValorFreteTransferencia(item) }} + ({{
+                    buscarMVAVarejista(item) }} / 100) + {{ calcularValorCompraTotalComValorFreteTransferencia(item) }}
+                  </span>
+                </td>
+
+                <!-- Cálculo do custo unitário e total -->
+                <td class="col tooltip-container">
+                  {{ calcularCustoUn(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo do Custo Unitário: <br>
+                    <span
+                      *ngIf="calcularDiferencaICMSSTeICMSInterestadualVarejista(item) > calcularDiferencaICMSSTeICMSInterestadual(item) && item.nfeTransferenciaDistribuidor === 'Sim'">
+                      ({{ calcularValorCompraTotalComValorFreteTransferencia(item) | currency:'BRL' }} +
+                      {{ calcularDiferencaICMSSTeICMSInterestadualVarejista(item) | currency:'BRL' }} +
+                      {{ calcularIcmsTransferencia(item) | currency:'BRL' }}) / {{ item.quantidadeProduto }}
+                    </span>
+
+                    <span
+                      *ngIf="calcularDiferencaICMSSTeICMSInterestadualVarejista(item) < calcularDiferencaICMSSTeICMSInterestadual(item) && item.nfeTransferenciaDistribuidor === 'Não'">
+                      ({{ calcularValorCompraTotalComValorFrete(item) | currency:'BRL' }} +
+                      {{ calcularDiferencaICMSSTeICMSInterestadual(item) | currency:'BRL' }}) / {{
+                      item.quantidadeProduto }}
+                    </span>
+                  </span>
+                </td>
+
+                <td class="col text-success tooltip-container">
+                  {{ calculoCustoTotal(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    <span class="tooltip-content">
+                      Cálculo do Custo Total: <br>
+                      <span
+                        *ngIf="item.nfeTransferenciaDistribuidor === 'Sim'">
+                        ({{ calcularValorCompraTotalComValorFreteTransferencia(item) | currency:'BRL' }} +
+                        {{ calcularValorFreteCompra(item) | currency:'BRL' }} +
+                        {{ calcularDiferencaICMSSTeICMSInterestadualVarejista(item) | currency:'BRL' }} +
+                        {{ calcularIcmsTransferencia(item) | currency:'BRL' }})
+                      </span>
+
+                      <span
+                        *ngIf="item.nfeTransferenciaDistribuidor === 'Não'">
+                        ({{ calcularValorCompraTotalComValorFrete(item) | currency:'BRL' }} +
+                        {{ calcularDiferencaICMSSTeICMSInterestadual(item) | currency:'BRL' }})
+                      </span>
+                    </span>
+                  </span>
+                </td>
+
+                <!-- Margem e cálculos de venda -->
+                <td class="col">
+
+
+
+                  <!-- Modo visualização (quando não está editando) -->
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ (item.percentualMargem / 100) | percent:'1.0-1' }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <input *ngIf="item.editando" type="number" [(ngModel)]="item.percentualMargem"
+                    (ionBlur)="finalizarEdicao(item)" (keyup.enter)="finalizarEdicao(item)" autofocus
+                    class="form-control padrao-input" />
+                </td>
+                <td class="col tooltip-container">
+                  {{ calcularValorVendaUnSemDesconto(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo do Valor de Venda Unitário sem Desconto: <br>
+                    ({{ calcularCustoUn(item) | currency:'BRL' }} * ({{ item.percentualMargem }} / 100)) + {{
+                    calcularCustoUn(item) | currency:'BRL' }}
+                  </span>
+                </td>
+                <td class="col" class="tooltip-container">
+                  {{ calcularValorVendaTotalSemDesconto(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo do Valor de Venda Total sem Desconto: <br>
+                    (({{ calcularCustoUn(item) | currency:'BRL' }} * ({{ item.percentualMargem }} / 100)) + {{
+                    calcularCustoUn(item) | currency:'BRL' }}) * {{ item.quantidadeProduto }}
+                  </span>
+                </td>
+
+                <!-- Desconto e cálculos de venda com desconto -->
+                <td class="col">
+
+                  <!-- Modo visualização (quando não está editando) -->
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ (item.percentualDesconto / 100) | percent:'1.0-3' }}
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <input *ngIf="item.editando" type="number" [(ngModel)]="item.percentualDesconto"
+                    (ionBlur)="finalizarEdicao(item)" (keyup.enter)="finalizarEdicao(item)" autofocus
+                    class="form-control padrao-input" />
+
+                </td>
+                <td class="col tooltip-container">
+                  {{ calcularValorVendaUnComDesconto(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo do Valor de Venda Unitário com Desconto: <br>
+                    {{ calcularValorVendaUnSemDesconto(item) | currency:'BRL' }} -
+                    ({{ calcularValorVendaUnSemDesconto(item) | currency:'BRL' }} * ({{ item.percentualDesconto }} /
+                    100))
+                  </span>
+                </td>
+                <td class="col text-success tooltip-container">
+                  {{ calcularValorVendaTotalComDesconto(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo do Valor de Venda Total com Desconto: <br>
+                    {{ calcularValorVendaTotalSemDesconto(item) | currency:'BRL' }} -
+                    ({{ calcularValorVendaTotalSemDesconto(item) | currency:'BRL' }} * ({{ item.percentualDesconto }} /
+                    100))
+                  </span>
+                </td>
+
+                <!-- Impostos e despesas -->
+                <td class="col" *ngIf="exibir">{{ item.dadosVarejistairpj }}</td>
+                <td class="col" *ngIf="exibir">{{ item.dadosVarejistacsll }}</td>
+                <td class="col" *ngIf="exibir">{{ item.dadosVarejistaaliquotapisSaida }}</td>
+                <td class="col" *ngIf="exibir">{{ item.dadosVarejistaaliquotacofinsSaida }}</td>
+                <td class="col" *ngIf="exibir">
+                      <!-- Modo visualização (quando não está editando) -->
+                      <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                        {{ item.dadosVarejistaaliquotaicms }}%
+                      </span>
+
+                      <!-- Modo edição (quando clicar no campo) -->
+                      <input *ngIf="item.editando" type="number" [(ngModel)]="item.dadosVarejistaaliquotaicms"
+                        (ionBlur)="finalizarEdicao(item)" (keyup.enter)="finalizarEdicao(item)" autofocus
+                        class="form-control padrao-input" />
+                </td>
+                <td class="col" *ngIf="exibir">{{item.dadosVarejistaaliquotaDifal}}</td>
+                <td class="col text-success tooltip-container">
+                  {{ calcularValorTotalImpostoVenda(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    <strong>Cálculo do Valor Total de Impostos de Venda:</strong><br>
+
+                    Base de cálculo sem ICMS:
+                    {{ (calcularValorVendaTotalComDesconto(item) * (1 - getNumber(item.dadosVarejistaaliquotaicms) /
+                    100)) | currency:'BRL' }} <br>
+
+                    PIS:
+                    {{ (calcularValorVendaTotalComDesconto(item) * (1 - getNumber(item.dadosVarejistaaliquotaicms) /
+                    100) * (getNumber(item.dadosVarejistaaliquotapisSaida) / 100)) | currency:'BRL' }} <br>
+
+                    COFINS:
+                    {{ (calcularValorVendaTotalComDesconto(item) * (1 - getNumber(item.dadosVarejistaaliquotaicms) /
+                    100) * (getNumber(item.dadosVarejistaaliquotacofinsSaida) / 100)) | currency:'BRL' }} <br>
+
+                    IRPJ:
+                    {{ (calcularValorVendaTotalComDesconto(item) * (getNumber(item.dadosVarejistairpj) / 100)) |
+                    currency:'BRL' }} <br>
+
+                    CSLL:
+                    {{ (calcularValorVendaTotalComDesconto(item) * (getNumber(item.dadosVarejistacsll) / 100)) |
+                    currency:'BRL' }} <br>
+
+                    ICMS:
+                    {{ (calcularValorVendaTotalComDesconto(item) * (getNumber(item.dadosVarejistaaliquotaicms) / 100)) |
+                    currency:'BRL' }} <br>
+
+                    ___________________ <br>
+                    Não faz parte do cálculo dos impostos <br>
+                    DIFAL:
+                    {{ (calcularValorVendaTotalComDesconto(item) * (getNumber(item.dadosVarejistaaliquotaDifal) / 100)) |
+                    currency:'BRL' }} <br>
+
+                    Crédito ICMS:
+                    {{calcularValorIcms(item)| currency:'BRL'}}
+                    <br>
+
+                  </span>
+                </td>
+
+
+                <!-- Comissões e despesas -->
+                <td class="col" *ngIf="exibir">{{ item.comissaoVarejista }}%</td>
+                <td class="col" *ngIf="exibir">{{ item.comissaoDistribuidor }}%</td>
+                <td class="col" *ngIf="exibir">
+
+                  <!-- Modo visualização (quando não está editando) -->
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.percentualFreteVenda }}%
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <input *ngIf="item.editando" type="number" [(ngModel)]="item.percentualFreteVenda"
+                    (ionBlur)="finalizarEdicao(item)" (keyup.enter)="finalizarEdicao(item)" autofocus
+                    class="form-control padrao-input" />
+                </td>
+                <td class="col" *ngIf="exibir">
+                  <!-- Modo visualização (quando não está editando) -->
+                  <span *ngIf="!item.editando" (click)="iniciarEdicao(item)">
+                    {{ item.percentualTaxas }}%
+                  </span>
+
+                  <!-- Modo edição (quando clicar no campo) -->
+                  <input *ngIf="item.editando" type="number" [(ngModel)]="item.percentualTaxas"
+                    (ionBlur)="finalizarEdicao(item)" (keyup.enter)="finalizarEdicao(item)" autofocus
+                    class="form-control padrao-input" />
+                </td>
+                <td class="col text-success tooltip-container">
+                  {{ calcularValorTotalDespesas(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo do Valor Total das Despesas: <br>
+                    {{ calcularValorVendaTotalComDesconto(item) | currency:'BRL' }} * ({{ item.comissaoVarejista }} + {{
+                    item.comissaoDistribuidor }} + {{ item.percentualFreteVenda }} + {{ item.percentualTaxas }})
+                  </span>
+                </td>
+
+                <!-- Lucro -->
+                <td class="col text-success tooltip-container">
+                  {{ calcularValorLucroBRL(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo do Lucro: <br>
+                    {{ calcularValorVendaTotalComDesconto(item) | currency:'BRL' }} -
+                    ({{ calculoCustoTotal(item) | currency:'BRL' }} +
+                    {{ calcularValorTotalImpostoVenda(item) | currency:'BRL' }} +
+                    {{ calcularValorTotalDespesas(item) | currency:'BRL' }})
+                  </span>
+                </td>
+                <td class="col text-success tooltip-container">
+                  {{ calcularValorLucroPercentual(item) | percent:'1.0-3' }}
+                  <span class="tooltip-content">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Item</th>
+                          <th>Valor</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Total com Desconto</td>
+                          <td>{{ calcularValorVendaTotalComDesconto(item) | currency:'BRL' }}</td>
+                        </tr>
+                        <tr>
+                          <td>Lucro (em BRL)</td>
+                          <td>{{ calcularValorLucroBRL(item) | currency:'BRL' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <br>
+                    Cálculo do Lucro Percentual: <br>
+                    ({{ calcularValorLucroBRL(item) | currency:'BRL' }}) /
+                    {{ calcularValorVendaTotalComDesconto(item) | currency:'BRL' }} =
+                    {{ calcularValorLucroPercentual(item) | percent:'1.0-3' }}
+                  </span>
+                </td>
+
+                <!-- Ações -->
+                <td class="col">
+                  <ion-buttons>
+                    <ion-button fill="clear" size="small" (click)="removeItem(item, i)">
+                      <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+                    <ion-button fill="clear" size="small" (click)="editarItem(item, i)">
+                      <ion-icon name="open-outline"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-col>
+</ion-row>
+
+<app-botao-flutuante (printContentClicked)="printContent()" (exportToExcelClicked)="exportToExcel()"
+  (printDREClicked)="printDRE()" (salvarDadosSimuladorClicked)="finalizarSimulacao()">
+</app-botao-flutuante>

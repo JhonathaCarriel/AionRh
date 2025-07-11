@@ -1,61 +1,69 @@
-<ion-content [fullscreen]="true">
+<app-header
+[pageTitle]="pageTitle"
+[iconName]="'arrow-back-sharp'"
+[ViewPage]="true">
+</app-header>
 
-  <app-header 
-    [pageTitle]="pageTitle" 
-    [iconName]="'arrow-back-sharp'"
-    [ViewPage]="true">
-  </app-header>
-  
-
-  <app-subheader
-  [TitleSubheader]="TitleSubheader"
-  [ViewPage]="true"
-  descricaoCampoPesquisa="Pesquisar por Descrição, NCM ou CEST"
-  (newClicked)="novoCadastroNCM()"
-  (saveClicked)="salvarCadastro()"
-  (searchClicked)="onSearch($event)">
-
+<app-subheader
+[TitleSubheader]="TitleSubheader"
+[ViewPage]="true"
+(filesSelected)="importarPlanilhaNCM($event)"
+[ViewPageImport]="true"
+descricaoCampoPesquisa="Pesquisar por Descrição, NCM ou CEST"
+(newClicked)="novoCadastroNCM()"
+(searchClicked)="onSearch($event)">
 </app-subheader>
 
-
-
-  <div class="table-responsive">
-    <table class="table table-striped table-hover table-bordered">
- 
+<ion-content [fullscreen]="true">
+  <div class="table-responsive mt-3">
+    <table class="table table-bordered table-striped table-hover">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">UF</th>         
-          <th scope="col">NCM</th>
-          <th scope="col">CEST</th>
-          <th scope="col">Descrição</th>          
-          <th scope="col">CST PIS/COFINS Entrada</th>
-          <th scope="col">CST PIS/COFINS Saída</th>
-          <th scope="col">CFOP</th>
-          <th scope="col">CST</th>
-          <th scope="col">% ICMS</th>
-          <th scope="col">% IRPJ</th>
-          <th scope="col">% CSLL</th>
-          <th scope="col">% PIS</th>
-          <th scope="col">% COFINS</th>
-          <th ></th>
+          <th>UF</th>
+          <th>NCM</th>
+          <th>Descrição</th>
+          <th>CEST</th>
+          <th>CST</th>
+          <th>CST IPI</th>
+          <th>CST PIS/COFINS Entrada</th>
+          <th>CST PIS/COFINS Saída</th>
+          <th>Alíquota ICMS (%)</th>
+          <th>Alíquota IPI (%)</th>
+          <th>Alíquota PIS Entrada (%)</th>
+          <th>Alíquota PIS Saída (%)</th>
+          <th>Alíquota COFINS Entrada (%)</th>
+          <th>Alíquota COFINS Saída (%)</th>
+          <th>IRPJ (%)</th>
+          <th>CSLL (%)</th>
+          <th>MVA Original (%)</th>
+          <th>MVA 4% (%)</th>
+          <th>MVA 7% (%)</th>
+          <th>MVA 12% (%)</th>
+          <th>Ações</th>
         </tr>
       </thead>
-
       <tbody>
         <tr *ngFor="let ncm of ncms; let i = index">
           <td>{{ ncm.uf }}</td>
           <td>{{ ncm.ncm }}</td>
+          <td>{{ ncm.descricao }}</td>
           <td>{{ ncm.cest }}</td>
-          <td class="no-wrap">{{ ncm.descricao }}</td>
-          <td>{{ ncm.cstpiscofinsEntrada }}</td>          
-          <td>{{ ncm.cstpiscofinsSaida }}</td>          
-          <td>{{ ncm.cfop }}</td>
           <td>{{ ncm.cst }}</td>
-          <td>{{ ncm.aliquotaicms }}</td>   
-          <td>{{ ncm.irpj }}</td>   
-          <td>{{ ncm.csll }}</td>   
-          <td>{{ ncm.aliquotapisSaida }}</td>   
-          <td>{{ ncm.aliquotacofinsSaida }}</td>   
+          <td>{{ ncm.cstIPI }}</td>
+          <td>{{ ncm.cstpiscofinsEntrada }}</td>
+          <td>{{ ncm.cstpiscofinsSaida }}</td>
+          <td class="text-end">{{ ncm.aliquotaicms }}</td>
+          <td class="text-end">{{ ncm.aliquotaIPI }}</td>
+          <td class="text-end">{{ ncm.aliquotapisEntrada }}</td>
+          <td class="text-end">{{ ncm.aliquotapisSaida }}</td>
+          <td class="text-end">{{ ncm.aliquotacofinsEntrada }}</td>
+          <td class="text-end">{{ ncm.aliquotacofinsSaida }}</td>
+          <td class="text-end">{{ ncm.irpj }}</td>
+          <td class="text-end">{{ ncm.csll }}</td>
+          <td class="text-end">{{ ncm.mvaOriginal }}</td>
+          <td class="text-end">{{ ncm.mvaAliquota4 }}</td>
+          <td class="text-end">{{ ncm.mvaAliquota7 }}</td>
+          <td class="text-end">{{ ncm.mvaAliquota12 }}</td>
           <td>
             <ion-buttons>
               <ion-button fill="clear" size="small" (click)="editar(ncm)">
@@ -65,11 +73,19 @@
                 <ion-icon name="trash"></ion-icon>
               </ion-button>
             </ion-buttons>
-
-
-          </td>  
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
+
 </ion-content>
+
+<app-botao-flutuante
+[showPrintContent]="false"
+[showExportToExcel]="true"
+[showSalvarDados]="false"
+[showPrintDRE]="false"
+(exportToExcelClicked)="exportarParaExcel()">
+</app-botao-flutuante>
+

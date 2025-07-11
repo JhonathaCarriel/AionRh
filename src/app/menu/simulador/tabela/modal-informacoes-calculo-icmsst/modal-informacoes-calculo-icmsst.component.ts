@@ -16,7 +16,7 @@ export class ModalInformacoesCalculoIcmsstComponent implements OnInit {
   @Input() valorCompra: number = 0;
   @Input() baseIcmsSt: number = 0;
   @Input() debitoIcmsSt: number = 0;
-  @Input() calculateIcms: number = 0;
+  @Input() calculateIcmsCompra: number = 0;
   @Input() calculoDifICMS: number = 0;
 
 
@@ -27,7 +27,7 @@ export class ModalInformacoesCalculoIcmsstComponent implements OnInit {
   }
 
   ngOnInit() {
-   
+
   }
 
   // Função para calcular o valor ICMS ST

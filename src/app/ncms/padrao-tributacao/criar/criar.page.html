@@ -1,0 +1,217 @@
+<app-header
+  [pageTitle]="pageTitle"
+  [iconName]="'arrow-back-sharp'"
+  [FormPage]="true"
+></app-header>
+
+<app-subheader
+  [FormPage]="true"
+  (saveClicked)="salvarCadastro()"
+  (discardClicked)="descartar()"
+></app-subheader>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <form [formGroup]="padraoTributacaoForm" class="card p-3">
+      <h5 class="mt-4 mb-3">Dados Gerais</h5>
+      <div class="row g-3">
+        <div class="col">
+          <label for="descricaoPadraoTributacao" class="form-label">Descrição Padrão Tributação</label>
+          <input
+            id="descricaoPadraoTributacao"
+            formControlName="descricaoPadraoTributacao"
+            type="text"
+            class="form-control"
+            aria-label="Descrição Padrão Tributação"
+          />
+        </div>
+      </div>
+
+      <h5 class="mt-4 mb-3">PIS/COFINS</h5>
+      <div class="row g-3">
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <label for="cstpiscofinsEntrada" class="form-label">CST Entrada</label>
+          <select
+            id="cstpiscofinsEntrada"
+            formControlName="cstpiscofinsEntrada"
+            class="form-control"
+            aria-label="Código CST PIS/COFINS Entrada"
+          >
+            <option *ngFor="let cst of cstService.cstPisCofinsEntrada" [value]="cst.value">
+              {{ cst.description }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-6 col-md-3 col-lg-4">
+          <label for="aliquotapisEntrada" class="form-label">PIS Ent</label>
+          <input
+            id="aliquotapisEntrada"
+            formControlName="aliquotapisEntrada"
+            type="number"
+            class="form-control"
+            aria-label="Alíquota PIS Entrada"
+            placeholder="%"
+          />
+        </div>
+        <div class="col-6 col-md-3 col-lg-4">
+          <label for="aliquotacofinsEntrada" class="form-label">COFINS Ent</label>
+          <input
+            id="aliquotacofinsEntrada"
+            formControlName="aliquotacofinsEntrada"
+            type="number"
+            class="form-control"
+            aria-label="Alíquota COFINS Entrada"
+            placeholder="%"
+          />
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <label for="cstpiscofinsSaida" class="form-label">CST Saída</label>
+          <select
+            id="cstpiscofinsSaida"
+            formControlName="cstpiscofinsSaida"
+            class="form-control"
+            aria-label="Código CST PIS/COFINS Saída"
+          >
+            <option *ngFor="let cst of cstService.cstPisCofinsSaida" [value]="cst.value">
+              {{ cst.description }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-6 col-md-3 col-lg-4">
+          <label for="aliquotapisSaida" class="form-label">PIS Saída</label>
+          <input
+            id="aliquotapisSaida"
+            formControlName="aliquotapisSaida"
+            type="number"
+            class="form-control"
+            aria-label="Alíquota PIS Saída"
+            placeholder="%"
+          />
+        </div>
+        <div class="col-6 col-md-3 col-lg-4">
+          <label for="aliquotacofinsSaida" class="form-label">COFINS Saída</label>
+          <input
+            id="aliquotacofinsSaida"
+            formControlName="aliquotacofinsSaida"
+            type="number"
+            class="form-control"
+            aria-label="Alíquota COFINS Saída"
+            placeholder="%"
+          />
+        </div>
+      </div>
+
+      <h5 class="mt-4 mb-3">IPI e ICMS</h5>
+      <div class="row g-3">
+        <div class="col-12 col-md-6 col-lg-6">
+          <label for="cstIPI" class="form-label">CST IPI</label>
+          <select id="cstIPI" formControlName="cstIPI" class="form-control" aria-label="Código CST IPI">
+            <option *ngFor="let cst of cstService.cstIpi" [value]="cst.value">
+              {{ cst.description }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-6 col-md-3 col-lg-6">
+          <label for="aliquotaIPI" class="form-label">IPI</label>
+          <input
+            id="aliquotaIPI"
+            formControlName="aliquotaIPI"
+            type="number"
+            class="form-control"
+            aria-label="Alíquota IPI"
+            placeholder="%"
+          />
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-6">
+          <label for="cst" class="form-label">CST/CSOSN</label>
+          <select id="cst" formControlName="cst" class="form-control" aria-label="Código CST/CSOSN">
+            <option *ngFor="let cst of cstService.cst" [value]="cst.value">
+              {{ cst.description }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-6 col-md-3 col-lg-6">
+          <label for="aliquotaicms" class="form-label">ICMS</label>
+          <input
+            id="aliquotaicms"
+            formControlName="aliquotaicms"
+            type="text"
+            class="form-control"
+            aria-label="Alíquota ICMS"
+            placeholder="%"
+            (input)="onInputIcms($event)"
+          />
+        </div>
+
+      </div>
+
+      <h5 class="mt-4 mb-3">MVA</h5>
+      <div class="row g-3">
+        <div class="col-6 col-md-4 col-lg-3">
+          <label for="mvaOriginal" class="form-label">% MVA Orig.</label>
+          <input
+            id="mvaOriginal"
+            formControlName="mvaOriginal"
+            type="number"
+            class="form-control"
+            aria-label="Alíquota MVA Original"
+            placeholder="%"
+          />
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-3">
+          <label for="mvaAliquota4" class="form-label">% MVA 4%</label>
+          <input
+            id="mvaAliquota4"
+            formControlName="mvaAliquota4"
+            type="number"
+            class="form-control"
+            placeholder="%"
+          />
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-3">
+          <label for="mvaAliquota7" class="form-label">% MVA 7%</label>
+          <input
+            id="mvaAliquota7"
+            formControlName="mvaAliquota7"
+            type="number"
+            class="form-control"
+            placeholder="%"
+          />
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-3">
+          <label for="mvaAliquota12" class="form-label">% MVA 12%</label>
+          <input
+            id="mvaAliquota12"
+            formControlName="mvaAliquota12"
+            type="number"
+            class="form-control"
+            placeholder="%"
+          />
+        </div>
+      </div>
+
+      <h5 class="mt-4 mb-3">Impostos Federais</h5>
+      <div class="row g-3">
+        <div class="col-6 col-md-4 col-lg-6">
+          <label for="irpj" class="form-label" title="IRPJ = 8% x 15% = 1,20% (não levando em consideração o adicional de IR);">% IRPJ</label>
+          <input id="irpj" formControlName="irpj" type="number" class="form-control" placeholder="%">
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-6">
+          <label for="csll" class="form-label" title="CSLL = 12% x 9% = 1,08% ">% CSLL</label>
+          <input id="csll" formControlName="csll" type="number" class="form-control" placeholder="%">
+        </div>
+      </div>
+    </form>
+  </div>
+</ion-content>

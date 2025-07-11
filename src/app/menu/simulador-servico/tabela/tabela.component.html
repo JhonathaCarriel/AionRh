@@ -1,125 +1,234 @@
-
 <ion-row id="tabela-container">
   <ion-col size="12">
-    <ion-card>
-      <ion-card-header>
+    <ion-card class="shadow-lg">
+      <!-- Cabeçalho do Card -->
+      <ion-row>
 
-      </ion-card-header>
+      </ion-row>
       <ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <ion-col class="col-disabled"><strong>Código</strong></ion-col>
-            <ion-col class="col-disabled"><strong>CNAE</strong></ion-col>
-            <ion-col class="col-disabled"><strong>Descrição do Servico</strong></ion-col>
-            <ion-col style="color: green;"><strong>{{totalServicoMecanico | currency: 'BRL'}}</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% Margem</strong></ion-col>
-            <ion-col style="color: green;"><strong>{{totalServicoSemDesconto | currency: 'BRL'}}</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% Desconto</strong></ion-col>
-            <ion-col style="color: green;"><strong>{{totalServicoComDesconto | currency: 'BRL'}}</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% CSLL Retido</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% PIS Retido</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% COFINS Retido</strong></ion-col>
-            <ion-col style="color: green;"><strong>{{totalImpostosRetidos | currency: 'BRL'}}</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% CSLL</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% IRPJ</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% ISS</strong></ion-col>
-            <ion-col style="color: green;"><strong>{{totalImpostosNaoRetidos | currency: 'BRL'}}</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% Comissão Varejista</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% Comissão Distribuidor</strong></ion-col>
-            <ion-col class="col-disabled"><strong>% Taxa</strong></ion-col>
-            <ion-col style="color: green;"><strong>{{totalDespesas | currency: 'BRL'}}</strong></ion-col>
-            <ion-col style="color: green;"><strong>{{totalLucroReais | currency: 'BRL'}}</strong></ion-col>
-            <ion-col style="color: green;"><strong>{{totalLucroPercentual | percent: '1.0-3'}}</strong></ion-col>
-            <ion-col class="col-disabled"></ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col><strong>Código</strong></ion-col>
-            <ion-col><strong>CNAE</strong></ion-col>
-            <ion-col><strong>Descrição do Servico</strong></ion-col>
-            <ion-col><strong>Valor Serviço Mecânico</strong></ion-col>
-            <ion-col><strong>% Margem</strong></ion-col>
-            <ion-col><strong>V. Serviço S/Desconto</strong></ion-col>
-            <ion-col><strong>% Desconto</strong></ion-col>
-            <ion-col><strong>V. Serviço C/Desconto</strong></ion-col>
-            <ion-col><strong>% CSLL Retido</strong></ion-col>
-            <ion-col><strong>% PIS Retido</strong></ion-col>
-            <ion-col><strong>% COFINS Retido</strong></ion-col>
-            <ion-col><strong>V. T. Imposto Retido</strong></ion-col>
-            <ion-col><strong>% CSLL</strong></ion-col>
-            <ion-col><strong>% IRPJ</strong></ion-col>
-            <ion-col><strong>% ISS</strong></ion-col>
-            <ion-col><strong>V. T. Imposto</strong></ion-col>
-            <ion-col><strong>% Comissão Varejista</strong></ion-col>
-            <ion-col><strong>% Comissão Distribuidor</strong></ion-col>
-            <ion-col><strong>% Taxa</strong></ion-col>
-            <ion-col><strong>V. T. Despesas</strong></ion-col>
-            <ion-col><strong>R$ Lucro</strong></ion-col>
-            <ion-col><strong>% Lucro</strong></ion-col>
-            <ion-col></ion-col>
-          </ion-row>
+        <!-- Tabela Responsiva -->
+        <div class="table-responsive">
+          <table class="table table-striped table-hover text-center">
+            <thead class="bg-dark text-white fw-bold">
+              <tr>
+                <th class="col-disabled col-sm-1">ID</th>
+                <th class="col-disabled col-sm-1">Código</th>
+                <th class="col-disabled col-sm-1">O.S</th>
+                <th class="col-disabled col-sm-4">Descrição do Serviço</th>
+                <th class="text-success">{{ totalServicoMecanico | currency: 'BRL' }}</th>
+                <th class="col-disabled">% Margem</th>
+                <th class="text-success">{{ totalServicoSemDesconto | currency: 'BRL' }}</th>
+                <th class="col-disabled">% Desconto</th>
+                <th class="text-success">{{ totalServicoComDesconto | currency: 'BRL' }}</th>
+                <th class="col-disabled">% CSLL Retido</th>
+                <th class="col-disabled">% PIS Retido</th>
+                <th class="col-disabled">% COFINS Retido</th>
+                <th class="text-success">{{ totalImpostosRetidos | currency: 'BRL' }}</th>
+                <th class="col-disabled">% CSLL</th>
+                <th class="col-disabled">% IRPJ</th>
+                <th class="col-disabled">% ISS</th>
+                <th class="text-success">{{ totalImpostosNaoRetidos | currency: 'BRL' }}</th>
+                <th class="col-disabled">% Comissão Varejista</th>
+                <th class="col-disabled">% Comissão Distribuidor</th>
+                <th class="col-disabled">% Taxa</th>
+                <th class="text-success">{{ totalDespesas | currency: 'BRL' }}</th>
+                <th class="text-success">{{ totalLucroReais | currency: 'BRL' }}</th>
+                <th class="text-success">{{ totalLucroPercentual | percent: '1.0-3' }}</th>
+                <th class="col-disabled">Ações</th>
+              </tr>
+            </thead>
+            <!-- Cabeçalho da Tabela -->
+            <thead class="bg-dark text-white w">
+              <tr>
+                <th class="col">ID</th>
+                <th class="col">Código</th>
+                <th class="col-disabled col-sm-1">O.S</th>
+                <th class="col-sm-3">Descrição do Serviço</th>
+                <th class="text-success">Serviço Mecânico + Materiais</th>
+                <th>% Margem</th>
+                <th class="text-success">Serviço S/Desconto</th>
+                <th>% Desconto</th>
+                <th class="text-success">Serviço C/Desconto</th>
+                <th>% CSLL</th>
+                <th>% PIS</th>
+                <th>% COFINS</th>
+                <th class="text-success">Impostos Retidos</th>
+                <th>% CSLL</th>
+                <th>% IRPJ</th>
+                <th>% ISS</th>
+                <th class="text-success">Impostos Não Retidos</th>
+                <th>% Comissão Var</th>
+                <th>% Comissão Dist</th>
+                <th>% Taxa</th>
+                <th class="text-success">Despesas</th>
+                <th class="text-success">Lucro R$</th>
+                <th class="text-success">Lucro %</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
 
-          <ion-row *ngFor="let item of dadosTabela; let i = index">
-            <ion-col>{{i + 1}}</ion-col>
-            <ion-col>{{item.cnae}}</ion-col>
-            <ion-col>{{item.nomeServico}}</ion-col>
-            <ion-col>{{item.valorServicoMecanico | currency:'BRL'}}</ion-col>
-            <ion-col>{{item.percentualMargem}}%</ion-col>
-            <ion-col>{{ calculateVTServico(item)| currency:'BRL' }}</ion-col>
-            <ion-col>{{item.percentualDesconto}}%</ion-col>
-            <ion-col>{{ calculateVTServicoComDesconto(item)| currency:'BRL' }}</ion-col>
-            <ion-col>{{item.csllRetido}}%</ion-col>
-            <ion-col>{{item.aliquotapisSaida}}%</ion-col>
-            <ion-col>{{item.aliquotacofinsSaida}}%</ion-col>
-            <ion-col>{{ caculateTotalImpostoRetido(item)| currency:'BRL' }}</ion-col>
-            <ion-col>{{item.irpj}}%</ion-col>
-            <ion-col>{{item.csll}}%</ion-col>
-            <ion-col>{{item.aliquotaISS}}%</ion-col>
-            <ion-col>{{caculateTotalImpostoNaoRetido(item) | currency: 'BRL'}}</ion-col>
-            <ion-col>{{item.comissaoVarejista}}%</ion-col>
-            <ion-col>{{item.comissaoDistribuidor}}%</ion-col>
-            <ion-col>{{item.percentualTaxas}}%</ion-col>
-            <ion-col>{{caculateTotalDespesas(item) | currency: 'BRL'}}</ion-col>
-            <ion-col>{{caculateTotalLucroReais(item) | currency: 'BRL'}}</ion-col>
-            <ion-col>{{caculateTotalLucroPercentual(item)/100 | percent: '1.0-3'}}</ion-col>
-            <ion-col>
-              <ion-buttons>
-                <ion-button fill="clear" size="small" (click)="removeItem(i)">
-                  <ion-icon name="trash"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+            <!-- Corpo da Tabela -->
+            <tbody>
+              <tr *ngFor="let item of dadosTabela; let i = index">
+                <td>{{item.id}}</td>
+                <td>{{i + 1}}</td>
+                <td>{{item.numeroOs}}</td>
 
+
+
+                <td (click)="iniciarEdicao(item)" class="col">
+                  <span *ngIf="!item.editando">{{ item.nomeServico }}</span>
+                  <input *ngIf="item.editando" [(ngModel)]="item.nomeServico" (blur)="finalizarEdicao(item, false)"
+                    (keyup.enter)="finalizarEdicao(item, false)" autofocus class="form-control padrao-input" />
+                </td>
+
+                <!-- Serviço Mecânico + Materiais -->
+                <td class="text-success tooltip-container">
+                  {{item.valorServicoMecanico + item.valorMateriais | currency:'BRL'}}
+                  <span class="tooltip-content">
+                    Serviço Mecânico: {{item.valorServicoMecanico | currency:'BRL'}}<br>
+                    Materiais: {{item.valorMateriais | currency:'BRL'}}
+                  </span>
+                </td>
+
+
+                <td (click)="iniciarEdicao(item)" class="col">
+                  <span *ngIf="!item.editando">{{ item.percentualMargem }}%</span>
+                  <input *ngIf="item.editando" [(ngModel)]="item.percentualMargem" (blur)="finalizarEdicao(item, false)"
+                    (keyup.enter)="finalizarEdicao(item, false)" autofocus class="form-control padrao-input" />
+                </td>
+
+                <!-- Serviço Sem Desconto -->
+                <td class="text-success tooltip-container">
+                  {{ calculateVTServico(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo: {{item.valorServicoMecanico + item.valorMateriais | currency:'BRL'}}
+                    + ({{item.percentualMargem}}% de {{item.valorServicoMecanico + item.valorMateriais |
+                    currency:'BRL'}})
+                  </span>
+                </td>
+
+
+                <td (click)="iniciarEdicao(item)" class="col">
+                  <span *ngIf="!item.editando">{{ item.percentualDesconto }}%</span>
+                  <input *ngIf="item.editando" [(ngModel)]="item.percentualDesconto"
+                    (blur)="finalizarEdicao(item, false)" (keyup.enter)="finalizarEdicao(item, false)" autofocus
+                    class="form-control padrao-input" />
+                </td>
+
+
+                <!-- Serviço Com Desconto -->
+                <td class="text-success tooltip-container">
+                  {{ calculateVTServicoComDesconto(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo: {{calculateVTServico(item) | currency:'BRL'}}
+                    - ({{item.percentualDesconto}}% de {{calculateVTServico(item) | currency:'BRL'}})
+                  </span>
+                </td>
+
+                <td>{{item.csllRetido}}%</td>
+                <td>{{item.aliquotapisSaida}}%</td>
+                <td>{{item.aliquotacofinsSaida}}%</td>
+
+                <!-- Impostos Retidos -->
+                <td class="text-success tooltip-container">
+                  {{ caculateTotalImpostoRetido(item) | currency:'BRL' }}
+                  <span class="tooltip-content">
+                    CSLL Retido: {{calculateCSLLRetido(item) | currency:'BRL'}}<br>
+                    PIS Retido: {{calculatealiquotapisSaida(item) | currency:'BRL'}}<br>
+                    COFINS Retido: {{calculatealiquotaCofinsSaida(item) | currency:'BRL'}}
+                  </span>
+                </td>
+
+                <td>{{item.csll}}%</td>
+                <td>{{item.irpj}}%</td>
+                <td>
+                  {{ item.valorServicoMecanico === 0 ? '0' : item.aliquotaISS }}%
+                </td>
+
+                <!-- Impostos Não Retidos -->
+                <td class="text-success tooltip-container">
+                  {{ caculateTotalImpostoNaoRetido(item) | currency: 'BRL' }}
+                  <span class="tooltip-content">
+                    CSLL: {{calculateCSLL(item) | currency:'BRL'}}<br>
+                    IRPJ: {{calculateIRPJ(item) | currency:'BRL'}}<br>
+                    ISS: {{calculateIss(item) | currency:'BRL'}}
+                  </span>
+                </td>
+
+
+                <td (click)="iniciarEdicao(item)" class="col">
+                  <span *ngIf="!item.editando">{{ item.comissaoVarejista }}%</span>
+                  <input *ngIf="item.editando" [(ngModel)]="item.comissaoVarejista"
+                    (blur)="finalizarEdicao(item, false)" (keyup.enter)="finalizarEdicao(item, false)" autofocus
+                    class="form-control padrao-input" />
+                </td>
+                <td (click)="iniciarEdicao(item)" class="col">
+                  <span *ngIf="!item.editando">{{ item.comissaoDistribuidor }}%</span>
+                  <input *ngIf="item.editando" [(ngModel)]="item.comissaoDistribuidor"
+                    (blur)="finalizarEdicao(item, false)" (keyup.enter)="finalizarEdicao(item, false)" autofocus
+                    class="form-control padrao-input" />
+                </td>
+                <td (click)="iniciarEdicao(item)" class="col">
+                  <span *ngIf="!item.editando">{{ item.percentualTaxas }}%</span>
+                  <input *ngIf="item.editando" [(ngModel)]="item.percentualTaxas" (blur)="finalizarEdicao(item, false)"
+                    (keyup.enter)="finalizarEdicao(item, false)" autofocus class="form-control padrao-input" />
+
+
+                  <!-- Despesas -->
+                <td class="text-success tooltip-container">
+                  {{ caculateTotalDespesas(item) | currency: 'BRL' }}
+                  <span class="tooltip-content">
+                    Comissão Varejista: {{calculateComissaoV(item) | currency:'BRL'}}<br>
+                    Comissão Distribuidor: {{calculateComissaoD(item) | currency:'BRL'}}<br>
+                    Taxas: {{calculateTaxas(item) | currency:'BRL'}}
+                  </span>
+                </td>
+
+                <!-- Lucro em Reais -->
+                <td class="text-success tooltip-container">
+                  {{ caculateTotalLucroReais(item) | currency: 'BRL' }}
+                  <span class="tooltip-content">
+                    Cálculo:<br>
+                    Serviço c/Desconto: {{calculateVTServicoComDesconto(item) | currency:'BRL'}}<br>
+                    - Impostos Retidos: {{caculateTotalImpostoRetido(item) | currency:'BRL'}}<br>
+                    - Impostos Não Retidos: {{caculateTotalImpostoNaoRetido(item) | currency:'BRL'}}<br>
+                    - Despesas: {{caculateTotalDespesas(item) | currency:'BRL'}}<br>
+                    - Custo Mecânico: {{item.valorServicoMecanico + item.valorMateriais | currency:'BRL'}}
+                  </span>
+                </td>
+
+                <!-- Lucro Percentual -->
+                <td class="text-success tooltip-container">
+                  {{ caculateTotalLucroPercentual(item)/100 | percent: '1.0-3' }}
+                  <span class="tooltip-content">
+                    Cálculo:<br>
+                    (Lucro R$ {{caculateTotalLucroReais(item) | currency:'BRL'}} /
+                    Serviço c/Desconto {{calculateVTServicoComDesconto(item) | currency:'BRL'}}) * 100
+                  </span>
+                </td>
+
+                <td>
+                  <ion-buttons>
+                    <ion-button fill="clear" size="small" class="text-danger" (click)="removeItem(item, i)">
+                      <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+                    <ion-button fill="clear" size="small" class="text-primary" (click)="editarItem(item, i)">
+                      <ion-icon name="open-outline"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </ion-card-content>
-
     </ion-card>
   </ion-col>
-
 </ion-row>
 
 
-<ion-fab slot="fixed" vertical="bottom" horizontal="end">
-  <ion-fab-button>
-    <ion-icon name="apps-outline"></ion-icon>
-  </ion-fab-button>
 
-  <ion-fab-list side="top">
-
-    <ion-fab-button (click)="printContent()">
-      <ion-icon name="print-outline"></ion-icon>
-    </ion-fab-button>
-
-    <ion-fab-button (click)="exportToExcel()">
-      <ion-icon name="document-text-outline"></ion-icon>
-    </ion-fab-button>
-
-    <ion-fab-button (click)="salvarDadosSimulador()">
-      <ion-icon name="save-outline"></ion-icon>
-    </ion-fab-button>
-
-    <ion-fab-button (click)="printDRE()">
-      DRE
-    </ion-fab-button>
-  </ion-fab-list>
-</ion-fab>
+<app-botao-flutuante (printContentClicked)="printContent()" (exportToExcelClicked)="exportToExcel()"
+  (printDREClicked)="printDRE()" (salvarDadosSimuladorClicked)="finalizarSimulacao()">
+</app-botao-flutuante>

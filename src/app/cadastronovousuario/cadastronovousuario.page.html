@@ -1,0 +1,71 @@
+<ion-content [fullscreen]="true" class="bg-light">
+  <div class="container h-100 d-flex align-items-center justify-content-center">
+    <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%; border-radius: 10px;">
+      <div class="text-center mb-3">
+        <ion-img style="width: 100px; height: 100px; margin: 0 auto;" src="assets/logo.png"></ion-img>
+        <h2 class="mt-2">Criar Conta</h2>
+      </div>
+
+      <form class="form container mt-4" [formGroup]="cadastroUsuarioForm">
+        <div class="form-group mb-3">
+          <label for="email" class="form-label">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            formControlName="email"
+            placeholder="Digite seu e-mail"
+            [class.is-invalid]="cadastroUsuarioForm.get('email')?.invalid && cadastroUsuarioForm.get('email')?.touched" />
+          <div *ngIf="cadastroUsuarioForm.get('email')?.invalid && cadastroUsuarioForm.get('email')?.touched" class="invalid-feedback">
+            <span *ngIf="cadastroUsuarioForm.get('email')?.errors?.['required']">Email é obrigatório</span>
+            <span *ngIf="cadastroUsuarioForm.get('email')?.errors?.['email']">Email inválido</span>
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="password" class="form-label">Senha</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            formControlName="password"
+            placeholder="Digite sua senha (mínimo 6 caracteres)"
+            [class.is-invalid]="cadastroUsuarioForm.get('password')?.invalid && cadastroUsuarioForm.get('password')?.touched" />
+          <div *ngIf="cadastroUsuarioForm.get('password')?.invalid && cadastroUsuarioForm.get('password')?.touched" class="invalid-feedback">
+            <span *ngIf="cadastroUsuarioForm.get('password')?.errors?.['required']">Senha é obrigatória</span>
+            <span *ngIf="cadastroUsuarioForm.get('password')?.errors?.['minlength']">Mínimo 6 caracteres</span>
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="confirmPassword" class="form-label">Confirme sua senha</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            class="form-control"
+            formControlName="confirmPassword"
+            placeholder="Confirme sua senha"
+            [class.is-invalid]="cadastroUsuarioForm.hasError('mismatchedPasswords') || (cadastroUsuarioForm.get('confirmPassword')?.invalid && cadastroUsuarioForm.get('confirmPassword')?.touched)" />
+          <div *ngIf="cadastroUsuarioForm.hasError('mismatchedPasswords')" class="invalid-feedback">
+            As senhas não coincidem
+          </div>
+          <div *ngIf="cadastroUsuarioForm.get('confirmPassword')?.invalid && cadastroUsuarioForm.get('confirmPassword')?.touched && !cadastroUsuarioForm.hasError('mismatchedPasswords')" class="invalid-feedback">
+            Confirmação de senha é obrigatória
+          </div>
+        </div>
+
+        <ion-button
+          expand="block"
+          (click)="salvarUsuario()"
+          [disabled]="cadastroUsuarioForm.invalid">
+          Criar Conta
+        </ion-button>
+
+        <div class="text-center mt-3">
+          <span>Já tem uma conta? </span>
+          <a routerLink="/login" class="text-decoration-none fw-bold">Faça login</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

@@ -1,13 +1,200 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>editar</ion-title>
-  </ion-toolbar>
+  <app-header [pageTitle]="pageTitle" [iconName]="'arrow-back-sharp'" [FormPage]="true">
+  </app-header>
+
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">editar</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <form action="" class="form" [formGroup]="simuladorServicoForm">
+    <ion-grid>
+      <ion-row>
+        <!-- Varejista -->
+        <ion-col>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Varejista</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <!-- Linha 1: Seleção do Varejista -->
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label class="form-label">Nome</label>
+                  <div class="input-group">
+                    <select class="form-select" formControlName="nomeVarejista"
+                      (ngModelChange)="preencherCamposVarejista($event)">
+                      <option value="" disabled selected>Selecione o varejista</option>
+                      <option *ngFor="let varejista of varejistas" [value]="varejista.nomeEmpresa">
+                        {{ varejista.nomeEmpresa }}
+                      </option>
+                    </select>
+                    <button class="btn btn-outline-secondary" type="button" (click)="abrirModalVarejista()">
+                      CAD
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Linha 2: UF e Atividade -->
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label class="form-label">UF</label>
+                  <select class="form-select" formControlName="ufVarejista">
+                    <option value="" disabled selected>Selecione a UF</option>
+                    <option *ngFor="let estado of estados" [value]="estado.sigla">
+                      {{ estado.sigla }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Atividade</label>
+                  <select class="form-select" formControlName="atividadeVarejista">
+                    <option value="" disabled selected>Selecione a atividade</option>
+                    <option *ngFor="let atividade of atividades" [value]="atividade.nome">
+                      {{ atividade.nome }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">NFS Serviço</label>
+                  <select class="form-select" formControlName="nfsServicoVarejista">
+                    <option value="" disabled selected>NFS Serviço</option>
+                    <option *ngFor="let boleano of boleanos" [value]="boleano.value">
+                      {{ boleano.nome }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Valores Predeterminados -->
+        <ion-col>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Valores Predeterminados</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label class="form-label">% Taxas</label>
+                  <input type="number" class="form-control" placeholder="% Taxas" formControlName="percentualTaxas" />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Comissão Varejista</label>
+                  <input type="number" class="form-control" placeholder="Comissão Varejista"
+                    formControlName="comissaoVarejista" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Comissão Distribuidor</label>
+                  <input type="number" class="form-control" placeholder="Comissão Distribuidor"
+                    formControlName="comissaoDistribuidor" />
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+
+        <!-- Produto / Serviço -->
+        <ion-col>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Serviço</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <!-- Linha 1 -->
+              <div class="row">
+                <div class="col-8">
+                                    <input type="text" class="form-control" placeholder="Para quem a simulação?"
+                    formControlName="paraQuemSimulacao" />
+                </div>
+                <div class="col">
+                  <div class="input-group">
+                    <input type="text" class="form-control" formControlName="numeroOs" placeholder="O.S" />
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+
+
+                <div class="col-2">
+                  <label class="form-label">R$ Serviço</label>
+                  <input type="number" class="form-control"
+                    formControlName="valorServicoMecanico"
+                    [disabled]="materialPreenchido"
+                    (input)="onServicoChange($event)" />
+                </div>
+                <div class="col-2">
+                  <label class="form-label">R$ Materiais</label>
+                  <input type="number" class="form-control"
+                    formControlName="valorMateriais"
+                    [disabled]="servicoPreenchido"
+                    (input)="onMaterialChange($event)" />
+                </div>
+                <div class="col-2">
+                  <label class="form-label">% Margem</label>
+                  <input type="number" class="form-control" placeholder="% Margem" formControlName="percentualMargem" />
+                </div>
+                <div class="col-2">
+                  <label class="form-label">% Desconto</label>
+                  <input type="number" class="form-control" placeholder="% Desconto"
+                    formControlName="percentualDesconto" />
+                </div>
+
+  <div class="col-md-2">
+    <label class="form-label">CNAE</label>
+    <input
+  type="text"
+  class="form-control"
+  formControlName="cnae"
+  (ngModelChange)="buscarDadosCnaeMunicipio()"
+  (ngModelChange)="buscarDadosCnae()"
+/>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Município</label>
+    <select class="form-select" formControlName="cidade">
+      <option *ngFor="let cidade of municipiosDisponiveis" [value]="cidade">
+        {{ cidade }}
+      </option>
+    </select>
+  </div>
+
+
+
+
+
+              </div>
+
+              <!-- Linha 2: Descrição Serviço + Botão -->
+              <div class="row">
+                <div class="col-md-10">
+                  <label class="form-label">Descrição Serviço</label>
+                  <textarea class="form-control" placeholder="Descrição Serviço" formControlName="nomeServico"
+                    rows="2"></textarea>
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                  <button type="button" class="btn btn-outline-success"(click)="adicionarNaTabela()">
+                    <ion-icon name="add-circle-outline"></ion-icon> Adicionar
+                  </button>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+
+      </ion-row>
+    </ion-grid>
+    <app-tabela [dadosTabela]="tabelaInformacoes" [simuladorServicoForm]="simuladorServicoForm"
+      (editar)="preencherFormularioComDados($event)"></app-tabela>
+  </form>
 </ion-content>

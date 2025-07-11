@@ -1,7 +1,12 @@
+
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { EditarRendimentoComponent } from './informacoes-rendimentos/editar-rendimento/editar-rendimento.component';
 import { authGuard } from './shared/guard/auth.guard';
+import { FornecedoresComponent } from './menu/fornecedores/fornecedores.component';
+import { CriarComponent } from './menu/fornecedores/criar/criar.component';
+import { EditarComponent } from './menu/fornecedores/editar/editar.component';
+
 
 const routes: Routes = [
   {
@@ -24,14 +29,7 @@ const routes: Routes = [
       ),
     canActivate: [authGuard],
   },
-  {
-    path: 'dashboards',
-    loadChildren: () =>
-      import('./dashboards/dashboards.component').then(
-        (m) => m.DashboardsComponent
-      ),
-    canActivate: [authGuard],
-  },
+
   {
     path: 'departamentos',
     loadChildren: () =>
@@ -48,6 +46,11 @@ const routes: Routes = [
       ),
     canActivate: [authGuard],
   },
+  {
+    path: 'dashboards',
+    loadChildren: () => import('./dashboards/dashboards.module').then( m => m.DashboardsPageModule)
+  },
+
   {
     path: 'cadastrar-colaborador',
     loadChildren: () =>
@@ -109,18 +112,20 @@ const routes: Routes = [
   path: 'relatorio-pdf',
   loadChildren: () => import('./menu/simulador/relatorio-pdf/relatorio-pdf.component').then(m =>m.RelatorioPdfComponent)
 },
+
   {
     path: 'simulador/servico',
-    loadChildren: () => import('./menu/simulador-servico/simulador-servico.module').then( m => m.SimuladorServicoPageModule)
+    loadChildren: () => import('./menu/simulador-servico/simulador/simulador-servico.module').then( m => m.SimuladorServicoPageModule)
   },
   {
-    path: 'simulador/servico/criar',
+    path: 'simulador/servico/criar/:id',
     loadChildren: () => import('./menu/simulador-servico/criar/criar.module').then( m => m.CriarPageModule)
   },
   {
     path: 'simulador/servico/editar/:id',
     loadChildren: () => import('./menu/simulador-servico/editar/editar.module').then( m => m.EditarPageModule)
   },
+
   {
     path: 'simulador/cnae',
     loadChildren: () => import('./cnae/cnae.module').then( m => m.CnaePageModule)
@@ -132,7 +137,82 @@ const routes: Routes = [
   {
     path: 'simulador/cnae/editar/:id',
     loadChildren: () => import('./cnae/editar/editar.module').then( m => m.EditarPageModule)
-  }
+  },
+
+  {
+    path:'simulador/produtos',
+    loadChildren: () => import('./menu/simulador-produtos/simulador/simulador-produtos.module').then(m => m.SimuladorProdutosPageModule)
+  },
+{
+  path: 'simulador/produtos/criar/:id',
+  loadChildren: () => import('./menu/simulador-produtos/criar/criar.module').then(m => m.CriarPageModule)
+},
+{
+  path: 'simulador/produtos/editar/:id',
+  loadChildren: () => import('./menu/simulador-produtos/editar/editar.module').then(m => m.EditarPageModule)
+},
+  {
+    path:'simulador/fornecedores',
+   component: FornecedoresComponent
+  },
+  {
+    path:'simulador/fornecedores/criar',
+   component: CriarComponent,
+   canActivate: [authGuard],
+  },
+  {
+    path:'simulador/fornecedores/editar/:id',
+   component: EditarComponent,
+   canActivate: [authGuard],
+  },
+
+  {
+    path: 'declaracao/criar',
+    loadChildren: () => import('./menu/declaracao/criar/criar.module').then( m => m.CriarPageModule),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'cadastronovousuario',
+    loadChildren: () => import('./cadastronovousuario/cadastronovousuario.module').then( m => m.CadastronovousuarioPageModule)
+  },
+  {
+    path: 'dashboards/powerbi/visualizar',
+    loadChildren: () => import('./menu/dashboards-power-bi/dashboards-power-bi.module').then( m => m.DashboardsPowerBiPageModule)
+  },
+
+{
+  path: 'ncm/padrao/tributacao/visualizar',
+  loadChildren: () => import('./ncms/padrao-tributacao/visualizar/visualizar.module').then( m => m.VisualizarPageModule)
+},
+{
+  path: 'ncm/padrao/tributacao/criar',
+  loadChildren: () => import('./ncms/padrao-tributacao/criar/criar.module').then( m => m.CriarPageModule)
+},
+
+
+  {
+    path: 'catalogos/visualizar',
+    loadChildren: () => import('./menu/catalogos/visualizar/visualizar.module').then( m => m.VisualizarPageModule)
+  },
+  {
+    path: 'catalogos/criar/:id',
+    loadChildren: () => import('./menu/catalogos/criar/criar.module').then( m => m.CriarPageModule)
+  },
+  {
+    path: 'catalogos/editar/:id',
+    loadChildren: () => import('./menu/catalogos/editar/editar.module').then( m => m.EditarPageModule)
+  },
+  {
+    path: 'logs/visualizar',
+    loadChildren: () => import('./menu/logs/logs.module').then( m => m.LogsPageModule)
+  },
+
+
+
+
+
+
+
 
 ];
 

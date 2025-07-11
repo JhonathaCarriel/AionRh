@@ -1,0 +1,53 @@
+<ion-header [translucent]="true">
+  <app-header pageTitle="Dashboards" [iconName]="'arrow-back-sharp'" [FormPage]="true">
+  </app-header>
+
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <div class="container mt-4">
+    <div class="row">
+      <!-- Gráfico de Simulações de Produtos -->
+      <div class="col-6">
+        <ion-card class="card-dashboards-barHorizontal setorMaiorPontuacao">
+
+          <ion-card-content>
+            <canvas #barChartComprasMes></canvas>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Gráfico de Simulações de Serviços -->
+      <div class="col-6">
+        <ion-card class="card-dashboards-barHorizontal colaboradoresQuantidadePonto">
+
+          <ion-card-content>
+            <canvas #barChartVendasMes></canvas>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Gráfico de Lucro Produtos x Mês -->
+      <div class="col-6">
+        <ion-card class="card-dashboards-barHorizontal setorMediaPontuacao">
+
+          <ion-card-content>
+            <canvas #barChartLucroMes></canvas>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Gráfico de Lucro Serviços x Mês -->
+      <div class="col-6">
+        <ion-card class="card-dashboards-barHorizontal">
+
+          <ion-card-content>
+            <canvas #barChartLucroMesServico></canvas>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+  </div>
+  <iframe title="Inventário SM" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=cd63c0fd-c5bf-41f1-8768-b0efcd111c76&autoAuth=true&ctid=f164977a-eb6a-4249-8442-6ee6e224ffca&actionBarEnabled=true" frameborder="0" allowFullScreen="true"></iframe>
+</ion-content>

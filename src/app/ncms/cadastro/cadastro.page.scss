@@ -1,15 +1,38 @@
-.row{
-    margin-top: 10px;
-}
-.card{
-    margin: 20px;
-    border-radius: 5px;
-    border-color: solid antiquewhite;
-    padding: 30px
+/* Geral */
+.row {
+  margin-top: 10px;
 }
 
-select,
-input,
-label{
-    font-size: 12px;
+.card {
+  margin: 20px;
+  border-radius: 5px;
+  padding: 30px;
+  box-shadow: 0 0 10px 0 rgba(158, 158, 158, 0.1);
+  background-color: var(--ion-background-color);
+  --color: azure;
+}
+
+.tabs-personalizadas {
+  margin-top: 10px;
+}
+
+/* Estilos específicos para iOS */
+.ios {
+  --card-margin: 5px;
+  --card-padding: 10px;
+  --row-margin: 5px;
+  --tabs-margin: 5px;
+}
+
+.ios .card {
+  margin: var(--card-margin);
+  padding: var(--card-padding);
+}
+
+.ios .tabs-personalizadas {
+  margin-top: var(--tabs-margin);
+}
+
+.ios .row {
+  margin-top: var(--row-margin);
 }

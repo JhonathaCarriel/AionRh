@@ -8,7 +8,6 @@ import { CestService } from 'src/app/services/cest.service';
 import { FirebaseNCMService } from 'src/app/services/firebase-ncm.service';
 import { firstValueFrom } from 'rxjs';
 import {jsPDF} from 'jspdf'
-
 export interface NCM{
   id: string,
   uf: string,
@@ -34,7 +33,6 @@ export interface NCM{
   irpj: number,
   csll:number
 }
-
 import { NcmService } from 'src/app/services/ncm.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 export interface EstadoAliquota {
@@ -52,7 +50,11 @@ export class SimuladorPage implements OnInit {
   simuladorForm: FormGroup;
   pageTitle: string = 'Simulador de Produtos'
   tabelaInformacoes: any[] = [];
-
+  irpj: string = '0.00%';
+  csll: string = '0.00%';
+  pis: string = '0.00%';
+  cofins: string = '0.00%';
+  icmsVenda: string = '0.00%';
   estados: EstadoAliquota[] = [];
   cest: string | null = null;
   cestsDisponiveis: string[] = [];
@@ -60,9 +62,10 @@ export class SimuladorPage implements OnInit {
   isFreteModalOpen = false;
   valorFrete!: number;
   valorCompraVenda!: number; tipoCalculoFrete: string = '';
-  exibirMva: boolean = false;
+  exibirMva: boolean = true;
   cestOptions: any[] = [];
   ncms: NCM[] = [];
+
 
 
 
@@ -129,12 +132,12 @@ export class SimuladorPage implements OnInit {
       produtoImportado: ['Nao'],
       quantidadeProduto: ['1.0'],
       valorCompraProdutoUnitario: ['1.0'],
-      ncmCompra: ['', [Validators.required, Validators.maxLength(8)]],
-      cestCompra:[''],
+      ncmCompra: ['84314929', [Validators.required, Validators.maxLength(8)]],
+      cestCompra:['0104500'],
       percentualMVA: [''],
-      cst: [''],
-      ncmVenda: ['', [Validators.required, Validators.maxLength(8)]],
-      cestVenda: [''],
+      cst: ['60'],
+      ncmVenda: ['84314929', [Validators.required, Validators.maxLength(8)]],
+      cestVenda: ['0104500'],
 
 
     });
@@ -147,9 +150,11 @@ export class SimuladorPage implements OnInit {
     this.atualizadorProdutosImportado();
     this.atualizadoraliquotaInterestadualFornecedor();
     this.controlarCampo();
-
     this.loadncm();
   }
+
+
+
 
 loadncm(){
   this.firestore.collection<NCM>('ncm', ref => ref.orderBy('uf'))
@@ -177,8 +182,11 @@ loadncm(){
   atualizadorProdutosImportado() {
     this.simuladorForm.get('produtoImportado')?.valueChanges.subscribe((produtoImportado) => {
       if (produtoImportado) {
+        this.buscarCestCompra();
         this.atualizarAliquotaFornecedor();
         this.atualizarAliquotaDistribuidor();
+        this.atualizadoraliquotaInterestadualFornecedor();
+
       }
     });
 
@@ -201,83 +209,135 @@ loadncm(){
   carregarEstados() {
     this.estados = this.aliquotasService.getAllEstados();
   }
+
   async adicionarNaTabela() {
-    // Primeiro, chama o onCheckNcm()
+
+
     this.onCheckNcm();
 
     // Verifica se o formulário é válido
-    if (this.simuladorForm.valid) {
-      const formData = this.simuladorForm.value;
+    if (this.simuladorForm.invalid) {
+      this.simuladorForm.markAllAsTouched();
+      console.error('Formulário inválido. Verifique os campos obrigatórios.');
+      return;
+    }
 
+    const formData = this.simuladorForm.value;
+
+    try {
       // Faz a consulta ao NCM
-      const ncmDataVenda = await firstValueFrom(this.FirebaseNCMService.consultaNCMVenda(
-        formData.ncmVenda,
-        formData.ufVarejista
-      ));
+      const ncmDataVenda = await firstValueFrom(
+        this.FirebaseNCMService.consultaNCMVenda(formData.ncmVenda, formData.ufVarejista, formData.cestVenda)
+      );
 
-      // Verifica se o resultado não está vazio e se o NCM é válido
-      const ncmData = ncmDataVenda.length > 0 ? ncmDataVenda[0] : null;
+      // Verifica se a resposta contém dados
+      const ncmData = ncmDataVenda?.length > 0 ? ncmDataVenda[0] : null;
 
-      if (!ncmData) {
-        // Caso o NCM seja inválido, retorna um erro e não adiciona o item
-        console.error('NCM inválido');
-        return;
-      }
+      // Atualiza os campos do formData com os valores do NCM retornado
+      formData.irpj = parseFloat(ncmData?.irpj || '0.00').toFixed(2);
+      formData.csll = parseFloat(ncmData?.csll || '0.00').toFixed(2);
+      formData.aliquotacofinsSaida = parseFloat(ncmData?.aliquotacofinsSaida || '0.00').toFixed(2);
+      formData.aliquotapisSaida = parseFloat(ncmData?.aliquotapisSaida || '0.00').toFixed(2);
+      formData.aliquotaicms = parseFloat(ncmData?.aliquotaicms || '0.00').toFixed(2);
 
-      // Atualiza os campos do formData com os valores de ncmData
-      formData.irpj = ncmData?.irpj || '0.00';
-      formData.csll = ncmData?.csll || '0.00';
-      formData.aliquotacofinsSaida = ncmData?.aliquotacofinsSaida || '0.00';
-      formData.aliquotapisSaida = ncmData?.aliquotapisSaida || '0.00';
-      formData.aliquotaicms = ncmData?.aliquotaicms || '0.00';
-
-      // Adiciona o novo item ao array
+      // Adiciona o novo item à tabela
       this.tabelaInformacoes.push({ ...formData });
-    } else {
-      console.error('Formulário inválido');
+      console.info('Informações adicionadas com sucesso:', formData);
+    } catch (error) {
+      console.error('Erro ao consultar o NCM:', error);
     }
   }
 
-  atualizarNcmVenda() {
-    // Verifica se o campo ncmCompra tem valor e atualiza ncmVenda
-    if (this.simuladorForm.get('ncmCompra')?.value) {
-      this.simuladorForm.get('ncmVenda')?.setValue(this.simuladorForm.get('ncmCompra')?.value);
+
+  // Método auxiliar para validar campos obrigatórios
+  private validarCamposObrigatorios(campos: string[], formData: any): boolean {
+    for (const campo of campos) {
+      if (!formData[campo] || formData[campo].toString().trim() === '') {
+        console.error(`O campo ${campo} é obrigatório e está vazio.`);
+        return false;
+      }
     }
+    return true;
   }
 
   buscarCestCompra() {
     const ncmCompra = this.simuladorForm.get('ncmCompra')?.value;
-    const ufDistribuidor = this.simuladorForm.get('ufDistribuidor')?.value; // Obtém o valor da UF do distribuidor
+    const ufDistribuidor = this.simuladorForm.get('ufDistribuidor')?.value;
+    const produtoImportado = this.simuladorForm.get('produtoImportado')?.value;
+    const aliquotaInterestadualFornecedor = this.simuladorForm.get('aliquotaInterestadualFornecedor')?.value;
 
     if (!ncmCompra || !ufDistribuidor) {
-      return; // Caso o NCM ou UF não estejam preenchidos, retorna sem fazer nada
+      return; // Retorna se os campos obrigatórios não estiverem preenchidos
     }
 
     this.firestore
-      .collection<NCM>('ncm', ref => ref
-        .where('ncm', '==', ncmCompra) // Filtra pelo NCM
-        .where('uf', '==', ufDistribuidor) // Filtra pela UF do distribuidor
-        .orderBy('uf')) // Ordena pelo campo 'uf'
+      .collection<NCM>('ncm', (ref) =>
+        ref
+          .where('ncm', '==', ncmCompra)
+          .where('uf', '==', ufDistribuidor)
+          .orderBy('uf')
+      )
       .snapshotChanges()
-      .subscribe((snapshot) => {
-        this.cestOptions = []; // Limpa as opções de CEST antes de preenchê-las
+      .subscribe(
+        (snapshot) => {
+          this.cestOptions = []; // Limpa as opções anteriores
+          let mva = null;
+          let cst = null;
 
-        snapshot.forEach((a) => {
-          const data = a.payload.doc.data() as NCM;
-          const id = a.payload.doc.id;
+          snapshot.forEach((a) => {
+            const data = a.payload.doc.data() as NCM;
+            const id = a.payload.doc.id;
 
-          // Verifica se o campo 'cest' existe nos dados
-          if (data.cest) {
-            this.cestOptions.push({
-              cest: data.cest,
-              id: id // Adiciona o id ao objeto retornado
-            });
+            if (data.cest) {
+              this.cestOptions.push({ cest: data.cest, id });
+
+              // Determina o MVA usando a função auxiliar
+              mva = this.determinarMVA(data, produtoImportado, aliquotaInterestadualFornecedor);
+
+              // Preenche o CST, se existir
+              if (data.cst) {
+                cst = data.cst;
+              }
+            }
+          });
+
+          // Atualiza os campos no formulário
+          if (mva !== null) {
+            this.simuladorForm.get('percentualMVA')?.setValue(mva);
           }
-        });
-      }, (error) => {
-        console.error('Erro ao buscar CEST:', error); // Registra erro no console
-      });
+          if (cst) {
+            this.simuladorForm.get('cst')?.setValue(cst);
+          }
+        },
+        (error) => {
+          console.error('Erro ao buscar CEST:', error); // Registra o erro no console
+        }
+      );
   }
+
+  private determinarMVA(data: NCM, produtoImportado: boolean, aliquotaInterestadualFornecedor: number): number | null {
+    // Verifica se o produto é importado
+    if (produtoImportado && data.mvaAliquota4 && aliquotaInterestadualFornecedor === 4) {
+      return data.mvaAliquota4; // MVA de 4% para produtos importados
+    }
+
+    // Verifica pela alíquota interestadual fornecida
+    switch (aliquotaInterestadualFornecedor) {
+      case 4:
+        return data.mvaAliquota4 || null; // Retorna o MVA para 4%, se existir
+      case 7:
+        return data.mvaAliquota7 || null; // Retorna o MVA para 7%, se existir
+      case 12:
+        return data.mvaAliquota12 || null; // Retorna o MVA para 12%, se existir
+      default:
+        break; // Caso nenhuma condição seja atendida, continua
+    }
+
+    // Caso nenhuma alíquota específica seja encontrada, retorna o MVA original
+    return data.mvaOriginal || null;
+  }
+
+
   buscarCestVenda(){
     const ncmVenda = this.simuladorForm.get('ncmVenda')?.value;
     const ufVarejista= this.simuladorForm.get('ufVarejista')?.value; // Obtém o valor da UF do distribuidor
@@ -367,6 +427,7 @@ loadncm(){
 
     await alert.present();
   }
+
   onCheckNcm() {
     const ncmCompraValue = this.simuladorForm.get('ncmCompra')?.value;
     this.simuladorForm.patchValue({
@@ -410,7 +471,7 @@ loadncm(){
     const cstField = this.simuladorForm.get('cst'); // Campo para CST
 
     // Obter os dados do NCM para o distribuidor
-    this.ncmService.getNcmData(ncmCompra, ufDistribuidor, ).subscribe({
+    this.ncmService.getNcmData(ncmCompra, ufDistribuidor).subscribe({
       next: (ncmData) => {
         if (ncmData) {
           // Calcular o percentualMVA com base nas informações
@@ -465,6 +526,7 @@ loadncm(){
 
     return percentualMVA;
   }
+
   private verificarNcmVenda(ncmVenda: string, cestVenda: string, ufVarejista: string) {
     this.ncmService.checkNcmExists(ncmVenda, ufVarejista, cestVenda).subscribe({
       next: (exists) => {
@@ -489,7 +551,7 @@ loadncm(){
       console.log('Alíquota ajustada para 4 devido a produto importado.');
     } else if (ufFornecedor && ufDestino) {
       // Se as UFs estiverem preenchidas, pega a alíquota de interesse
-      const aliquota = this.aliquotasService.getAliquotaInterestadualFornecedor(ufFornecedor, ufDestino);
+      const aliquota = this.aliquotasService.getAliquotaInterestadualFornecedor(ufFornecedor);
 
       if (aliquota !== undefined) {
         this.simuladorForm.patchValue({ aliquotaInterestadualFornecedor: aliquota });
@@ -508,9 +570,6 @@ loadncm(){
     // Atualizando o valor da aliquotaInternaDistribuidor no formulário
     this.simuladorForm.get('aliquotaInternaDistribuidor')?.setValue(aliquota);
   }
-
-
-
 
 
 

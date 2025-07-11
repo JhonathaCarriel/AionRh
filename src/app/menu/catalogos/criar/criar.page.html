@@ -1,0 +1,218 @@
+<app-header [pageTitle]="'Cadastro de Catálogos'" [iconName]="'arrow-back-sharp'" [FormPage]="true"></app-header>
+
+<app-subheader [FormPage]="true" (saveClicked)="salvarCatalogo()" (discardClicked)="descartar()"></app-subheader>
+
+<ion-content [fullscreen]="true">
+  <div class="container mt-4">
+    <form [formGroup]="catalogoForm" class="card">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="nome" class="form-label">Nome do Catálogo</label>
+          <input type="text" class="form-control" id="nome" formControlName="nome" placeholder="Ex: Tratores Série A" />
+        </div>
+        <div class="col-md-6">
+          <label for="descricao" class="form-label">Descrição</label>
+          <input type="text" class="form-control" id="descricao" formControlName="descricao" />
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="fabricante" class="form-label">Fabricante</label>
+          <input type="text" class="form-control" id="fabricante" formControlName="fabricante" />
+        </div>
+        <div class="col-md-4">
+          <label for="dataCadastro" class="form-label">Data de Cadastro</label>
+          <input type="date" class="form-control" id="dataCadastro" formControlName="dataCadastro" />
+        </div>
+        <div class="col-md-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="criarIndice" formControlName="criarIndice"
+              (change)="alternarCriarIndice()" />
+            <label class="form-check-label" for="criarIndice">
+              Criar Índice
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <h5>Páginas Personalizadas</h5>
+      <button class="btn btn-secondary mb-3" type="button" (click)="adicionarPaginaPersonalizada()">
+        Adicionar Página Personalizada
+      </button>
+
+      <div formArrayName="paginasPersonalizadas">
+        <div *ngFor="let pagina of paginasPersonalizadas.controls; let p = index" [formGroupName]="p"
+          class="mb-4 border p-3">
+          <div class="row">
+            <div class="col-md-2">
+              <label class="form-label">Sequência</label>
+              <input type="number" class="form-control form-control-sm" formControlName="sequencia" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Número da Página</label>
+              <input type="text" class="form-control form-control-sm" formControlName="numeroPagina" />
+              <div *ngIf="pagina.get('numeroPagina')?.invalid && pagina.get('numeroPagina')?.touched">
+                <small class="text-danger">A página deve ser um número.</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Nome da Página</label>
+              <input type="text" class="form-control form-control-sm" formControlName="nomePagina" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Imagem de Fundo</label>
+              <input type="file" class="form-control form-control-sm" (change)="onFileSelectedPagina($event, p)"
+                accept="image/*" />
+              <div *ngIf="pagina.get('imagemPagina')?.value">
+                <small class="text-muted">Imagem carregada</small>
+              </div>
+            </div>
+          </div>
+          <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" formControlName="exibirItens" id="exibirItens{{p}}" />
+            <label class="form-check-label" for="exibirItens{{p}}">
+              Exibir Itens Cadastrados nesta Página
+            </label>
+          </div>
+          <button class="btn btn-danger btn-sm mt-2" type="button" (click)="removerPaginaPersonalizada(p)">
+            Remover Página
+          </button>
+        </div>
+      </div>
+
+      <hr />
+      <button class="btn btn-success" type="button" (click)="adicionarGrupoDeItens()">
+        Adicionar Novo Grupo de Itens
+      </button>
+      <div formArrayName="gruposDeItens">
+        <div *ngFor="let grupo of gruposDeItens.controls; let i = index" [formGroupName]="i" class="mb-4 border p-3">
+
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5>Grupo de Itens: {{ grupo.get('nomeDoGrupo')?.value }}</h5>
+            <button class="btn btn-outline-secondary btn-sm" type="button" (click)="toggleGrupo(i)">
+              {{ expandedGroups[i] ? 'Minimizar' : 'Expandir' }}
+            </button>
+          </div>
+
+          <div *ngIf="expandedGroups[i]">
+            <div class="mb-3">
+              <label class="form-label">Nome do Grupo de Itens</label>
+              <input type="text" class="form-control" formControlName="nomeDoGrupo"
+                placeholder="Ex: Cilindros Hidráulicos" />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Imagem do Grupo</label>
+              <input type="file" class="form-control" (change)="onFileSelected($event, i)" accept="image/*" />
+            </div>
+
+            <div class="mb-3" *ngIf="catalogoForm.get('criarIndice')?.value">
+              <label class="form-label">Página no Índice</label>
+              <input type="number" class="form-control" formControlName="paginaIndice" placeholder="Ex: 15" />
+              <div *ngIf="grupo.get('paginaIndice')?.invalid && grupo.get('paginaIndice')?.touched">
+                <small class="text-danger">A página deve ser um número.</small>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Colar Itens (separados por tabulação e cada item em uma linha)</label>
+              <textarea class="form-control" formControlName="itensColados" rows="5"
+                placeholder="Cole os dados aqui..."></textarea>
+              <button class="btn btn-info btn-sm mt-2" type="button" (click)="processarItensColados(i)">
+                Processar Itens Colados
+              </button>
+            </div>
+
+            <h5>Itens do Grupo "{{ grupo.get('nomeDoGrupo')?.value }}"</h5>
+
+            <div formArrayName="itens">
+              <table class="table table-bordered table-striped">
+                <thead class="table-light">
+                  <tr>
+                    <th>REFERÊNCIA INTERNA</th>
+                    <th>CÓDIGO</th>
+                    <th>HASTE</th>
+                    <th>ÊMBOLO</th>
+                    <th>DESCRIÇÃO</th>
+                    <th>CILINDRO</th>
+                    <th>EQUIPAMENTO</th>
+                    <th>MARCA</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of getItensDoGrupo(i).controls; let j = index" [formGroupName]="j">
+                    <td>
+                      <input type="text" class="form-control form-control-sm" formControlName="referenciaInterna" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" formControlName="codigo" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" formControlName="haste" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" formControlName="embolo" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" formControlName="descricao" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" formControlName="cilindro" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" formControlName="equipamento" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" formControlName="marca" />
+                    </td>
+                    <td>
+                      <button class="btn btn-danger btn-sm" type="button" (click)="removerItem(i, j)">
+                        Remover
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <button class="btn btn-primary btn-sm mt-2" type="button" (click)="adicionarItem(i)">
+              Adicionar Item Manualmente
+            </button>
+
+            <button class="btn btn-danger btn-sm mt-2 ms-2" type="button" (click)="removerGrupoDeItens(i)">
+              Remover Grupo "{{ grupo.get('nomeDoGrupo')?.value }}"
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="catalogoForm.get('criarIndice')?.value" class="mb-4 border p-3">
+        <h5>Índice do Catálogo</h5>
+        <div formArrayName="indice">
+          <div *ngFor="let itemIndice of indice.controls; let k = index" [formGroupName]="k" class="row mb-2">
+            <div class="col-md-6">
+              <label class="form-label">Nome do Grupo</label>
+              <input type="text" class="form-control form-control-sm" formControlName="nomeDoGrupoIndice" readonly />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Página</label>
+              <input type="number" class="form-control form-control-sm" formControlName="paginaIndice" />
+              <div *ngIf="itemIndice.get('paginaIndice')?.invalid && itemIndice.get('paginaIndice')?.touched">
+                <small class="text-danger">A página deve ser um número.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+</ion-content>
+<app-botao-flutuante [showPrintContent]="true" [showExportToExcel]="false" [showSalvarDados]="false"
+  [showPrintDRE]="false" (printContentClicked)="exportarPDF()">
+</app-botao-flutuante>

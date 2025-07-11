@@ -44,3 +44,19 @@ ion-toolbar {
 .logout {
   color: #fff;
 }
+.logo-central {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+.logo{
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  display: block;
+}
+

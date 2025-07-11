@@ -1,0 +1,60 @@
+<app-header
+  [pageTitle]="'Visualizar Padrão de Tributação'"
+  [iconName]="'arrow-back-sharp'"
+  [ViewPage]="true">
+</app-header>
+
+<app-subheader
+  [TitleSubheader]="''"
+  [ViewPage]="true"
+  descricaoCampoPesquisa="Pesquisar por Descrição ou CST"
+  (newClicked)="novoCadastro()"
+  (searchClicked)="onSearch($event)">
+</app-subheader>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <article
+      class="article-card"
+      *ngFor="let item of padroesTributacao">
+
+      <!-- Botões de ação -->
+      <div class="card-actions">
+        <ion-button color="danger" fill="clear" size="small" (click)="excluirPadrao(item.id)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+
+      </div>
+
+      <!-- Título -->
+      <h5 class="titulo mb-2">{{ item.descricaoPadraoTributacao }}</h5>
+
+      <!-- Bloco de dados -->
+      <div class="card-grid">
+        <div class="card-field">
+          <strong>IPI:</strong> CST: {{ item.cstIPI }} | Alíquota: {{ item.aliquotaIPI }}%
+        </div>
+        <div class="card-field">
+          <strong>PIS/COFINS Entrada:</strong> CST: {{ item.cstpiscofinsEntrada }} | PIS: {{ item.aliquotapisEntrada }}% | COFINS: {{ item.aliquotacofinsEntrada }}%
+        </div>
+        <div class="card-field">
+          <strong>PIS/COFINS Saída:</strong> CST: {{ item.cstpiscofinsSaida }} | PIS: {{ item.aliquotapisSaida }}% | COFINS: {{ item.aliquotacofinsSaida }}%
+        </div>
+        <div class="card-field">
+          <strong>ICMS:</strong> CST: {{ item.cst }} | Alíquota: {{ item.aliquotaicms }}%
+        </div>
+        <div class="card-field">
+          <strong>MVA:</strong>
+          Original: {{ item.mvaOriginal }}% |
+          12%: {{ item.mvaAliquota12 }}% |
+          7%: {{ item.mvaAliquota7 }}% |
+          4%: {{ item.mvaAliquota4 }}%
+        </div>
+        <div class="card-field">
+          <strong>IRPJ:</strong> {{ item.irpj }}% |
+          <strong>CSLL:</strong> {{ item.csll }}%
+        </div>
+      </div>
+    </article>
+  </ion-list>
+</ion-content>

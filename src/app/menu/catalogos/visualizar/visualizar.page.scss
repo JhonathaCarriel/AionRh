@@ -1,0 +1,88 @@
+
+
+ion-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+
+
+.article-card {
+  border: 1px solid #e7e7e7;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 10px;
+  background-color: #fff;
+  box-shadow: 2px 2px 10px rgba(85, 85, 85, 0.1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.o_kanban_renderer .o_kanban_record:not(.o_legacy_kanban_record):not(.o_kanban_ghost) {
+  padding: var(--KanbanRecord-padding-v) var(--KanbanRecord-padding-h);
+  border: 1px solid #d8dadd;
+  background-color: white;
+}
+.o_kanban_renderer.o_kanban_ungrouped .o_kanban_record {
+  width: var(--KanbanRecord-width);
+  margin: calc(var(--KanbanRecord-margin-v)* 0.5) var(--KanbanRecord-margin-h);
+}
+.o_kanban_renderer .o_kanban_record:not(.o_legacy_kanban_record):where(:not(.row)) {
+  flex-flow: column;
+}
+.o_kanban_renderer .o_kanban_record:not(.o_legacy_kanban_record) {
+  --fieldWidget-display: block;
+  --Tag-max-width: 100%;
+  --Tag-font-size: 0.75rem;
+  --Tags-margin: calc(1em - var(--Tag-font-size, .75rem)) 0;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex
+;
+  align-items: stretch;
+  min-width: 150px;
+  margin: 0 0 -1px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+@media (min-width: 768px) {
+  .flex-md-shrink-1 {
+      flex-shrink: 1 !important;
+  }
+}
+.cursor-pointer {
+  cursor: pointer !important;
+}
+.flex-shrink-0 {
+  flex-shrink: 0 !important;
+}
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+.d-flex {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important
+;
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+folha de estilo do user agent
+article {
+  display: block;
+  unicode-bidi: isolate;
+}

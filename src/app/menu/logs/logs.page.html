@@ -1,0 +1,102 @@
+<ion-content [fullscreen]="true">
+  <app-header
+    [pageTitle]="'Histórico de Logs'"
+    [iconName]="'arrow-back-sharp'"
+    [ViewPage]="true">
+  </app-header>
+
+  <app-subheader
+    [TitleSubheader]="''"
+    [ViewPage]="true"
+    descricaoCampoPesquisa="Buscar..."
+    (searchClicked)="onSearch($event)">
+  </app-subheader>
+
+  <div class="content-container">
+    <div class="logs-table-container">
+      <table class="logs-table">
+        <thead>
+          <tr>
+            <th>Data/Hora</th>
+            <th>Usuário</th>
+            <th>Ação</th>
+            <th>Entidade</th>
+            <th>ID Documento</th>
+            <th>Detalhes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of getPaginatedLogs()" [ngClass]="'row-' + log.tipoOperacao">
+            <td>{{ formatTimestamp(log.dataHora) }}</td>
+            <td>{{ log.usuario }}</td>
+            <td>
+              <span class="action-badge" [ngClass]="getActionClass(log.tipoOperacao)">
+                {{ getActionName(log.tipoOperacao) }}
+              </span>
+            </td>
+            <td>{{ log.colecaoAlvo }}</td>
+            <td class="document-id">{{ log.documentoAlvoId }}</td>
+            <td>
+              <button class="details-button" (click)="showDetails(log)">
+                <i class="fas fa-info-circle"></i> Detalhes
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-controls">
+      <button (click)="previousPage()" [disabled]="currentPage === 1" class="pagination-button">
+        <i class="fas fa-chevron-left"></i> Anterior
+      </button>
+      <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="pagination-button">
+        Próxima <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Detalhes do Log</h2>
+        <button class="close-button" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-row">
+          <span >Data:</span>
+          <span class="detail-value">{{ formatTimestamp(selectedLog?.dataHora) }}</span>
+        </div>
+        <div class="detail-row">
+          <span >Usuário:</span>
+          <span class="detail-value">{{ selectedLog?.usuario }}</span>
+        </div>
+        <div class="detail-row">
+          <span >Ação:</span>
+          <span class="detail-value action-badge" [ngClass]="getActionClass(selectedLog?.tipoOperacao || '')">
+            {{ getActionName(selectedLog?.tipoOperacao || '') }}
+          </span>
+        </div>
+        <div class="detail-row">
+          <span >Entidade:</span>
+          <span class="detail-value">{{ selectedLog?.colecaoAlvo }}</span>
+        </div>
+        <div class="detail-row">
+          <span >ID Documento:</span>
+          <span class="detail-value">{{ selectedLog?.documentoAlvoId }}</span>
+        </div>
+        <div class="detail-section">
+          <h3>Alterações</h3>
+          <div class="changes-container">
+
+            <div class="changes-column">
+              <h4>Resultados</h4>
+              <pre>{{ selectedLog?.dadosNovos | json }}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

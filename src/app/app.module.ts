@@ -15,6 +15,7 @@ import { HeaderComponent } from './header/header.component';
 import { AuthService } from './shared/services/auth-service.service';
 import { CestService } from './services/cest.service';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { CommonModule } from '@angular/common';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     IonicModule,
+    HttpClientModule,
     CommonModule,
     FormsModule,
     AngularFireDatabaseModule, ReactiveFormsModule, HeaderComponent, IonicModule

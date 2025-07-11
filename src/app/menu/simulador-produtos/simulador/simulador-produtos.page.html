@@ -1,0 +1,58 @@
+<ion-content [fullscreen]="true">
+  <app-header [pageTitle]="pageTitle" [iconName]="'arrow-back-sharp'" [ViewPage]="true">
+  </app-header>
+
+  <app-subheader [TitleSubheader]="TitleSubheader" [ViewPage]="true" descricaoCampoPesquisa="Buscar..."
+    (newClicked)="novoCadastroSimulacaoProduto()"
+    (searchClicked)="onSearch($event)">
+  </app-subheader>
+
+  <ion-list>
+    <article
+      class="o_kanban_record d-flex flex-column cursor-pointer flex-grow-1 flex-md-shrink-1 flex-shrink-0 article-card position-relative"
+      *ngFor="let cabecalho of cabecalhos">
+      <!-- Botões no topo do article -->
+      <div class="d-flex justify-content-between align-items-center position-absolute top-0 end-0 p-2">
+        <ion-button color="danger" fill="clear" size="small" (click)="excluirCabecalho(cabecalho.id)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" size="small" class="text-primary" (click)="editarCabecalho(cabecalho.id)">
+          <ion-icon name="open-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" size="small" class="text-primary" (click)="duplicarSimulacaoProduto(cabecalho.id)">
+          <ion-icon name="duplicate-outline"></ion-icon>
+                </ion-button>
+      </div>
+
+      <!-- Conteúdo do article -->
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="fw-bolder me-2 text-truncate" style="max-width: 60%; font-size: 12px;">
+          {{ cabecalho.nomeCliente }}{{ cabecalho.paraQuemSimulacao }}
+        </span>
+      </div>
+
+      <div class="d-flex align-items-baseline mb-2">
+
+        <div name="amount_total"
+          class="o_field_widget o_readonly_modifier o_field_monetary fw-bolder ms-auto flex-shrink-0">
+          <span>R$&nbsp;{{ cabecalho.valorTotalVenda ? (cabecalho.valorTotalVenda | number:'1.2-2') : '0.00' }}</span>
+        </div>
+      </div>
+
+      <footer class="align-items-end">
+        <div class="d-flex flex-wrap gap-1 text-muted text-nowrap">
+          <!-- Only show ID if it contains only numbers -->
+          <span *ngIf="isNumericId(cabecalho.id)">ID:{{ cabecalho.id }} - {{cabecalho.numeroOs}}</span>
+          <span>{{ cabecalho.nomeVarejista }}</span>
+          <span>{{ cabecalho.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div name="state" class="o_field_widget o_readonly_modifier o_field_label_selection ms-auto">
+          <span class="badge"
+            [ngClass]="{'text-bg-success': cabecalho.finalizado === 'Sim', 'text-bg-warning': cabecalho.finalizado !== 'Sim'}">
+            {{ cabecalho.finalizado === 'Sim' ? 'Finalizado' : 'Em andamento' }}
+          </span>
+        </div>
+      </footer>
+    </article>
+  </ion-list>
+</ion-content>

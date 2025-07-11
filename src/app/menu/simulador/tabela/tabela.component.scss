@@ -1,6 +1,6 @@
 ion-col,
 ion-card{
-font-size: 12px;
+font-size: 14px;
 border-collapse: collapse;
 }
 
@@ -14,22 +14,22 @@ border-collapse: collapse;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
-  
+
   .totals-card ion-card-header {
     text-align: center;
   }
-  
+
   .totals-card ion-card-content p {
     margin: 10px 0;
   }
 
-  
+
   .col-disabled {
     color: white;
     pointer-events: none; /* Bloqueia a interação */
     user-select: none; /* Impede a seleção do texto */
   }
-  
+
   .button-information{
     color: green;
   }

@@ -1,71 +1,122 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import firebase from 'firebase/compat/app';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  userData: any;
-  constructor(private afAuth: AngularFireAuth, public router: Router,
+  userData: firebase.User | null = null;
+
+  constructor(
+    private afAuth: AngularFireAuth,
+    private router: Router
   ) {
     this.afAuth.authState.subscribe((user) => {
-
+      this.userData = user;
       if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
+        localStorage.setItem('user', JSON.stringify(user));
       } else {
         localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
       }
     });
   }
 
+  // Método para cadastrar novo usuário com tratamento de erros
+  async cadastrarNovoUsuario(email: string, password: string, dadosAdicionais?: any): Promise<{ success: boolean; message?: string; user?: firebase.User }> {
+    try {
+      const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
 
+      // Atualizar perfil do usuário com dados adicionais (opcional)
+      if (dadosAdicionais && userCredential.user) {
+        await userCredential.user.updateProfile({
+          displayName: dadosAdicionais.nome || '',
+          photoURL: dadosAdicionais.fotoUrl || null
+        });
+      }
+
+      // Enviar email de verificação (opcional)
+      await userCredential.user?.sendEmailVerification();
+
+      return {
+        success: true,
+        user: userCredential.user || undefined,
+        message: 'Cadastro realizado com sucesso! Verifique seu email.'
+      };
+    } catch (error: any) {
+      let errorMessage = 'Erro ao cadastrar usuário';
+
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          errorMessage = 'Este email já está em uso.';
+          break;
+        case 'auth/invalid-email':
+          errorMessage = 'Email inválido.';
+          break;
+        case 'auth/weak-password':
+          errorMessage = 'Senha muito fraca. Use pelo menos 6 caracteres.';
+          break;
+        default:
+          errorMessage = error.message || errorMessage;
+      }
+
+      return {
+        success: false,
+        message: errorMessage
+      };
+    }
+  }
+
+  // Métodos existentes mantidos abaixo...
+  getUserEmail(): string | null {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user?.email || null;
+  }
+
+  getUserEmail$(): Observable<string | null> {
+    return this.afAuth.authState.pipe(
+      map(user => user?.email || null)
+    );
+  }
 
   async login(email: string, password: string): Promise<boolean> {
     try {
       const userCredential = await this.afAuth.signInWithEmailAndPassword(email, password);
-      if (userCredential && userCredential.user) {
-        // Autenticação bem-sucedida
-        return true;
-      } else {
-        // Autenticação falhou
-        return false;
-      }
+      return !!userCredential?.user;
     } catch (error) {
-      // Tratamento de erro
       console.error('Erro ao autenticar usuário:', error);
       return false;
     }
   }
 
-
   async logout(): Promise<void> {
-    this.router.navigate(['/login']);
     await this.afAuth.signOut();
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {
-    return this.afAuth.currentUser !== null;
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user !== null && user !== 'null';
   }
 
-  async registerUser(email: string, password: string) {
-    return await this.afAuth.createUserWithEmailAndPassword(email, password);
-  }
-
-  async resetPassword(email: string) {
-    return await this.afAuth.sendPasswordResetEmail(email);
+  async resetPassword(email: string): Promise<void> {
+    return this.afAuth.sendPasswordResetEmail(email);
   }
 
   async isAuthenticated(): Promise<boolean> {
     const user = JSON.parse(localStorage.getItem('user')!);
-    console.log(user)
-    return user !== null && !!user.email
+    return user !== null && user !== 'null' && !!user.email;
   }
 
-  async getProfile(): Promise<firebase.default.User | null> {
+  async getProfile(): Promise<firebase.User | null> {
     return this.afAuth.currentUser;
+  }
+
+  getAuthState(): Observable<firebase.User | null> {
+    return this.afAuth.authState;
   }
 }

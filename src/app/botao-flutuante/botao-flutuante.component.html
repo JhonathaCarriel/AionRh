@@ -1,0 +1,27 @@
+<div class="fixed">
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button color="primary">
+    <ion-icon name="apps-outline"></ion-icon>
+  </ion-fab-button>
+
+  <ion-fab-list side="start">
+    <ion-button *ngIf="showPrintDRE" (click)="printDRE()" aria-label="Imprimir DRE">
+      <ion-icon name="receipt-outline"></ion-icon>
+      DRE
+    </ion-button>
+    <ion-button *ngIf="showPrintContent" (click)="printContent()" aria-label="Imprimir conteúdo">
+      <ion-icon name="print-outline"></ion-icon>
+      Imprimir
+    </ion-button>
+    <ion-button *ngIf="showExportToExcel" (click)="exportToExcel()" aria-label="Exportar para Excel">
+      <ion-icon name="document-text-outline"></ion-icon>
+      Excel
+    </ion-button>
+    <ion-button *ngIf="showSalvarDados" (click)="salvarDadosSimulador()" aria-label="Salvar dados">
+      <ion-icon name="save-outline"></ion-icon>
+      Salvar
+    </ion-button>
+  </ion-fab-list>
+</ion-fab>
+</div>

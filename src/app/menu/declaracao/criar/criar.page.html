@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Criar Declaração</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="container mt-5">
+    <h2>Criar Declaração</h2>
+
+    <form (ngSubmit)="gerarDeclaracao()">
+      <div class="form-group">
+        <label for="nomeCatequizando">Nome do Catequizando</label>
+        <input type="text" class="form-control" id="nomeCatequizando" [(ngModel)]="formData.nomeCatequizando" name="nomeCatequizando" required>
+      </div>
+
+      <div class="form-group">
+        <label for="dataNascimento">Data de Nascimento</label>
+        <input type="date" class="form-control" id="dataNascimento" [(ngModel)]="formData.dataNascimento" name="dataNascimento" required>
+      </div>
+
+      <div class="form-group">
+        <label for="naturalidade">Naturalidade</label>
+        <input type="text" class="form-control" id="naturalidade" [(ngModel)]="formData.naturalidade" name="naturalidade" required>
+      </div>
+
+      <div class="form-group">
+        <label for="nomePai">Nome do Pai</label>
+        <input type="text" class="form-control" id="nomePai" [(ngModel)]="formData.nomePai" name="nomePai" required>
+      </div>
+
+      <div class="form-group">
+        <label for="nomeMae">Nome da Mãe</label>
+        <input type="text" class="form-control" id="nomeMae" [(ngModel)]="formData.nomeMae" name="nomeMae" required>
+      </div>
+
+      <div class="form-group">
+        <label for="turmaCatequese">Turma de Catequese</label>
+        <input type="text" class="form-control" id="turmaCatequese" [(ngModel)]="formData.turmaCatequese" name="turmaCatequese" required>
+      </div>
+
+      <div class="form-group">
+        <label for="dataDeclaracao">Data da Declaração</label>
+        <input type="date" class="form-control" id="dataDeclaracao" [(ngModel)]="formData.dataDeclaracao" name="dataDeclaracao" required>
+      </div>
+
+      <div class="form-group">
+        <label for="nomeCoordenador">Nome do Coordenador</label>
+        <input type="text" class="form-control" id="nomeCoordenador" [(ngModel)]="formData.nomeCoordenador" name="nomeCoordenador" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Gerar Declaração</button>
+    </form>
+  </div>
+
+</ion-content>

@@ -1,0 +1,199 @@
+<app-header
+[pageTitle]="pageTitle"
+[iconName]="'arrow-back-sharp'"
+[FormPage]="true">
+</app-header>
+
+<!-- Componente de Sub-Cabeçalho -->
+<app-subheader [FormPage]="true" (saveClicked)="salvarFornecedor()"
+(discardClicked)="descartar()">
+</app-subheader>
+<ion-content [fullscreen]="true">
+
+
+  <div class="container mt-4">
+    <form [formGroup]="fornecedorForm" class="card p-3 shadow-sm">
+
+      <h5 class="mb-3">Dados da Empresa</h5>
+
+      <div class="mb-3">
+        <label for="cnpj" class="form-label">CNPJ</label>
+        <div class="input-group">
+          <input
+            id="cnpj"
+            type="text"
+            formControlName="cnpj"
+            class="form-control"
+            placeholder="Digite o CNPJ"
+          />
+          <ion-button fill="clear" (click)="buscarDadosFornecedor()">
+            <ion-icon name="search-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="nomeEmpresa" class="form-label">Nome da Empresa</label>
+        <input
+          id="nomeEmpresa"
+          type="text"
+          formControlName="nomeEmpresa"
+          class="form-control"
+          placeholder="Digite o Nome da Empresa"
+        />
+        <div *ngIf="fornecedorForm.controls['nomeEmpresa'].invalid && (fornecedorForm.controls['nomeEmpresa'].dirty || fornecedorForm.controls['nomeEmpresa'].touched)" class="form-text text-danger">
+          O Nome da Empresa é obrigatório.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="razaoSocial" class="form-label">Razão Social</label>
+        <input
+          id="razaoSocial"
+          type="text"
+          formControlName="razaoSocial"
+          class="form-control"
+          placeholder="Digite a Razão Social"
+        />
+      </div>
+
+      <h5 class="mt-4 mb-3">Endereço</h5>
+
+      <div class="row g-2 mb-3">
+        <div class="col-md">
+          <label for="estado" class="form-label">Estado</label>
+          <input
+            id="estado"
+            type="text"
+            formControlName="estado"
+            class="form-control"
+            placeholder="Digite o Estado"
+          />
+        </div>
+        <div class="col-md">
+          <label for="municipio" class="form-label">Município</label>
+          <input
+            id="municipio"
+            type="text"
+            formControlName="municipio"
+            class="form-control"
+            placeholder="Digite o Município"
+          />
+        </div>
+        <div class="col-md">
+          <label for="logradouro" class="form-label">Logradouro</label>
+          <input
+            id="logradouro"
+            type="text"
+            formControlName="logradouro"
+            class="form-control"
+            placeholder="Digite o Logradouro"
+          />
+        </div>
+      </div>
+
+      <div class="row g-2 mb-3">
+        <div class="col-md-3">
+          <label for="numero" class="form-label">Número</label>
+          <input
+            id="numero"
+            type="text"
+            formControlName="numero"
+            class="form-control"
+            placeholder="Número"
+          />
+        </div>
+        <div class="col-md-4">
+          <label for="bairro" class="form-label">Bairro</label>
+          <input
+            id="bairro"
+            type="text"
+            formControlName="bairro"
+            class="form-control"
+            placeholder="Digite o Bairro"
+          />
+        </div>
+        <div class="col-md-5">
+          <label for="cep" class="form-label">CEP</label>
+          <input
+            id="cep"
+            type="text"
+            formControlName="cep"
+            class="form-control"
+            placeholder="Digite o CEP"
+          />
+        </div>
+      </div>
+
+      <h5 class="mt-4 mb-3">Contato</h5>
+
+      <div class="row g-2 mb-3">
+        <div class="col-md">
+          <label for="telefone1" class="form-label">Telefone 1</label>
+          <input
+            id="telefone1"
+            type="text"
+            formControlName="telefone1"
+            class="form-control"
+            placeholder="Digite o Telefone 1"
+          />
+        </div>
+        <div class="col-md">
+          <label for="telefone2" class="form-label">Telefone 2 (Opcional)</label>
+          <input
+            id="telefone2"
+            type="text"
+            formControlName="telefone2"
+            class="form-control"
+            placeholder="Digite o Telefone 2"
+          />
+        </div>
+      </div>
+
+      <h5 class="mt-4 mb-3">Informações Adicionais</h5>
+
+      <div class="row g-2 mb-3">
+        <div class="col-md">
+          <label for="atividadeFornecedor" class="form-label">Atividade</label>
+          <select
+            name="atividadeFornecedor"
+            id="atividadeFornecedor"
+            formControlName="atividadeFornecedor"
+            class="form-control"
+            (change)="verificarTipoDeAtividade($event)"
+          >
+            <option *ngFor="let atividade of atividades" [value]="atividade.nome">
+              {{ atividade.nome }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md">
+          <label for="nfeCompraFornecedor" class="form-label">Compra com NF-e?</label>
+          <select
+            name="nfeCompraFornecedor"
+            id="nfeCompraFornecedor"
+            formControlName="nfeCompraFornecedor"
+            class="form-control"
+          >
+            <option *ngFor="let boleano of boleanos" [value]="boleano.nome">{{ boleano.nome }}</option>
+          </select>
+        </div>
+
+        <div class="col-md">
+          <label for="tipoDeEmpresa" class="form-label">Tipo de Empresa</label>
+          <select
+  name="tipoDeEmpresa"
+  id="tipoDeEmpresa"
+  formControlName="tipoDeEmpresa"
+  class="form-control"
+  >
+  <option *ngFor="let tipo of tipos" [value]="tipo.nome">{{ tipo.nome }}</option>
+</select>
+
+        </div>
+      </div>
+
+    </form>
+  </div>
+</ion-content>
